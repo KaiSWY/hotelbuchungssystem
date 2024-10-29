@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="connection.autocommit">true</property>
+        <property name="show_sql">true</property>
+        <property name="hibernate.dialect">org.hibernate.community.dialect.SQLiteDialect</property>
+        <property name="hibernate.connection.driver_class">org.sqlite.JDBC</property>
+        <property name="hibernate.connection.url">
+            jdbc:sqlite:src/main/resources/database/hotelbooking.db?createDatabaseIfNotExist=true
+        </property>
+        <property name="hibernate.hbm2ddl.auto">create</property>
+
+        <!-- Entities -->
+        <mapping class="com.hotelbooking.model.Activity"/>
+        <mapping class="com.hotelbooking.model.ParkingSpot"/>
+        <mapping class="com.hotelbooking.model.ParkingSpot_User"/>
+        <mapping class="com.hotelbooking.model.ParkingSpotType"/>
+        <mapping class="com.hotelbooking.model.RestaurantTable"/>
+        <mapping class="com.hotelbooking.model.RestaurantTable_User"/>
+        <mapping class="com.hotelbooking.model.Room"/>
+        <mapping class="com.hotelbooking.model.Room_User"/>
+        <mapping class="com.hotelbooking.model.User"/>
+    </session-factory>
+</hibernate-configuration>
