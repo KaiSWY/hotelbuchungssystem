@@ -10,7 +10,7 @@ public class Room_User
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
 
     @ManyToOne
     @JoinColumn(name = "room_number")
@@ -20,7 +20,9 @@ public class Room_User
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Column(name = "start_date_time")
     private LocalDateTime startDateTime;
+    @Column(name = "end_date_time")
     private LocalDateTime endDateTime;
 
     public Room_User(Room room, User user, LocalDateTime startDateTime, LocalDateTime endDateTime)
@@ -35,12 +37,12 @@ public class Room_User
     {
     }
 
-    public long id()
+    public int id()
     {
         return id;
     }
 
-    public void id(long id)
+    public void id(int id)
     {
         this.id = id;
     }

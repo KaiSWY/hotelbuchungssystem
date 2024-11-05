@@ -10,6 +10,7 @@ import java.util.List;
 public class RestaurantTable
 {
     @Id
+    @Column(name = "table_number")
     private int tableNumber;
     private int seats;
 

@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class Activity_User
 {
     @Id
-    private long id;
+    private int id;
 
     @ManyToOne
     @JoinColumn(name = "activity_id", nullable = false)

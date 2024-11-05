@@ -10,7 +10,7 @@ public class ParkingSpot_User
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
 
     @ManyToOne
     @JoinColumn(name = "spot_id", nullable = false)
@@ -20,7 +20,9 @@ public class ParkingSpot_User
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @Column(name = "start_date_time")
     private LocalDateTime startDateTime;
+    @Column(name = "end_date_time")
     private LocalDateTime endDateTime;
 
     public ParkingSpot_User()
@@ -35,12 +37,12 @@ public class ParkingSpot_User
         this.endDateTime = endDateTime;
     }
 
-    public long id()
+    public int id()
     {
         return id;
     }
 
-    public void id(long id)
+    public void id(int id)
     {
         this.id = id;
     }

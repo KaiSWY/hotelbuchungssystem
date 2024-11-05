@@ -1,9 +1,6 @@
 package com.hotelbooking.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +10,12 @@ import java.util.List;
 public class ParkingSpotType
 {
     @Id
+    @Column(name = "spot_type_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int typeId;
+    @Column(name = "name")
     private String typeName; // e.g. "Underground", "Open Air", "Standard"
+    @Column(name = "price_per_hour")
     private double pricePerHour;
 
     @OneToMany(mappedBy = "spot_type")

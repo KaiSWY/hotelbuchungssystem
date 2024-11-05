@@ -7,11 +7,14 @@ import jakarta.persistence.*;
 public class Activity
 {
     @Id
+    @Column(name = "activity_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int activityId;
     private String name;
     private String description;
+    @Column(name = "price_per_person")
     private double pricePerPerson;
+    @Column(name = "max_participants")
     private int maxParticipants;
 
     public Activity(int activityNumber, String name, String description, double pricePerPerson, int maxParticipants)
@@ -20,6 +23,7 @@ public class Activity
         this.name = name;
         this.description = description;
         this.pricePerPerson = pricePerPerson;
+        this.maxParticipants = maxParticipants;
     }
 
     public Activity()

@@ -1,9 +1,6 @@
 package com.hotelbooking.model;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -13,13 +10,19 @@ import java.util.List;
 public class User
 {
     @Id
+    @Column(name = "user_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userId;
+    @Column(name = "first_name")
     private String firstName;
+    @Column(name = "last_name")
     private String lastName;
     private String email;
+    @Column(name = "postal_code")
     private int postalCode;
     private String city;
     private String street;
+    @Column(name = "house_number")
     private int houseNumber;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -136,13 +139,6 @@ public class User
         this.parkingSpots_Users = parkingSpots_Users;
     }
 
-    public void addParkingSpot(ParkingSpot spot, LocalDateTime startDateTime, LocalDateTime endDateTime)
-    {
-        ParkingSpot_User parkingSpot_user = new ParkingSpot_User(spot, this, startDateTime, endDateTime);
-        parkingSpots_Users.add(parkingSpot_user);
-        spot.parkingSpots_Users().add(parkingSpot_user); // set back references
-    }
-
     public List<Room_User> rooms_users()
     {
         return rooms_users;
@@ -151,13 +147,6 @@ public class User
     public void rooms_users(List<Room_User> rooms_users)
     {
         this.rooms_users = rooms_users;
-    }
-
-    public void addRoom(Room room, LocalDateTime startDateTime, LocalDateTime endDateTime)
-    {
-        Room_User room_user = new Room_User(room, this, startDateTime, endDateTime);
-        rooms_users.add(room_user);
-        room.rooms_users().add(room_user); // set back references
     }
 
     public List<RestaurantTable_User> tables_users()
@@ -169,12 +158,4 @@ public class User
     {
         this.tables_users = tables_users;
     }
-
-    public void addTable(RestaurantTable table, LocalDateTime startDateTime, LocalDateTime endDateTime)
-    {
-        RestaurantTable_User table_user = new RestaurantTable_User(table, this, startDateTime, endDateTime);
-        tables_users.add(table_user);
-        table.tables_users().add(table_user); // set back references
-    }
-
 }

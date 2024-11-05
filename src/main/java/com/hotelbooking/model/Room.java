@@ -10,10 +10,14 @@ import java.util.List;
 public class Room
 {
     @Id
+    @Column(name = "room_number")
     private int roomNumber;
+    @Column(name = "double_beds")
     private int doubleBeds;
+    @Column(name = "single_beds")
     private int singleBeds;
     private String description;
+    @Column(name = "price_per_night")
     private int pricePerNight;
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)

@@ -10,6 +10,7 @@ import java.util.List;
 public class ParkingSpot
 {
     @Id
+    @Column(name = "spot_number")
     private int spotNumber;
 
     @ManyToOne
