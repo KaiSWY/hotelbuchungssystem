@@ -30,52 +30,52 @@ public class Activity
     {
     }
 
-    public int activityId()
+    public int getActivityId()
     {
         return activityId;
     }
 
-    public void activityId(int activityId)
+    public void setActivityId(int activityId)
     {
         this.activityId = activityId;
     }
 
-    public String name()
+    public String getName()
     {
         return name;
     }
 
-    public void name(String name)
+    public void setName(String name)
     {
         this.name = name;
     }
 
-    public String description()
+    public String getDescription()
     {
         return description;
     }
 
-    public void description(String description)
+    public void setDescription(String description)
     {
         this.description = description;
     }
 
-    public double pricePerPerson()
+    public double getPricePerPerson()
     {
         return pricePerPerson;
     }
 
-    public void pricePerPerson(int pricePerPerson)
+    public void setPricePerPerson(double pricePerPerson)
     {
         this.pricePerPerson = pricePerPerson;
     }
 
-    public int maxParticipants()
+    public int getMaxParticipants()
     {
         return maxParticipants;
     }
 
-    public void maxParticipants(int maxParticipants)
+    public void setMaxParticipants(int maxParticipants)
     {
         this.maxParticipants = maxParticipants;
     }

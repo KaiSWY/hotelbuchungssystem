@@ -37,52 +37,52 @@ public class RestaurantTable_User
         this.endDateTime = endDateTime;
     }
 
-    public int id()
+    public int getId()
     {
         return id;
     }
 
-    public void id(int id)
+    public void setId(int id)
     {
         this.id = id;
     }
 
-    public RestaurantTable table()
+    public RestaurantTable getTable()
     {
         return table;
     }
 
-    public void table(RestaurantTable table)
+    public void setTable(RestaurantTable table)
     {
         this.table = table;
     }
 
-    public User user()
+    public User getUser()
     {
         return user;
     }
 
-    public void user(User user)
+    public void setUser(User user)
     {
         this.user = user;
     }
 
-    public LocalDateTime startDateTime()
+    public LocalDateTime getStartDateTime()
     {
         return startDateTime;
     }
 
-    public void startDateTime(LocalDateTime startDateTime)
+    public void setStartDateTime(LocalDateTime startDateTime)
     {
         this.startDateTime = startDateTime;
     }
 
-    public LocalDateTime endDateTime()
+    public LocalDateTime getEndDateTime()
     {
         return endDateTime;
     }
 
-    public void endDateTime(LocalDateTime endDateTime)
+    public void setEndDateTime(LocalDateTime endDateTime)
     {
         this.endDateTime = endDateTime;
     }

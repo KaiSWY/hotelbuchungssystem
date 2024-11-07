@@ -37,52 +37,52 @@ public class Room_User
     {
     }
 
-    public int id()
+    public int getId()
     {
         return id;
     }
 
-    public void id(int id)
+    public void setId(int id)
     {
         this.id = id;
     }
 
-    public Room room()
+    public Room getRoom()
     {
         return room;
     }
 
-    public void room(Room room)
+    public void setRoom(Room room)
     {
         this.room = room;
     }
 
-    public User user()
+    public User getUser()
     {
         return user;
     }
 
-    public void user(User user)
+    public void setUser(User user)
     {
         this.user = user;
     }
 
-    public LocalDateTime startDateTime()
+    public LocalDateTime getStartDateTime()
     {
         return startDateTime;
     }
 
-    public void startDateTime(LocalDateTime startDateTime)
+    public void setStartDateTime(LocalDateTime startDateTime)
     {
         this.startDateTime = startDateTime;
     }
 
-    public LocalDateTime endDateTime()
+    public LocalDateTime getEndDateTime()
     {
         return endDateTime;
     }
 
-    public void endDateTime(LocalDateTime endDateTime)
+    public void setEndDateTime(LocalDateTime endDateTime)
     {
         this.endDateTime = endDateTime;
     }

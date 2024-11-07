@@ -30,32 +30,32 @@ public class ParkingSpot
         this.spotType = spotType;
     }
 
-    public int spotNumber()
+    public int getSpotNumber()
     {
         return spotNumber;
     }
 
-    public void spotNumber(int spotNumber)
+    public void setSpotNumber(int spotNumber)
     {
         this.spotNumber = spotNumber;
     }
 
-    public ParkingSpotType spotType()
+    public ParkingSpotType getSpotType()
     {
         return spotType;
     }
 
-    public void spotType(ParkingSpotType spotType)
+    public void setSpotType(ParkingSpotType spotType)
     {
         this.spotType = spotType;
     }
 
-    public List<ParkingSpot_User> parkingSpots_Users()
+    public List<ParkingSpot_User> getParkingSpots_Users()
     {
         return parkingSpots_Users;
     }
 
-    public void parkingSpots_Users(List<ParkingSpot_User> parkingSpots_Users)
+    public void setParkingSpots_Users(List<ParkingSpot_User> parkingSpots_Users)
     {
         this.parkingSpots_Users = parkingSpots_Users;
     }

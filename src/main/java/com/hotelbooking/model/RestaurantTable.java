@@ -27,32 +27,32 @@ public class RestaurantTable
     {
     }
 
-    public int tableNumber()
+    public int getTableNumber()
     {
         return tableNumber;
     }
 
-    public void tableNumber(int tableNumber)
+    public void setTableNumber(int tableNumber)
     {
         this.tableNumber = tableNumber;
     }
 
-    public int seats()
+    public int getSeats()
     {
         return seats;
     }
 
-    public void seats(int seats)
+    public void setSeats(int seats)
     {
         this.seats = seats;
     }
 
-    public List<RestaurantTable_User> tables_users()
+    public List<RestaurantTable_User> getTables_users()
     {
         return tables_users;
     }
 
-    public void tables_users(List<RestaurantTable_User> tables_users)
+    public void setTables_users(List<RestaurantTable_User> tables_users)
     {
         this.tables_users = tables_users;
     }

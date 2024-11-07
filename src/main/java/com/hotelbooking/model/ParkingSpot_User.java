@@ -37,52 +37,52 @@ public class ParkingSpot_User
         this.endDateTime = endDateTime;
     }
 
-    public int id()
+    public int getId()
     {
         return id;
     }
 
-    public void id(int id)
+    public void setId(int id)
     {
         this.id = id;
     }
 
-    public ParkingSpot spot()
+    public ParkingSpot getSpot()
     {
         return spot;
     }
 
-    public void spot(ParkingSpot spot)
+    public void setSpot(ParkingSpot spot)
     {
         this.spot = spot;
     }
 
-    public User user()
+    public User getUser()
     {
         return user;
     }
 
-    public void user(User user)
+    public void setUser(User user)
     {
         this.user = user;
     }
 
-    public LocalDateTime startDateTime()
+    public LocalDateTime getStartDateTime()
     {
         return startDateTime;
     }
 
-    public void startDateTime(LocalDateTime startDateTime)
+    public void setStartDateTime(LocalDateTime startDateTime)
     {
         this.startDateTime = startDateTime;
     }
 
-    public LocalDateTime endDateTime()
+    public LocalDateTime getEndDateTime()
     {
         return endDateTime;
     }
 
-    public void endDateTime(LocalDateTime endDateTime)
+    public void setEndDateTime(LocalDateTime endDateTime)
     {
         this.endDateTime = endDateTime;
     }

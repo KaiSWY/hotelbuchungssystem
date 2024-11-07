@@ -49,112 +49,112 @@ public class User
         this.houseNumber = houseNumber;
     }
 
-    public int userId()
+    public int getUserId()
     {
         return userId;
     }
 
-    public void userId(int userId)
+    public void setUserId(int userId)
     {
         this.userId = userId;
     }
 
-    public String firstName()
+    public String getFirstName()
     {
         return firstName;
     }
 
-    public void firstName(String firstName)
+    public void setFirstName(String firstName)
     {
         this.firstName = firstName;
     }
 
-    public String lastName()
+    public String getLastName()
     {
         return lastName;
     }
 
-    public void lastName(String lastName)
+    public void setLastName(String lastName)
     {
         this.lastName = lastName;
     }
 
-    public String email()
+    public String getEmail()
     {
         return email;
     }
 
-    public void email(String email)
+    public void setEmail(String email)
     {
         this.email = email;
     }
 
-    public int postalCode()
+    public int getPostalCode()
     {
         return postalCode;
     }
 
-    public void postalCode(int postalCode)
+    public void setPostalCode(int postalCode)
     {
         this.postalCode = postalCode;
     }
 
-    public String city()
+    public String getCity()
     {
         return city;
     }
 
-    public void city(String city)
+    public void setCity(String city)
     {
         this.city = city;
     }
 
-    public String street()
+    public String getStreet()
     {
         return street;
     }
 
-    public void street(String street)
+    public void setStreet(String street)
     {
         this.street = street;
     }
 
-    public int houseNumber()
+    public int getHouseNumber()
     {
         return houseNumber;
     }
 
-    public void houseNumber(int houseNumber)
+    public void setHouseNumber(int houseNumber)
     {
         this.houseNumber = houseNumber;
     }
 
-    public List<ParkingSpot_User> parkingSpots_Users()
+    public List<ParkingSpot_User> getParkingSpots_Users()
     {
         return parkingSpots_Users;
     }
 
-    public void parkingSpots_Users(List<ParkingSpot_User> parkingSpots_Users)
+    public void setParkingSpots_Users(List<ParkingSpot_User> parkingSpots_Users)
     {
         this.parkingSpots_Users = parkingSpots_Users;
     }
 
-    public List<Room_User> rooms_users()
+    public List<Room_User> getRooms_users()
     {
         return rooms_users;
     }
 
-    public void rooms_users(List<Room_User> rooms_users)
+    public void setRooms_users(List<Room_User> rooms_users)
     {
         this.rooms_users = rooms_users;
     }
 
-    public List<RestaurantTable_User> tables_users()
+    public List<RestaurantTable_User> getTables_users()
     {
         return tables_users;
     }
 
-    public void tables_users(List<RestaurantTable_User> tables_users)
+    public void setTables_users(List<RestaurantTable_User> tables_users)
     {
         this.tables_users = tables_users;
     }

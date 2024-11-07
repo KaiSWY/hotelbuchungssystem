@@ -36,62 +36,62 @@ public class Room
     {
     }
 
-    public int roomNumber()
+    public int getRoomNumber()
     {
         return roomNumber;
     }
 
-    public void roomNumber(int roomNumber)
+    public void setRoomNumber(int roomNumber)
     {
         this.roomNumber = roomNumber;
     }
 
-    public int doubleBeds()
+    public int getDoubleBeds()
     {
         return doubleBeds;
     }
 
-    public void doubleBeds(int doubleBeds)
+    public void setDoubleBeds(int doubleBeds)
     {
         this.doubleBeds = doubleBeds;
     }
 
-    public int singleBeds()
+    public int getSingleBeds()
     {
         return singleBeds;
     }
 
-    public void singleBeds(int singleBeds)
+    public void setSingleBeds(int singleBeds)
     {
         this.singleBeds = singleBeds;
     }
 
-    public String description()
+    public String getDescription()
     {
         return description;
     }
 
-    public void description(String description)
+    public void setDescription(String description)
     {
         this.description = description;
     }
 
-    public int pricePerNight()
+    public int getPricePerNight()
     {
         return pricePerNight;
     }
 
-    public void pricePerNight(int pricePerNight)
+    public void setPricePerNight(int pricePerNight)
     {
         this.pricePerNight = pricePerNight;
     }
 
-    public List<Room_User> rooms_users()
+    public List<Room_User> getRooms_users()
     {
         return rooms_users;
     }
 
-    public void rooms_users(List<Room_User> rooms_users)
+    public void setRooms_users(List<Room_User> rooms_users)
     {
         this.rooms_users = rooms_users;
     }

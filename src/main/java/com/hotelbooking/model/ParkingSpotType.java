@@ -32,42 +32,42 @@ public class ParkingSpotType
     {
     }
 
-    public int typeId()
+    public int getTypeId()
     {
         return typeId;
     }
 
-    public void typeId(int typeId)
+    public void setTypeId(int typeId)
     {
         this.typeId = typeId;
     }
 
-    public String typeName()
+    public String getTypeName()
     {
         return typeName;
     }
 
-    public void typeName(String typeName)
+    public void setTypeName(String typeName)
     {
         this.typeName = typeName;
     }
 
-    public double pricePerHour()
+    public double getPricePerHour()
     {
         return pricePerHour;
     }
 
-    public void pricePerHour(double pricePerHour)
+    public void setPricePerHour(double pricePerHour)
     {
         this.pricePerHour = pricePerHour;
     }
 
-    public List<ParkingSpot> spots()
+    public List<ParkingSpot> getSpots()
     {
         return spots;
     }
 
-    public void spots(List<ParkingSpot> spots)
+    public void setSpots(List<ParkingSpot> spots)
     {
         this.spots = spots;
     }
