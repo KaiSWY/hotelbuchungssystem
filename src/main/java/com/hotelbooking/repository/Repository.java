@@ -24,11 +24,14 @@ abstract class Repository<TEntity, ID>
     {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
-        try {
+        try
+        {
             session.persist(entity);
             transaction.commit();
             session.close();
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             transaction.rollback();
             throw e;
         }
@@ -38,11 +41,14 @@ abstract class Repository<TEntity, ID>
     {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
-        try {
+        try
+        {
             session.merge(entity);
             transaction.commit();
             session.close();
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             transaction.rollback();
             throw e;
         }

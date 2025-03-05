@@ -6,17 +6,23 @@ import org.hibernate.cfg.Configuration;
 public class DatabaseConnection {
     private static SessionFactory sessionFactory;
 
-    private DatabaseConnection() {
+    private DatabaseConnection()
+    {
         // private constructor to avoid multiple instances
     }
 
-    public static SessionFactory getSessionFactory() {
-        if (sessionFactory == null) {
-            try {
+    public static SessionFactory getSessionFactory()
+    {
+        if (sessionFactory == null)
+        {
+            try
+            {
                 sessionFactory = new Configuration()
                         .configure("hibernate.cfg.xml")  // Lädt die Konfigurationsdatei
                         .buildSessionFactory();
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 ex.printStackTrace();
                 throw new RuntimeException("Error when setting up the SessionFactory: " + ex.getMessage());
             }
@@ -24,8 +30,10 @@ public class DatabaseConnection {
         return sessionFactory;
     }
 
-    public static void shutdown() {
-        if (sessionFactory != null) {
+    public static void shutdown()
+    {
+        if (sessionFactory != null)
+        {
             sessionFactory.close();
         }
     }

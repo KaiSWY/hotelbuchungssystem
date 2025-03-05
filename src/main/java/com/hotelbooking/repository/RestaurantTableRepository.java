@@ -5,7 +5,8 @@ import org.hibernate.SessionFactory;
 
 public class RestaurantTableRepository extends Repository<RestaurantTable, Integer> implements IRestaurantTableRepository
 {
-    public RestaurantTableRepository(SessionFactory sessionFactory){
+    public RestaurantTableRepository(SessionFactory sessionFactory)
+    {
         super(sessionFactory, RestaurantTable.class);
     }
 }
