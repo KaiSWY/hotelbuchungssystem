@@ -54,6 +54,22 @@ abstract class Repository<TEntity, ID>
         }
     }
 
+    public void delete(TEntity entity)
+    {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        try
+        {
+            session.detach(entity);
+            transaction.commit();
+            session.close();
+        } catch (Exception e)
+        {
+            transaction.rollback();
+            throw e;
+        }
+    }
+
     //TODO error handling
     public TEntity getById(ID id)
     {

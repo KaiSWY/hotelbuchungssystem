@@ -7,6 +7,7 @@ public interface IRestaurantTableRepository
 {
     void add(RestaurantTable restaurantTable);
     void update(RestaurantTable restaurantTable);
+    void delete(RestaurantTable restaurantTable);
     RestaurantTable getById(Integer id);
     List<RestaurantTable> getAll();
 }
