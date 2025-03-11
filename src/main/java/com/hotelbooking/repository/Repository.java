@@ -8,7 +8,7 @@ import org.hibernate.Transaction;
 
 import java.util.List;
 
-abstract class Repository<TEntity, ID>
+public abstract class Repository<TEntity, ID>
 {
     private final SessionFactory sessionFactory;
     private final Class<TEntity> type;

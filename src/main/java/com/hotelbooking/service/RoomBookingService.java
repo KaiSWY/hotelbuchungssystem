@@ -5,7 +5,7 @@ import com.hotelbooking.repository.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class RoomBookingService
+public class RoomBookingService extends BookingService<Integer>
 {
     private final IUserRepository userRepository;
     private final IRoomRepository roomRepository;
@@ -16,23 +16,41 @@ public class RoomBookingService
     }
 
     //TODO error handling
-    public void book(int userId, int roomId, LocalDateTime startDateTime, LocalDateTime endDateTime) {
-        User user = userRepository.getById(userId);
-                //.orElseThrow(() -> new IllegalArgumentException("User not found with id: " + userId));
-        Room room = roomRepository.getById(roomId);
-                //.orElseThrow(() -> new IllegalArgumentException("Room not found with id: " + roomId));
+    @Override
+    public void book(Booking booking) {
+        Room_User roomUserBooking;
+        if(booking instanceof Room_User) {
+            roomUserBooking = (Room_User) booking;
+        } else {
+            // TODO Required error handling for wrong booking object
+            throw new IllegalArgumentException("Invalid booking object");
+        }
 
-        if (isBookingConflict(room, startDateTime, endDateTime)) {
+        User user = userRepository.getById(roomUserBooking.getUser().getUserId());
+                //.orElseThrow(() -> new IllegalArgumentException("User not found with id: " + userId));
+        Room room = roomRepository.getById(roomUserBooking.getRoom().getRoomNumber());
+                //.orElseThrow(() -> new IllegalArgumentException("Room not found with id: " + roomId));
+        LocalDateTime startDateTime = booking.getStartDateTime();
+        LocalDateTime endDateTime = booking.getEndDateTime();
+
+        if (!isBookingConflict(room.getRoomNumber(), startDateTime, endDateTime)) {
             Room_User roomUser = new Room_User(room, user, startDateTime, endDateTime);
-            user.rooms_users().add(roomUser);
+            user.getRooms_users().add(roomUser);
             userRepository.update(user);
         } else {
             throw new IllegalArgumentException("Room is not available for the selected time period");
         }
     }
 
-    private boolean isBookingConflict(Room room, LocalDateTime startDateTime, LocalDateTime endDateTime) {
-        List<Room_User> conflictingBookings = roomRepository.findConflictingBookings(room, startDateTime, endDateTime);
-        return conflictingBookings.isEmpty();
+    @Override
+    public void cancel()
+    {
+
+    }
+
+    @Override
+    protected List<Booking> getBookingsFromEntity(Integer entityId)
+    {
+        return roomRepository.getById(entityId).getRooms_users().stream().map(x -> (Booking) x).toList();
     }
 }
