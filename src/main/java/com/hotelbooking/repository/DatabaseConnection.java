@@ -3,7 +3,8 @@ package com.hotelbooking.repository;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-public class DatabaseConnection {
+public class DatabaseConnection
+{
     private static SessionFactory sessionFactory;
 
     private DatabaseConnection()
@@ -20,8 +21,7 @@ public class DatabaseConnection {
                 sessionFactory = new Configuration()
                         .configure("hibernate.cfg.xml")  // Lädt die Konfigurationsdatei
                         .buildSessionFactory();
-            }
-            catch (Exception ex)
+            } catch (Exception ex)
             {
                 ex.printStackTrace();
                 throw new RuntimeException("Error when setting up the SessionFactory: " + ex.getMessage());

@@ -1,56 +1,111 @@
 package com.hotelbooking.service;
 
 import com.hotelbooking.model.*;
-import com.hotelbooking.repository.*;
+import com.hotelbooking.repository.IRepository;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class RoomBookingService extends BookingService<Integer>
+public class RoomBookingService extends BookingService<Room_User, Integer>
 {
-    private final IUserRepository userRepository;
-    private final IRoomRepository roomRepository;
+    private final IRepository<User, Integer> userRepository;
+    private final IRepository<Room, Integer> roomRepository;
+    private final ParkingSpotBookingService parkingSpotBookingService;
 
-    public RoomBookingService(IUserRepository userRepository, IRoomRepository roomRepository) {
+    public RoomBookingService(
+            IRepository<Room_User, Integer> roomUserRepository,
+            IRepository<User, Integer> userRepository,
+            IRepository<Room, Integer> roomRepository,
+            ParkingSpotBookingService parkingSpotBookingService)
+    {
+        super(roomUserRepository);
         this.userRepository = userRepository;
         this.roomRepository = roomRepository;
+        this.parkingSpotBookingService = parkingSpotBookingService;
     }
 
-    //TODO error handling
     @Override
-    public void book(Booking booking) {
-        Room_User roomUserBooking;
-        if(booking instanceof Room_User) {
-            roomUserBooking = (Room_User) booking;
-        } else {
-            // TODO Required error handling for wrong booking object
-            throw new IllegalArgumentException("Invalid booking object");
-        }
+    public void book(Booking booking)
+    {
+        Room_User roomUserBooking = getRoomUserBookingObject(booking);
 
         User user = userRepository.getById(roomUserBooking.getUser().getUserId());
-                //.orElseThrow(() -> new IllegalArgumentException("User not found with id: " + userId));
+        //.orElseThrow(() -> new IllegalArgumentException("User not found with id: " + userId));
         Room room = roomRepository.getById(roomUserBooking.getRoom().getRoomNumber());
-                //.orElseThrow(() -> new IllegalArgumentException("Room not found with id: " + roomId));
+        //.orElseThrow(() -> new IllegalArgumentException("Room not found with id: " + roomId));
         LocalDateTime startDateTime = booking.getStartDateTime();
         LocalDateTime endDateTime = booking.getEndDateTime();
 
-        if (!isBookingConflict(room.getRoomNumber(), startDateTime, endDateTime)) {
+        if (!isBookingConflict(room.getRoomNumber(), startDateTime, endDateTime))
+        {
             Room_User roomUser = new Room_User(room, user, startDateTime, endDateTime);
             user.getRooms_users().add(roomUser);
             userRepository.update(user);
-        } else {
+            room.getRooms_users().add(roomUser);
+            roomRepository.update(room);
+            repository.add(roomUser);
+        }
+        else
+        {
             throw new IllegalArgumentException("Room is not available for the selected time period");
         }
     }
 
-    @Override
-    public void cancel()
+    public void book(Booking booking, ParkingSpot_User parkingSpotUser)
     {
+        Room_User roomUserBooking = getRoomUserBookingObject(booking);
 
+        ParkingSpot parkingSpot = parkingSpotUser.getSpot();
+        int parkingSpotNumber = parkingSpot.getSpotNumber();
+        Room room = roomRepository.getById(roomUserBooking.getRoom().getRoomNumber());
+        int roomNumber = room.getRoomNumber();
+        LocalDateTime startDateTime = booking.getStartDateTime();
+        LocalDateTime endDateTime = booking.getEndDateTime();
+
+        if (isBookingConflict(roomNumber, startDateTime, endDateTime))
+        {
+            throw new IllegalArgumentException("Room is not available for the selected time period");
+        }
+        if (parkingSpotBookingService.isBookingConflict(parkingSpotNumber, startDateTime, endDateTime))
+        {
+            throw new IllegalArgumentException("Parking spot " + parkingSpotNumber + " is not available for the selected time period");
+        }
+        book(booking);
+        parkingSpotBookingService.book(parkingSpotUser);
+    }
+
+    private Room_User getRoomUserBookingObject(Booking booking)
+    {
+        if (booking instanceof Room_User)
+        {
+            return (Room_User) booking;
+        }
+        else
+        {
+            throw new IllegalArgumentException("Invalid booking object");
+        }
     }
 
     @Override
-    protected List<Booking> getBookingsFromEntity(Integer entityId)
+    public void cancel(Integer bookingId)
     {
-        return roomRepository.getById(entityId).getRooms_users().stream().map(x -> (Booking) x).toList();
+        Room_User roomUser = repository.getById(bookingId);
+        if (roomUser == null)
+        {
+            throw new IllegalArgumentException("Cancellation process failed. Room booking not found with ID: " + bookingId);
+        }
+        User user = roomUser.getUser();
+        Room room = roomUser.getRoom();
+        user.getRooms_users().remove(roomUser);
+        userRepository.update(user);
+        room.getRooms_users().remove(roomUser);
+        roomRepository.update(room);
+        super.cancel(bookingId);
+    }
+
+    @Override
+    public List<Room_User> getBookingsByEntityId(Integer entityId)
+    {
+        return roomRepository.getById(entityId).getRooms_users();
     }
 }

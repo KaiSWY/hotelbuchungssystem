@@ -1,29 +1,39 @@
 package com.hotelbooking.service;
 
-import com.hotelbooking.model.*;
-import com.hotelbooking.repository.*;
+import com.hotelbooking.model.Booking;
+import com.hotelbooking.model.RestaurantTable;
+import com.hotelbooking.model.RestaurantTable_User;
+import com.hotelbooking.model.User;
+import com.hotelbooking.repository.IRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class RestaurantTableBookingService extends BookingService<Integer>
+public class RestaurantTableBookingService extends BookingService<RestaurantTable_User, Integer>
 {
-    private final IUserRepository userRepository;
-    private final IRestaurantTableRepository restaurantTableRepository;
+    private final IRepository<User, Integer> userRepository;
+    private final IRepository<RestaurantTable, Integer> restaurantTableRepository;
 
-    public RestaurantTableBookingService(IUserRepository userRepository, IRestaurantTableRepository restaurantTableRepository) {
+    public RestaurantTableBookingService(
+            IRepository<RestaurantTable_User, Integer> restaurantTableUserRepository,
+            IRepository<User, Integer> userRepository,
+            IRepository<RestaurantTable, Integer> restaurantTableRepository)
+    {
+        super(restaurantTableUserRepository);
         this.userRepository = userRepository;
         this.restaurantTableRepository = restaurantTableRepository;
     }
 
-    // TODO: Error handling
     @Override
-    public void book(Booking booking) {
+    public void book(Booking booking)
+    {
         RestaurantTable_User restaurantTableUserBooking;
-        if (booking instanceof RestaurantTable_User) {
+        if (booking instanceof RestaurantTable_User)
+        {
             restaurantTableUserBooking = (RestaurantTable_User) booking;
-        } else {
-            // TODO Required error handling for wrong booking object
+        }
+        else
+        {
             throw new IllegalArgumentException("Invalid booking object");
         }
 
@@ -34,24 +44,41 @@ public class RestaurantTableBookingService extends BookingService<Integer>
         LocalDateTime startDateTime = booking.getStartDateTime();
         LocalDateTime endDateTime = booking.getEndDateTime();
 
-        if (!isBookingConflict(table.getTableNumber(), startDateTime, endDateTime)) {
+        if (!isBookingConflict(table.getTableNumber(), startDateTime, endDateTime))
+        {
             RestaurantTable_User tableUser = new RestaurantTable_User(table, user, startDateTime, endDateTime);
             user.getTables_users().add(tableUser); // assuming user has a method to access the booking
             userRepository.update(user);
-        } else {
+            table.getTables_users().add(tableUser);
+            restaurantTableRepository.update(table);
+            repository.add(tableUser);
+        }
+        else
+        {
             throw new IllegalArgumentException("Table is not available for the selected time period");
         }
     }
 
     @Override
-    public void cancel()
+    public void cancel(Integer bookingId)
     {
-
+        RestaurantTable_User restaurantTableUser = repository.getById(bookingId);
+        if (restaurantTableUser == null)
+        {
+            throw new IllegalArgumentException("Cancellation process failed. Restaurant table booking not found with ID: " + bookingId);
+        }
+        User user = restaurantTableUser.getUser();
+        RestaurantTable restaurantTable = restaurantTableUser.getTable();
+        user.getTables_users().remove(restaurantTableUser);
+        userRepository.update(user);
+        restaurantTable.getTables_users().remove(restaurantTableUser);
+        restaurantTableRepository.update(restaurantTable);
+        super.cancel(bookingId);
     }
 
     @Override
-    protected List<Booking> getBookingsFromEntity(Integer entityId)
+    public List<RestaurantTable_User> getBookingsByEntityId(Integer entityId)
     {
-        return restaurantTableRepository.getById(entityId).getTables_users().stream().map(x -> (Booking) x).toList();
+        return restaurantTableRepository.getById(entityId).getTables_users();
     }
 }

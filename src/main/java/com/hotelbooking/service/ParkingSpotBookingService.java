@@ -1,56 +1,82 @@
 package com.hotelbooking.service;
 
-import com.hotelbooking.model.*;
-import com.hotelbooking.repository.IParkingSpotRepository;
-import com.hotelbooking.repository.IUserRepository;
+import com.hotelbooking.model.Booking;
+import com.hotelbooking.model.ParkingSpot;
+import com.hotelbooking.model.ParkingSpot_User;
+import com.hotelbooking.model.User;
+import com.hotelbooking.repository.IRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class ParkingSpotBookingService extends BookingService<Integer>
+public class ParkingSpotBookingService extends BookingService<ParkingSpot_User, Integer>
 {
-    private final IUserRepository userRepository;
-    private final IParkingSpotRepository parkingSpotRepository;
+    private final IRepository<User, Integer> userRepository;
+    private final IRepository<ParkingSpot, Integer> parkingSpotRepository;
 
-    public ParkingSpotBookingService(IUserRepository userRepository, IParkingSpotRepository parkingSpotRepository) {
+    public ParkingSpotBookingService(
+            IRepository<ParkingSpot_User, Integer> parkingSpotUserRepository,
+            IRepository<User, Integer> userRepository,
+            IRepository<ParkingSpot, Integer> parkingSpotRepository)
+    {
+        super(parkingSpotUserRepository);
         this.userRepository = userRepository;
         this.parkingSpotRepository = parkingSpotRepository;
     }
 
-    //TODO error handling
     @Override
-    public void book(Booking booking) {
+    public void book(Booking booking)
+    {
         ParkingSpot_User parkingSpotUserBooking;
-        if(booking instanceof ParkingSpot_User) {
+        if (booking instanceof ParkingSpot_User)
+        {
             parkingSpotUserBooking = (ParkingSpot_User) booking;
-        } else {
-            // TODO Required error handling for wrong booking object
+        }
+        else
+        {
             throw new IllegalArgumentException("Invalid booking object");
         }
 
-        User user = userRepository.getById(parkingSpotUserBooking.getUser().getUserId());
-        ParkingSpot parkingSpot = parkingSpotRepository.getById(parkingSpotUserBooking.getSpot().getSpotNumber());
+        User user = parkingSpotUserBooking.getUser();
+        ParkingSpot parkingSpot = parkingSpotUserBooking.getSpot();
         LocalDateTime startDateTime = booking.getStartDateTime();
         LocalDateTime endDateTime = booking.getEndDateTime();
 
-        if (!isBookingConflict(parkingSpot.getSpotNumber(), startDateTime, endDateTime)) {
+        if (!isBookingConflict(parkingSpot.getSpotNumber(), startDateTime, endDateTime))
+        {
             ParkingSpot_User parkingSpotUser = new ParkingSpot_User(parkingSpot, user, startDateTime, endDateTime);
             user.getParkingSpots_Users().add(parkingSpotUser);
             userRepository.update(user);
-        } else {
+            parkingSpot.getParkingSpots_Users().add(parkingSpotUser);
+            parkingSpotRepository.update(parkingSpot);
+            repository.add(parkingSpotUser);
+        }
+        else
+        {
             throw new IllegalArgumentException("ParkingSpot is not available for the selected time period");
         }
     }
 
     @Override
-    public void cancel()
+    public void cancel(Integer bookingId)
     {
-
+        ParkingSpot_User parkingSpotUser = repository.getById(bookingId);
+        if (parkingSpotUser == null)
+        {
+            throw new IllegalArgumentException("Cancellation process failed. Parking spot booking not found with ID: " + bookingId);
+        }
+        User user = parkingSpotUser.getUser();
+        ParkingSpot parkingSpot = parkingSpotUser.getSpot();
+        user.getParkingSpots_Users().remove(parkingSpotUser);
+        userRepository.update(user);
+        parkingSpot.getParkingSpots_Users().remove(parkingSpotUser);
+        parkingSpotRepository.update(parkingSpot);
+        super.cancel(bookingId);
     }
 
     @Override
-    protected List<Booking> getBookingsFromEntity(Integer entityId)
+    public List<ParkingSpot_User> getBookingsByEntityId(Integer entityId)
     {
-        return parkingSpotRepository.getById(entityId).getParkingSpots_Users().stream().map(x -> (Booking) x).toList();
+        return parkingSpotRepository.getById(entityId).getParkingSpots_Users();
     }
 }
