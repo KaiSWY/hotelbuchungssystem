@@ -37,7 +37,9 @@ public class ParkingSpotBookingService extends BookingService<Integer>
             ParkingSpot_User parkingSpotUser = new ParkingSpot_User(parkingSpot, user, startDateTime, endDateTime);
             user.getParkingSpots_Users().add(parkingSpotUser);
             userRepository.update(user);
-        } else {
+        }
+        else
+        {
             throw new IllegalArgumentException("ParkingSpot is not available for the selected time period");
         }
     }
