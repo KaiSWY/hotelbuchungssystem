@@ -33,6 +33,9 @@ public class User
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<RestaurantTable_User> tables_users = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Activity_User> activity_users = new ArrayList<>();
+
     public User()
     {
     }
@@ -156,5 +159,15 @@ public class User
     public void setTables_users(List<RestaurantTable_User> tables_users)
     {
         this.tables_users = tables_users;
+    }
+
+    public List<Activity_User> getActivity_users()
+    {
+        return activity_users;
+    }
+
+    public void setActivity_users(List<Activity_User> activity_users)
+    {
+        this.activity_users = activity_users;
     }
 }

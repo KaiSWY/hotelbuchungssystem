@@ -9,7 +9,7 @@ import com.hotelbooking.repository.IRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class ParkingSpotBookingService extends BookingService<ParkingSpot_User, Integer>
+public class ParkingSpotBookingService extends BookingService<ParkingSpot_User>
 {
     private final IRepository<User, Integer> userRepository;
     private final IRepository<ParkingSpot, Integer> parkingSpotRepository;
@@ -45,11 +45,7 @@ public class ParkingSpotBookingService extends BookingService<ParkingSpot_User, 
         if (!isBookingConflict(parkingSpot.getSpotNumber(), startDateTime, endDateTime))
         {
             ParkingSpot_User parkingSpotUser = new ParkingSpot_User(parkingSpot, user, startDateTime, endDateTime);
-            user.getParkingSpots_Users().add(parkingSpotUser);
-            userRepository.update(user);
-            parkingSpot.getParkingSpots_Users().add(parkingSpotUser);
-            parkingSpotRepository.update(parkingSpot);
-            repository.add(parkingSpotUser);
+            persistParkingSpotUser(parkingSpotUser);
         }
         else
         {
@@ -65,18 +61,36 @@ public class ParkingSpotBookingService extends BookingService<ParkingSpot_User, 
         {
             throw new IllegalArgumentException("Cancellation process failed. Parking spot booking not found with ID: " + bookingId);
         }
-        User user = parkingSpotUser.getUser();
-        ParkingSpot parkingSpot = parkingSpotUser.getSpot();
-        user.getParkingSpots_Users().remove(parkingSpotUser);
-        userRepository.update(user);
-        parkingSpot.getParkingSpots_Users().remove(parkingSpotUser);
-        parkingSpotRepository.update(parkingSpot);
-        super.cancel(bookingId);
+        persistDeletedParkingSpotUser(parkingSpotUser);
     }
 
     @Override
     public List<ParkingSpot_User> getBookingsByEntityId(Integer entityId)
     {
         return parkingSpotRepository.getById(entityId).getParkingSpots_Users();
+    }
+
+    private void persistParkingSpotUser(ParkingSpot_User parkingSpotUser)
+    {
+        User user = parkingSpotUser.getUser();
+        ParkingSpot parkingSpot = parkingSpotUser.getSpot();
+
+        user.getParkingSpots_Users().add(parkingSpotUser);
+        userRepository.update(user);
+        parkingSpot.getParkingSpots_Users().add(parkingSpotUser);
+        parkingSpotRepository.update(parkingSpot);
+        repository.add(parkingSpotUser);
+    }
+
+    private void persistDeletedParkingSpotUser(ParkingSpot_User parkingSpotUser)
+    {
+        User user = parkingSpotUser.getUser();
+        ParkingSpot parkingSpot = parkingSpotUser.getSpot();
+
+        user.getParkingSpots_Users().remove(parkingSpotUser);
+        userRepository.update(user);
+        parkingSpot.getParkingSpots_Users().remove(parkingSpotUser);
+        parkingSpotRepository.update(parkingSpot);
+        super.cancel(parkingSpotUser.getId());
     }
 }

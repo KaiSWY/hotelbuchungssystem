@@ -6,7 +6,7 @@ import com.hotelbooking.repository.IRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class RoomBookingService extends BookingService<Room_User, Integer>
+public class RoomBookingService extends BookingService<Room_User>
 {
     private final IRepository<User, Integer> userRepository;
     private final IRepository<Room, Integer> roomRepository;
@@ -39,11 +39,7 @@ public class RoomBookingService extends BookingService<Room_User, Integer>
         if (!isBookingConflict(room.getRoomNumber(), startDateTime, endDateTime))
         {
             Room_User roomUser = new Room_User(room, user, startDateTime, endDateTime);
-            user.getRooms_users().add(roomUser);
-            userRepository.update(user);
-            room.getRooms_users().add(roomUser);
-            roomRepository.update(room);
-            repository.add(roomUser);
+            persistRoomUser(roomUser);
         }
         else
         {
@@ -94,18 +90,36 @@ public class RoomBookingService extends BookingService<Room_User, Integer>
         {
             throw new IllegalArgumentException("Cancellation process failed. Room booking not found with ID: " + bookingId);
         }
-        User user = roomUser.getUser();
-        Room room = roomUser.getRoom();
-        user.getRooms_users().remove(roomUser);
-        userRepository.update(user);
-        room.getRooms_users().remove(roomUser);
-        roomRepository.update(room);
-        super.cancel(bookingId);
+        persistDeleteRoomUser(roomUser);
     }
 
     @Override
     public List<Room_User> getBookingsByEntityId(Integer entityId)
     {
         return roomRepository.getById(entityId).getRooms_users();
+    }
+
+    private void persistRoomUser(Room_User roomUser)
+    {
+        User user = roomUser.getUser();
+        Room room = roomUser.getRoom();
+
+        user.getRooms_users().add(roomUser);
+        userRepository.update(user);
+        room.getRooms_users().add(roomUser);
+        roomRepository.update(room);
+        repository.add(roomUser);
+    }
+
+    public void persistDeleteRoomUser(Room_User roomUser)
+    {
+        User user = roomUser.getUser();
+        Room room = roomUser.getRoom();
+
+        user.getRooms_users().remove(roomUser);
+        userRepository.update(user);
+        room.getRooms_users().remove(roomUser);
+        roomRepository.update(room);
+        super.cancel(roomUser.getId());
     }
 }
