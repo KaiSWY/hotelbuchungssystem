@@ -45,7 +45,7 @@ public class ParkingSpotBookingService extends BookingService<ParkingSpot_User>
         if (!isBookingConflict(parkingSpot.getSpotNumber(), startDateTime, endDateTime))
         {
             ParkingSpot_User parkingSpotUser = new ParkingSpot_User(parkingSpot, user, startDateTime, endDateTime);
-            persistParkingSpotUser(parkingSpotUser);
+            repository.add(parkingSpotUser);
         }
         else
         {
@@ -68,18 +68,6 @@ public class ParkingSpotBookingService extends BookingService<ParkingSpot_User>
     public List<ParkingSpot_User> getBookingsByEntityId(Integer entityId)
     {
         return parkingSpotRepository.getById(entityId).getParkingSpots_Users();
-    }
-
-    private void persistParkingSpotUser(ParkingSpot_User parkingSpotUser)
-    {
-        User user = parkingSpotUser.getUser();
-        ParkingSpot parkingSpot = parkingSpotUser.getSpot();
-
-        user.getParkingSpots_Users().add(parkingSpotUser);
-        userRepository.update(user);
-        parkingSpot.getParkingSpots_Users().add(parkingSpotUser);
-        parkingSpotRepository.update(parkingSpot);
-        repository.add(parkingSpotUser);
     }
 
     private void persistDeletedParkingSpotUser(ParkingSpot_User parkingSpotUser)

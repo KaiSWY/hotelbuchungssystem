@@ -1,7 +1,6 @@
 package com.hotelbooking.service.analysers;
 
 import com.hotelbooking.model.Booking;
-import com.hotelbooking.model.Room;
 import com.hotelbooking.repository.IRepository;
 
 import java.time.LocalDateTime;

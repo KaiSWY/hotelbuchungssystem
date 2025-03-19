@@ -9,9 +9,9 @@
         <property name="hibernate.dialect">org.hibernate.community.dialect.SQLiteDialect</property>
         <property name="hibernate.connection.driver_class">org.sqlite.JDBC</property>
         <property name="hibernate.connection.url">
-            jdbc:sqlite:src/main/resources/database/hotelbooking.db?createDatabaseIfNotExist=true
+            jdbc:sqlite:src/main/resources/database/hotelbooking.db
         </property>
-        <property name="hibernate.hbm2ddl.auto">create</property>
+        <property name="hibernate.hbm2ddl.auto">update</property>
 
         <!-- Entities -->
         <mapping class="com.hotelbooking.model.Activity"/>

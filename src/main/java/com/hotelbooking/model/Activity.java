@@ -27,12 +27,11 @@ public class Activity
     @JoinColumn(name = "contact_person_id")
     private ContactPerson contactPerson;
 
-    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "activity", cascade = CascadeType.ALL)
     private List<Activity_User> activity_users = new ArrayList<>();
 
-    public Activity(int activityNumber, String name, String description, double pricePerPerson, int maxParticipants, String place, ContactPerson contactPerson)
+    public Activity(String name, String description, double pricePerPerson, int maxParticipants, String place, ContactPerson contactPerson)
     {
-        this.activityId = activityNumber;
         this.name = name;
         this.description = description;
         this.pricePerPerson = pricePerPerson;

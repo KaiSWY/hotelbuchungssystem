@@ -18,12 +18,11 @@ public class ParkingSpotType
     @Column(name = "price_per_hour")
     private double pricePerHour;
 
-    @OneToMany(mappedBy = "spot_type")
+    @OneToMany(mappedBy = "spotType", cascade = CascadeType.ALL)
     private List<ParkingSpot> spots = new ArrayList<>();
 
-    public ParkingSpotType(int typeId, String typeName, double pricePerHour)
+    public ParkingSpotType(String typeName, double pricePerHour)
     {
-        this.typeId = typeId;
         this.typeName = typeName;
         this.pricePerHour = pricePerHour;
     }

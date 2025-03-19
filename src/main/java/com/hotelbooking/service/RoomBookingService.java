@@ -39,7 +39,7 @@ public class RoomBookingService extends BookingService<Room_User>
         if (!isBookingConflict(room.getRoomNumber(), startDateTime, endDateTime))
         {
             Room_User roomUser = new Room_User(room, user, startDateTime, endDateTime);
-            persistRoomUser(roomUser);
+            repository.add(roomUser);
         }
         else
         {
@@ -97,18 +97,6 @@ public class RoomBookingService extends BookingService<Room_User>
     public List<Room_User> getBookingsByEntityId(Integer entityId)
     {
         return roomRepository.getById(entityId).getRooms_users();
-    }
-
-    private void persistRoomUser(Room_User roomUser)
-    {
-        User user = roomUser.getUser();
-        Room room = roomUser.getRoom();
-
-        user.getRooms_users().add(roomUser);
-        userRepository.update(user);
-        room.getRooms_users().add(roomUser);
-        roomRepository.update(room);
-        repository.add(roomUser);
     }
 
     public void persistDeleteRoomUser(Room_User roomUser)

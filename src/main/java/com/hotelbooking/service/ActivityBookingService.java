@@ -14,9 +14,9 @@ public class ActivityBookingService extends BookingService<Activity_User>
     private final IRepository<User, Integer> userRepository;
     private final IRepository<Activity, Integer> activityRepository;
 
-    protected ActivityBookingService(IRepository<Activity_User, Integer> repository,
-                                     IRepository<User, Integer> userRepository,
-                                     IRepository<Activity, Integer> activityRepository)
+    public ActivityBookingService(IRepository<Activity_User, Integer> repository,
+                                  IRepository<User, Integer> userRepository,
+                                  IRepository<Activity, Integer> activityRepository)
     {
         super(repository);
         this.userRepository = userRepository;
@@ -44,7 +44,7 @@ public class ActivityBookingService extends BookingService<Activity_User>
         if (!toManyMembers(activity, startDateTime, endDateTime))
         {
             Activity_User activityUser = new Activity_User(activity, user, startDateTime, endDateTime);
-            persistActivityUser(activityUser);
+            repository.add(activityUser);
         }
         else
         {
@@ -60,7 +60,7 @@ public class ActivityBookingService extends BookingService<Activity_User>
         {
             throw new IllegalArgumentException("Cancellation process failed. Activity booking not found with ID: " + bookingId);
         }
-        persistActivityUser(activityUser);
+        persistDeleteActivityUser(activityUser);
     }
 
     @Override
@@ -83,18 +83,6 @@ public class ActivityBookingService extends BookingService<Activity_User>
             }
         }
         return memberCounter > maxMembers;
-    }
-
-    private void persistActivityUser(Activity_User activityUser)
-    {
-        User user = activityUser.getUser();
-        Activity activity = activityUser.getActivity();
-
-        user.getActivity_users().add(activityUser);
-        userRepository.update(user);
-        activity.getActivity_users().add(activityUser);
-        activityRepository.update(activity);
-        repository.add(activityUser);
     }
 
     private void persistDeleteActivityUser(Activity_User activityUser)

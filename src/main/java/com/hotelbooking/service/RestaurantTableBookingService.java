@@ -47,7 +47,7 @@ public class RestaurantTableBookingService extends BookingService<RestaurantTabl
         if (!isBookingConflict(table.getTableNumber(), startDateTime, endDateTime))
         {
             RestaurantTable_User tableUser = new RestaurantTable_User(table, user, startDateTime, endDateTime);
-            persistRestaurantTableUser(tableUser);
+            repository.add(tableUser);
         }
         else
         {
@@ -70,18 +70,6 @@ public class RestaurantTableBookingService extends BookingService<RestaurantTabl
     public List<RestaurantTable_User> getBookingsByEntityId(Integer entityId)
     {
         return restaurantTableRepository.getById(entityId).getTables_users();
-    }
-
-    private void persistRestaurantTableUser(RestaurantTable_User restaurantTableUser)
-    {
-        User user = restaurantTableUser.getUser();
-        RestaurantTable restaurantTable = restaurantTableUser.getTable();
-
-        user.getTables_users().add(restaurantTableUser);
-        userRepository.update(user);
-        restaurantTable.getTables_users().add(restaurantTableUser);
-        restaurantTableRepository.update(restaurantTable);
-        repository.add(restaurantTableUser);
     }
 
     private void persistDeleteRestaurantTableUser(RestaurantTable_User restaurantTableUser)

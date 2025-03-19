@@ -9,4 +9,5 @@ public class ActivityUserRepository extends Repository<Activity_User, Integer>
     {
         super(sessionFactory, Activity_User.class);
     }
+
 }

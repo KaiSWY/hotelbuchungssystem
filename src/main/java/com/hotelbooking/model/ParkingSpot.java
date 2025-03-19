@@ -14,7 +14,7 @@ public class ParkingSpot
     private int spotNumber;
 
     @ManyToOne
-    @JoinColumn(name = "type_id", nullable = false)
+    @JoinColumn(name = "parking_spot_type_id", nullable = false)
     private ParkingSpotType spotType;
 
     @OneToMany(mappedBy = "spot")

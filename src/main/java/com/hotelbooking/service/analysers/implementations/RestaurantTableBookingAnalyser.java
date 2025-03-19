@@ -12,7 +12,7 @@ public class RestaurantTableBookingAnalyser extends BookingAnalyser<RestaurantTa
 {
     protected RestaurantTableBookingAnalyser(IRepository<RestaurantTable, Integer> repository, IRepository<Booking, Integer> bookingRepository)
     {
-        super(repository,bookingRepository);
+        super(repository, bookingRepository);
     }
 
     @Override
