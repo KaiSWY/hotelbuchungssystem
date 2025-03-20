@@ -8,12 +8,14 @@ public class CLI {
     {
     }
 
-    public CLI(Message message) {
+    public CLI(Message message)
+    {
         this.message = message;
-        this.findCommand = new FindCommand(message.getArgs());
+        this.findCommand = new FindCommand(this.message.getArgs());
     }
 
-    public void execute() {
+    public void execute()
+    {
         //check if values can be found
         this.findCommand.searchCommands();
     }

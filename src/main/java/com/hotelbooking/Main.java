@@ -7,10 +7,10 @@ public class Main
 {
     public static void main(String[] args)
     {
-        System.out.println("Hotelbuchungssystem:");
+        System.out.println(">--Hotelbuchungssystem--<");
 
         // -test
-        String[] argValues = {"-", "roomNumber", "123", "-", "start", "01.01.2025"};
+        String[] argValues = {"bookRoom", "-", "roomNumber", "123", "-", "start", "01.01.2025"};
 
         //start cli
         Message message = new Message(argValues);

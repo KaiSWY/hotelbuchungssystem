@@ -1,6 +1,9 @@
 package com.hotelbooking.cli;
 
-public class FindCommand
+import java.util.ArrayList;
+import java.util.List;
+
+public class FindCommand implements IGetValuesInterface
 {
     private String[] args;
     private ExecuteCommand executeCommand;
@@ -16,23 +19,24 @@ public class FindCommand
     }
 
     //check all cases to get data to execute
-    public void searchCommands() {
+    public void searchCommands()
+    {
         //check if args match
         if (isValidInputStructure())
         {
             //start for loop to get value
-            for (int iArgValueCounter = 0; iArgValueCounter < args.length; iArgValueCounter += 3)
+            String mainCommand = args[0];
+            List<String> actionArgsList = new ArrayList<>();
+            for (int iArgValueCounter = 1; iArgValueCounter < (args.length - 1); iArgValueCounter += 3)
             {
-                String[] argTriplet = {args[iArgValueCounter], args[iArgValueCounter + 1], args[iArgValueCounter + 2]};
-
-                //return values - test
-                System.out.println("command:" + getCommandValue(argTriplet));
-                System.out.println("value:" + getValue(argTriplet));
-
-                //call method in other class to run action
-                boolean result = this.executeCommand.runAction(getCommandValue(argTriplet), getValue(argTriplet));
-                System.out.println(result ? "true" : "false");
+                //add values to args list
+                actionArgsList.add(args[iArgValueCounter]);
+                actionArgsList.add(args[iArgValueCounter + 1]);
             }
+            String[] actionArgs = actionArgsList.toArray(new String[0]);
+
+            //call method in other class to run action
+            this.executeCommand.runAction(mainCommand, actionArgs);
         }
     }
 
@@ -40,13 +44,13 @@ public class FindCommand
     private boolean isValidInputStructure()
     {
         //check if length of args array has correct length -> check for error
-        if (this.args.length % 3 != 0)
+        if ((this.args.length - 1) % 3 != 0)
         {
             return false;
         }
 
         //iterate args array
-        for (int i = 0; i < args.length; i += 3)
+        for (int i = 1; i < (args.length - 1); i += 3)
         {
             //check if current group follows the pattern: -, "command", "value"
             if (!args[i].equals("-") || args[i + 1].equals("-") || args[i + 2].equals("-"))
@@ -60,13 +64,15 @@ public class FindCommand
     }
 
     //method to get command from arg values
-    private String getCommandValue(String[] argInputValues)
+    @Override
+    public String getCommandValue(String[] argInputValues)
     {
         return argInputValues[1];
     }
 
     //method to get value from arg values
-    private String getValue(String[] argInputValues)
+    @Override
+    public String getValue(String[] argInputValues)
     {
         return argInputValues[2];
     }
