@@ -89,6 +89,7 @@ public abstract class Repository<TEntity, ID> implements IRepository<TEntity, ID
             {
                 throw new EntityNotFoundException("Entity with ID " + id + " not found.");
             }
+            EntityLazyLoader.initializeEntity(session, entity);
             return entity;
         }
     }
@@ -100,7 +101,12 @@ public abstract class Repository<TEntity, ID> implements IRepository<TEntity, ID
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<TEntity> query = builder.createQuery(type);
             query.from(type);
-            return session.createQuery(query).getResultList();
+            List<TEntity> results = session.createQuery(query).getResultList();
+            for (TEntity entity : results)
+            {
+                EntityLazyLoader.initializeEntity(session, entity);
+            }
+            return results;
         }
     }
 }

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "user")
 public class User
 {
     @Id
@@ -17,6 +18,7 @@ public class User
     @Column(name = "last_name")
     private String lastName;
     private String email;
+    private String country;
     @Column(name = "postal_code")
     private int postalCode;
     private String city;
@@ -33,15 +35,19 @@ public class User
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<RestaurantTable_User> tables_users = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Activity_User> activity_users = new ArrayList<>();
+
     public User()
     {
     }
 
-    public User(String firstName, String lastName, String email, int postalCode, String city, String street, int houseNumber)
+    public User(String firstName, String lastName, String email, String country, int postalCode, String city, String street, int houseNumber)
     {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.country = country;
         this.postalCode = postalCode;
         this.city = city;
         this.street = street;
@@ -156,5 +162,25 @@ public class User
     public void setTables_users(List<RestaurantTable_User> tables_users)
     {
         this.tables_users = tables_users;
+    }
+
+    public List<Activity_User> getActivity_users()
+    {
+        return activity_users;
+    }
+
+    public void setActivity_users(List<Activity_User> activity_users)
+    {
+        this.activity_users = activity_users;
+    }
+
+    public String getCountry()
+    {
+        return country;
+    }
+
+    public void setCountry(String country)
+    {
+        this.country = country;
     }
 }

@@ -7,11 +7,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BookingService<T extends Booking, ID> extends CrudService<T, Integer> implements Bookable<T, ID>
+public abstract class BookingService<T extends Booking> implements Bookable<T>
 {
+    protected final IRepository<T, Integer> repository;
+
     protected BookingService(IRepository<T, Integer> repository)
     {
-        super(repository);
+        this.repository = repository;
     }
 
     @Override
@@ -31,7 +33,7 @@ public abstract class BookingService<T extends Booking, ID> extends CrudService<
         }
     }
 
-    protected boolean isBookingConflict(ID entityId, LocalDateTime start, LocalDateTime end)
+    protected boolean isBookingConflict(Integer entityId, LocalDateTime start, LocalDateTime end)
     {
         List<Booking> bookings = getBookingsByEntityId(entityId).stream().map(x -> (Booking) x).toList();
         for (Booking booking : bookings)
@@ -63,5 +65,15 @@ public abstract class BookingService<T extends Booking, ID> extends CrudService<
             }
         }
         return filteredBookings;
+    }
+
+    public List<T> findAll()
+    {
+        return repository.getAll();
+    }
+
+    public T getById(Integer id)
+    {
+        return repository.getById(id);
     }
 }
