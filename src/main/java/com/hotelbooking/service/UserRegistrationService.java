@@ -45,8 +45,7 @@ public class UserRegistrationService
     }
 
     //TODO error handling
-    public void updateUser(User user, User updatedUser)
-    {
+    public void updateUser(User user, User updatedUser) {
         if (userExists(user))
         {
             //update user
@@ -59,10 +58,8 @@ public class UserRegistrationService
     }
 
     //TODO error handling
-    public void deleteUser(User user)
-    {
-        if (userExists(user))
-        {
+    public void deleteUser(User user) {
+        if (userExists(user)) {
             //delete user
             this.userRepository.delete(user);
         }
