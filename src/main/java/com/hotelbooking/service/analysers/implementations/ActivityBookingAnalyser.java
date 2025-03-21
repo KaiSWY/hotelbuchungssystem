@@ -1,12 +1,13 @@
 package com.hotelbooking.service.analysers.implementations;
 
 import com.hotelbooking.model.Activity;
+import com.hotelbooking.model.Activity_User;
 import com.hotelbooking.model.Booking;
 import com.hotelbooking.repository.IRepository;
-import com.hotelbooking.service.analysers.AnalyseResult;
 import com.hotelbooking.service.analysers.BookingAnalyser;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class ActivityBookingAnalyser extends BookingAnalyser<Activity, Integer>
 {
@@ -16,8 +17,15 @@ public class ActivityBookingAnalyser extends BookingAnalyser<Activity, Integer>
     }
 
     @Override
-    public AnalyseResult analyseBetweenDate(Activity entity, LocalDateTime startTime, LocalDateTime endTime)
+    protected List<Booking> getFilteredBookings(List<Booking> bookings, Activity entity, LocalDateTime startTime, LocalDateTime endTime)
     {
-        return null;
+        List<Activity_User> activityUserBookings = convertBookingListToExtendsBookingList(bookings, Activity_User.class);
+        activityUserBookings = activityUserBookings.stream()
+                .filter(booking -> booking.getActivity().getActivityId() == entity.getActivityId())
+                .filter(booking -> !booking.getEndDateTime().isBefore(startTime) && !booking.getStartDateTime().isAfter(endTime))
+                .toList();
+
+        return convertExtendsBookingListToBookingList(activityUserBookings);
     }
 }
+
