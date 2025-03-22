@@ -1,6 +1,6 @@
 package com.hotelbooking;
 
-import com.hotelbooking.cli.Message;
+import com.hotelbooking.cli.HotelBookingCLI;
 
 public class Main
 {
@@ -9,9 +9,10 @@ public class Main
         System.out.println(">--Hotelbuchungssystem--<");
 
         // -test
-        String[] argValues = {"bookRoom", "-", "roomNumber", "123", "-", "start", "01.01.2025"};
+        String[] argValues = {"--createUser", "-roomNumber", "123", "-start", "01.01.2025"};
 
         //start cli
-
+        HotelBookingCLI hotelBookingCLI = new HotelBookingCLI(argValues);
+        hotelBookingCLI.execute();
     }
 }

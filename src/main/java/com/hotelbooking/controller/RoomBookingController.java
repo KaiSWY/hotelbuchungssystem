@@ -17,7 +17,6 @@ public class RoomBookingController implements IController<Room_User, Integer>
         this.roomBookingAnalyser = roomBookingAnalyser;
     }
 
-
     @Override
     public Room_User get(Integer integer)
     {
