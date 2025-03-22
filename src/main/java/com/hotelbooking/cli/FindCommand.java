@@ -3,7 +3,7 @@ package com.hotelbooking.cli;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FindCommand implements IGetValuesInterface
+public class FindCommand
 {
     private String[] args;
     private ExecuteCommand executeCommand;
@@ -64,16 +64,14 @@ public class FindCommand implements IGetValuesInterface
     }
 
     //method to get command from arg values
-    @Override
     public String getCommandValue(String[] argInputValues)
     {
-        return argInputValues[1];
+        return argInputValues[2];
     }
 
     //method to get value from arg values
-    @Override
     public String getValue(String[] argInputValues)
     {
-        return argInputValues[2];
+        return argInputValues[3];
     }
 }

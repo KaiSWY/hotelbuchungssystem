@@ -14,8 +14,6 @@ public class ExecuteCommand
     private String command;
     private String value;
 
-    private IGetValuesInterface iGetValuesInterface;
-
     //service classes
     private UserRegistrationService userRegistrationService;
     private RoomBookingService roomBookingService;
@@ -32,9 +30,8 @@ public class ExecuteCommand
         this.value = value;
     }
 
-    public ExecuteCommand(IGetValuesInterface iGetValuesInterface, UserRegistrationService userRegistrationService, RoomBookingService roomBookingService, ParkingSpotBookingService parkingSpotBookingService, RestaurantTableBookingService restaurantTableBookingService)
+    public ExecuteCommand(UserRegistrationService userRegistrationService, RoomBookingService roomBookingService, ParkingSpotBookingService parkingSpotBookingService, RestaurantTableBookingService restaurantTableBookingService)
     {
-        this.iGetValuesInterface = iGetValuesInterface;
         this.userRegistrationService = userRegistrationService;
         this.roomBookingService = roomBookingService;
         this.parkingSpotBookingService = parkingSpotBookingService;
@@ -104,8 +101,6 @@ public class ExecuteCommand
     public Room roomBookingAction(String[] actionArgs)
     {
         //get different values
-        String roomNumber = this.iGetValuesInterface.getValue(actionArgs);
-        System.out.println(roomNumber);
 
         Room newRoom = new Room();
 
