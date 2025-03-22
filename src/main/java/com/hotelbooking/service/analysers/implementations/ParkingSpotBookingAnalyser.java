@@ -11,7 +11,7 @@ import java.util.List;
 
 public class ParkingSpotBookingAnalyser extends BookingAnalyser<ParkingSpot, Integer>
 {
-    protected ParkingSpotBookingAnalyser(IRepository<ParkingSpot, Integer> repository, IRepository<Booking, Integer> bookingRepository)
+    public ParkingSpotBookingAnalyser(IRepository<ParkingSpot, Integer> repository, IRepository<Booking, Integer> bookingRepository)
     {
         super(repository, bookingRepository);
     }

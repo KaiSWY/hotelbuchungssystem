@@ -11,7 +11,7 @@ import java.util.List;
 
 public class ActivityBookingAnalyser extends BookingAnalyser<Activity, Integer>
 {
-    protected ActivityBookingAnalyser(IRepository<Activity, Integer> repository, IRepository<Booking, Integer> bookingRepository)
+    public ActivityBookingAnalyser(IRepository<Activity, Integer> repository, IRepository<Booking, Integer> bookingRepository)
     {
         super(repository, bookingRepository);
     }
