@@ -1,11 +1,24 @@
 package com.hotelbooking.cli;
 
+import com.hotelbooking.HibernateUtil;
+import com.hotelbooking.cli.enums.CommandMapping;
 import com.hotelbooking.cli.enums.MainCommands;
+import com.hotelbooking.cli.enums.SubCommands;
 import com.hotelbooking.controller.*;
+import com.hotelbooking.model.Activity;
+import com.hotelbooking.model.Activity_User;
+import com.hotelbooking.model.Room;
+import com.hotelbooking.model.User;
+import com.hotelbooking.repository.ActivityRepository;
+import com.hotelbooking.repository.ActivityUserRepository;
+import com.hotelbooking.repository.IRepository;
+import com.hotelbooking.repository.UserRepository;
+import org.hibernate.SessionFactory;
 
 import java.util.Arrays;
 
-public class HotelBookingCLI {
+public class HotelBookingCLI
+{
     private String[] args;
 
     //controller
@@ -32,7 +45,8 @@ public class HotelBookingCLI {
         {
             //check case with switch case
             String mainCommand = this.getStructuredCommands()[0][0];
-            String[] totalSubCommands = this.getStructuredCommands()[1];
+            String[] subValues = this.getStructuredCommands()[1];
+            String[] totalSubCommands = this.getStructuredCommands()[2];
 
             //find corresponding matching command
             MainCommands matchingCommand = MainCommands.findCommandsByValue(mainCommand);
@@ -42,7 +56,7 @@ public class HotelBookingCLI {
                 switch (MainCommands.findCommandsByValue(mainCommand))
                 {
                     case CREATE_USER:
-                        this.createUserInteraction(totalSubCommands);
+                        this.createUserInteraction(matchingCommand, subValues, totalSubCommands);
                         break;
                     case CREATE_ROOM_BOOKING:
                         this.createRoomBookingInteraction(totalSubCommands);
@@ -84,18 +98,38 @@ public class HotelBookingCLI {
     //method to get structured commands
     private String[][] getStructuredCommands()
     {
-        return new String[][]{
+        //create total sub commands string array
+        String[] totalSubCommandsArray = Arrays.stream(args)
+                .filter(arg -> arg.startsWith("--"))
+                .toArray(String[]::new);
+
+        //return new string array
+        return new String[][] {
                 {args[0]},
-                Arrays.copyOfRange(args, 1, args.length)
+                Arrays.copyOfRange(args, 1, args.length),
+                totalSubCommandsArray
         };
     }
 
     //method for create user interaction
-    private void createUserInteraction(String[] subCommands)
+    private void createUserInteraction(MainCommands mainCommand, String[] subValues, String[] subCommands)
     {
+        if (SubCommands.commandsPartOfEnum(subCommands) && CommandMapping.subCommandsPartOfMainCommands(mainCommand, subCommands))
+        {
+            try (SessionFactory sessionFactory = HibernateUtil.getSessionFactory())
+            {
+                IRepository<User, Integer> userRepository = new UserRepository(sessionFactory);
+                IRepository<Activity, Integer> activityRepository = new ActivityRepository(sessionFactory);
+                IRepository<Activity_User, Integer> activityUserRepository = new ActivityUserRepository(sessionFactory);
+
+
+
+            }
+            HibernateUtil.shutdown();
+
+            System.out.println("success");
+        }
         System.out.println("create user");
-
-
     }
 
     //method for create room booking interaction

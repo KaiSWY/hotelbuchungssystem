@@ -9,7 +9,7 @@ public class Main
         System.out.println(">--Hotelbuchungssystem--<");
 
         // -test
-        String[] argValues = {"--createUser", "-roomNumber", "123", "-start", "01.01.2025"};
+        String[] argValues = {"createUser", "--firstName", "kai", "--end", "Schablowsky"};
 
         //start cli
         HotelBookingCLI hotelBookingCLI = new HotelBookingCLI(argValues);
