@@ -183,4 +183,24 @@ public class User
     {
         this.country = country;
     }
+
+    @Override
+    public String toString()
+    {
+        return "User{" +
+                "userId=" + userId +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", country='" + country + '\'' +
+                ", postalCode=" + postalCode +
+                ", city='" + city + '\'' +
+                ", street='" + street + '\'' +
+                ", houseNumber=" + houseNumber +
+                ", parkingSpots_Users=" + parkingSpots_Users +
+                ", rooms_users=" + rooms_users +
+                ", tables_users=" + tables_users +
+                ", activity_users=" + activity_users +
+                '}';
+    }
 }

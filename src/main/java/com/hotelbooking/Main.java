@@ -22,12 +22,18 @@ public class Main
                 "--street", "Hauptstrasse",
                 "--houseNumber", "2"};
 
-        String[] getUserArgValues = {"getUser",
-                "--id", "1"
+        String[] deleteUserArgValues = {"deleteUser",
+                "--id", "4"
         };
 
+        String[] bookRoomArgValues = {"bookRoom",
+            "--id", "1",
+            "--roomNumber", "",
+            "--startDate", "2020-01-01",
+            "--endDate", "2020-01-02",};
+
         //start cli
-        HotelBookingCLI hotelBookingCLI = new HotelBookingCLI(argValues);
+        HotelBookingCLI hotelBookingCLI = new HotelBookingCLI(deleteUserArgValues);
         hotelBookingCLI.execute();
     }
 }

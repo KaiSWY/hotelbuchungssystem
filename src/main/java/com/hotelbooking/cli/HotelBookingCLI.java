@@ -3,9 +3,15 @@ package com.hotelbooking.cli;
 import com.hotelbooking.HibernateUtil;
 import com.hotelbooking.cli.enums.MainCommands;
 import com.hotelbooking.cli.enums.SubCommands;
+import com.hotelbooking.model.Room;
+import com.hotelbooking.model.Room_User;
 import com.hotelbooking.model.User;
 import com.hotelbooking.repository.IRepository;
+import com.hotelbooking.repository.RoomRepository;
+import com.hotelbooking.repository.RoomUserRepository;
 import com.hotelbooking.repository.UserRepository;
+import com.hotelbooking.service.ParkingSpotBookingService;
+import com.hotelbooking.service.RoomBookingService;
 import com.hotelbooking.service.UserRegistrationService;
 import org.hibernate.SessionFactory;
 
@@ -19,6 +25,12 @@ public class HotelBookingCLI
 
     private IRepository<User, Integer> userRepository;
     private UserRegistrationService userRegistrationService;
+
+    private IRepository<Room, Integer> roomRepository;
+    private IRepository<Room_User, Integer> roomUserRepository;
+    private RoomBookingService roomBookingService;
+
+    private ParkingSpotBookingService parkingSpotBookingService;
 
     public HotelBookingCLI()
     {
@@ -52,6 +64,9 @@ public class HotelBookingCLI
                         break;
                     case GET_USER:
                         this.getUserInformationInteraction(subValues, totalSubCommands);
+                        break;
+                    case DELETE_USER:
+                        this.deleteUserInteraction(subValues, totalSubCommands);
                         break;
                     case CREATE_ROOM_BOOKING:
                         this.createRoomBookingInteraction(totalSubCommands);
@@ -177,10 +192,45 @@ public class HotelBookingCLI
         }
     }
 
+    //method to delete user
+    private void deleteUserInteraction(String[] subValues, String[] subCommands)
+    {
+        if (SubCommands.commandsPartOfEnum(subCommands))
+        {
+            try (SessionFactory sessionFactory = HibernateUtil.getSessionFactory())
+            {
+                //get input data map
+                Map<SubCommands, String> extractedParameters = extractParameters(subValues);
+
+                this.userRepository = new UserRepository(sessionFactory);
+                this.userRegistrationService = new UserRegistrationService(userRepository);
+
+                this.userRegistrationService.delete(Integer.parseInt(extractedParameters.get(SubCommands.ID)));
+
+                //set information output
+                System.out.println("User deleted!");
+            }
+            HibernateUtil.shutdown();
+        }
+    }
+
     //method for create room booking interaction
     private void createRoomBookingInteraction(String[] subCommands)
     {
+        if (SubCommands.commandsPartOfEnum(subCommands))
+        {
+            try (SessionFactory sessionFactory = HibernateUtil.getSessionFactory())
+            {
+                //get input data map
+                Map<SubCommands, String> extractedParameters = extractParameters(subCommands);
 
+
+
+                //set information output
+                System.out.println("Room booked!");
+            }
+            HibernateUtil.shutdown();
+        }
     }
 
     //method for create parking sport interaction
