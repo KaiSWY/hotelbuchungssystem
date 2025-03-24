@@ -1,32 +1,24 @@
 package com.hotelbooking.cli;
 
 import com.hotelbooking.HibernateUtil;
-import com.hotelbooking.cli.enums.CommandMapping;
 import com.hotelbooking.cli.enums.MainCommands;
 import com.hotelbooking.cli.enums.SubCommands;
-import com.hotelbooking.controller.*;
-import com.hotelbooking.model.Activity;
-import com.hotelbooking.model.Activity_User;
-import com.hotelbooking.model.Room;
 import com.hotelbooking.model.User;
-import com.hotelbooking.repository.ActivityRepository;
-import com.hotelbooking.repository.ActivityUserRepository;
 import com.hotelbooking.repository.IRepository;
 import com.hotelbooking.repository.UserRepository;
+import com.hotelbooking.service.UserRegistrationService;
 import org.hibernate.SessionFactory;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class HotelBookingCLI
 {
     private String[] args;
 
-    //controller
-    private UserRegistrationController userRegistrationController;
-    private RoomBookingController roomBookingController;
-    private RestaurantTableBookingController restaurantTableBookingController;
-    private ParkingSpotBookingController parkingSpotBookingController;
-    private ActivityBookingController activityBookingController;
+    private IRepository<User, Integer> userRepository;
+    private UserRegistrationService userRegistrationService;
 
     public HotelBookingCLI()
     {
@@ -56,7 +48,10 @@ public class HotelBookingCLI
                 switch (MainCommands.findCommandsByValue(mainCommand))
                 {
                     case CREATE_USER:
-                        this.createUserInteraction(matchingCommand, subValues, totalSubCommands);
+                        this.createUserInteraction(subValues, totalSubCommands);
+                        break;
+                    case GET_USER:
+                        this.getUserInformationInteraction(subValues, totalSubCommands);
                         break;
                     case CREATE_ROOM_BOOKING:
                         this.createRoomBookingInteraction(totalSubCommands);
@@ -111,25 +106,75 @@ public class HotelBookingCLI
         };
     }
 
+    //method to extract input values
+    private static Map<SubCommands, String> extractParameters(String[] args) {
+        Map<SubCommands, String> parameters = new HashMap<>();
+
+        for (int iIndex = 0; iIndex < args.length - 1; iIndex++)
+        {
+            if (args[iIndex].startsWith("--"))
+            {
+                SubCommands key = SubCommands.findCommandsByValue(args[iIndex]);
+                if (key != null)
+                {
+                    parameters.put(key, args[iIndex + 1]);
+                }
+            }
+        }
+        return parameters;
+    }
+
     //method for create user interaction
-    private void createUserInteraction(MainCommands mainCommand, String[] subValues, String[] subCommands)
+    private void createUserInteraction(String[] subValues, String[] subCommands)
     {
-        if (SubCommands.commandsPartOfEnum(subCommands) && CommandMapping.subCommandsPartOfMainCommands(mainCommand, subCommands))
+        if (SubCommands.commandsPartOfEnum(subCommands))
         {
             try (SessionFactory sessionFactory = HibernateUtil.getSessionFactory())
             {
-                IRepository<User, Integer> userRepository = new UserRepository(sessionFactory);
-                IRepository<Activity, Integer> activityRepository = new ActivityRepository(sessionFactory);
-                IRepository<Activity_User, Integer> activityUserRepository = new ActivityUserRepository(sessionFactory);
+                Map<SubCommands, String> extractedParameters = extractParameters(subValues);
 
+                //create new registration
+                User newUser = new User(
+                        extractedParameters.get(SubCommands.FIRST_NAME),
+                        extractedParameters.get(SubCommands.LAST_NAME),
+                        extractedParameters.get(SubCommands.MAIL),
+                        extractedParameters.get(SubCommands.COUNTRY),
+                        Integer.parseInt(extractedParameters.get(SubCommands.ZIP_CODE)),
+                        extractedParameters.get(SubCommands.CITY),
+                        extractedParameters.get(SubCommands.STREET),
+                        Integer.parseInt(extractedParameters.get(SubCommands.HOUSE_NUMBER))
+                );
 
+                this.userRepository = new UserRepository(sessionFactory);
+                this.userRegistrationService = new UserRegistrationService(userRepository);
+                this.userRegistrationService.create(newUser);
 
+                System.out.println("User created!");
             }
             HibernateUtil.shutdown();
-
-            System.out.println("success");
         }
-        System.out.println("create user");
+    }
+
+    //method to get user information
+    private void getUserInformationInteraction(String[] subValues, String[] subCommands)
+    {
+        if (SubCommands.commandsPartOfEnum(subCommands))
+        {
+            try (SessionFactory sessionFactory = HibernateUtil.getSessionFactory())
+            {
+                //get input data map
+                Map<SubCommands, String> extractedParameters = extractParameters(subValues);
+
+                this.userRepository = new UserRepository(sessionFactory);
+                this.userRegistrationService = new UserRegistrationService(userRepository);
+
+                User receivedUser = this.userRegistrationService.getById(Integer.parseInt(extractedParameters.get(SubCommands.ID)));
+
+                //set information output
+                System.out.println("User Information: " + receivedUser.toString());
+            }
+            HibernateUtil.shutdown();
+        }
     }
 
     //method for create room booking interaction

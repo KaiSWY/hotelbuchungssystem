@@ -5,6 +5,7 @@ import java.util.Objects;
 
 public enum SubCommands
 {
+    ID("--id"),
     FIRST_NAME("--firstName"),
     LAST_NAME("--lastName"),
     MAIL("--mail"),
@@ -12,9 +13,11 @@ public enum SubCommands
     ZIP_CODE("--zipCode"),
     CITY("--city"),
     STREET("--street"),
+    HOUSE_NUMBER("--houseNumber"),
     ROOM_NUMBER("--roomNumber"),
     START_DATE("--startDate"),
-    END_DATE("--endDate");
+    END_DATE("--endDate"),
+    DELETE("--delete");
 
     private String subCommands;
 
