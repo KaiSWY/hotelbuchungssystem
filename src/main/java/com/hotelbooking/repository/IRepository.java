@@ -12,5 +12,7 @@ public interface IRepository<T, ID>
 
     T getById(ID id);
 
+    T getByMail(String mail);
+
     List<T> getAll();
 }

@@ -26,6 +26,11 @@ public abstract class CrudService<T, ID>
     }
 
 
+    public T getByMail(String mail)
+    {
+        return repository.getByMail(mail);
+    }
+
     public void update(ID id, T entity)
     {
         T oldEntity = repository.getById(id);

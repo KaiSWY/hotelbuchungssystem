@@ -20,7 +20,10 @@ public enum MainCommands
             SubCommands.ID)
     ),
     CREATE_ROOM_BOOKING("createRoomBooking", List.of(
-            SubCommands.ID)
+            SubCommands.ROOM_NUMBER,
+            SubCommands.MAIL,
+            SubCommands.START_DATE,
+            SubCommands.END_DATE)
     ),
     GET_ROOM_BOOKING("getRoomBooking", List.of(
             SubCommands.ID)

@@ -1,5 +1,6 @@
 package com.hotelbooking.repository;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -88,6 +89,20 @@ public abstract class Repository<TEntity, ID> implements IRepository<TEntity, ID
             if (entity == null)
             {
                 throw new EntityNotFoundException("Entity with ID " + id + " not found.");
+            }
+            EntityLazyLoader.initializeEntity(session, entity);
+            return entity;
+        }
+    }
+
+    public TEntity getByMail(String mail)
+    {
+        try (Session session = sessionFactory.openSession())
+        {
+            TEntity entity = session.get(type, mail);
+            if (entity == null)
+            {
+                throw new EntityNotFoundException("Entity with mail " + mail + " not found.");
             }
             EntityLazyLoader.initializeEntity(session, entity);
             return entity;

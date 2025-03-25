@@ -17,20 +17,22 @@ public class Main
                 "--zipCode", "76148",
                 "--city", "Karlsruhe",
                 "--street", "Hauptstrasse",
-                "--houseNumber", "12"};
+                "--houseNumber", "12"
+        };
 
         String[] deleteUserArgValues = {"deleteUser",
                 "--id", "2"
         };
 
-        String[] bookRoomArgValues = {"bookRoom",
-            "--id", "1",
-            "--roomNumber", "",
-            "--startDate", "2020-01-01",
-            "--endDate", "2020-01-02",};
+        String[] bookRoomArgValues = {"createRoomBooking",
+                "--roomNumber", "11",
+                "--mail", "kai.schablowsky@t-online.de",
+                "--startDate", "01.01.2025",
+                "--endDate", "02.01.2025"
+        };
 
         //start cli
-        HotelBookingCLI hotelBookingCLI = new HotelBookingCLI(deleteUserArgValues);
+        HotelBookingCLI hotelBookingCLI = new HotelBookingCLI(bookRoomArgValues);
         hotelBookingCLI.execute();
     }
 }

@@ -13,6 +13,7 @@ import org.hibernate.SessionFactory;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class HotelBookingCLI
@@ -23,12 +24,6 @@ public class HotelBookingCLI
 
     private IRepository<User, Integer> userRepository;
     private UserRegistrationService userRegistrationService;
-
-    private IRepository<Room, Integer> roomRepository;
-    private IRepository<Room_User, Integer> roomUserRepository;
-    private RoomBookingService roomBookingService;
-
-    private ParkingSpotBookingService parkingSpotBookingService;
 
     public HotelBookingCLI()
     {
@@ -152,10 +147,10 @@ public class HotelBookingCLI
                         extractedParameters.get(SubCommands.LAST_NAME),
                         extractedParameters.get(SubCommands.MAIL),
                         extractedParameters.get(SubCommands.COUNTRY),
-                        Integer.parseInt(extractedParameters.get(SubCommands.ZIP_CODE)),
+                        Utils.createNumber(extractedParameters.get(SubCommands.ZIP_CODE)),
                         extractedParameters.get(SubCommands.CITY),
                         extractedParameters.get(SubCommands.STREET),
-                        Integer.parseInt(extractedParameters.get(SubCommands.HOUSE_NUMBER))
+                        Utils.createNumber(extractedParameters.get(SubCommands.HOUSE_NUMBER))
                 );
 
                 this.userRepository = new UserRepository(sessionFactory);
@@ -215,7 +210,7 @@ public class HotelBookingCLI
     //method for create room booking interaction
     private void createRoomBookingInteraction(String[] subCommands)
     {
-        if (SubCommands.commandsPartOfEnum(subCommands))
+        if (SubCommands.commandsPartOfEnum(subCommands) && MainCommands.checkSubCommandsMatchMainCommandGroup(this.mainCommand, subCommands))
         {
             try (SessionFactory sessionFactory = HibernateUtil.getSessionFactory())
             {
@@ -227,6 +222,7 @@ public class HotelBookingCLI
                 IRepository<Room_User, Integer> roomUserRepository = new RoomUserRepository(sessionFactory);
                 IRepository<ParkingSpot, Integer> parkingSpotRepository = new ParkingSpotRepository(sessionFactory);
                 IRepository<ParkingSpot_User, Integer> parkingSpotUserRepository = new ParkingSpotUserRepository(sessionFactory);
+
                 BookingService<ParkingSpot_User> parkingSpotBookingService = new ParkingSpotBookingService(
                         parkingSpotUserRepository,
                         userRepository,
@@ -239,9 +235,9 @@ public class HotelBookingCLI
 
                 Booking roomBooking = new Room_User(
                         roomRepository.getById(Integer.parseInt(extractedParameters.get(SubCommands.ROOM_NUMBER))),
-                        userRepository.getById(Integer.parseInt(extractedParameters.get(SubCommands.MAIL))),
-                        extractedParameters.get(SubCommands.START_DATE),
-                        extractedParameters.get(SubCommands.END_DATE)
+                        userRepository.getByMail(extractedParameters.get(SubCommands.MAIL)),
+                        Utils.createDateTime(extractedParameters.get(SubCommands.START_DATE)),
+                        Utils.createDateTime(extractedParameters.get(SubCommands.END_DATE))
                 );
 
                 roomBookingService.book(roomBooking);
