@@ -21,18 +21,32 @@ public class Main
         };
 
         String[] deleteUserArgValues = {"deleteUser",
-                "--id", "2"
+                "--id", "1"
         };
 
         String[] bookRoomArgValues = {"createRoomBooking",
-                "--roomNumber", "11",
+                "--roomNumber", "1",
+                "--mail", "kai.schablowsky@t-online.de",
+                "--startDate", "01.01.2025",
+                "--endDate", "02.01.2025"
+        };
+
+        String[] bookParkingSpotValues = {"bookParkingSpot",
+                "--id", "1",
+                "--mail", "kai.schablowsky@t-online.de",
+                "--startDate", "01.01.2025",
+                "--endDate", "02.01.2025"
+        };
+
+        String[] bookRestaurantTable = {"bookRestaurantTable",
+                "--id", "1",
                 "--mail", "kai.schablowsky@t-online.de",
                 "--startDate", "01.01.2025",
                 "--endDate", "02.01.2025"
         };
 
         //start cli
-        HotelBookingCLI hotelBookingCLI = new HotelBookingCLI(bookRoomArgValues);
+        HotelBookingCLI hotelBookingCLI = new HotelBookingCLI(bookRestaurantTable);
         hotelBookingCLI.execute();
     }
 }

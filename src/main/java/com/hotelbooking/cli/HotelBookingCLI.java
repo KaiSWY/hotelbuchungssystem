@@ -5,10 +5,7 @@ import com.hotelbooking.cli.enums.MainCommands;
 import com.hotelbooking.cli.enums.SubCommands;
 import com.hotelbooking.model.*;
 import com.hotelbooking.repository.*;
-import com.hotelbooking.service.BookingService;
-import com.hotelbooking.service.ParkingSpotBookingService;
-import com.hotelbooking.service.RoomBookingService;
-import com.hotelbooking.service.UserRegistrationService;
+import com.hotelbooking.service.*;
 import org.hibernate.SessionFactory;
 
 import java.util.*;
@@ -19,7 +16,7 @@ public class HotelBookingCLI
 
     private String mainCommand;
 
-    private IRepository<User, Integer> userRepository;
+    private IRepository<User, Integer> userRepositoryTop;
     private UserRegistrationService userRegistrationService;
 
     public HotelBookingCLI()
@@ -59,16 +56,13 @@ public class HotelBookingCLI
                         this.deleteUserInteraction(subValues, totalSubCommands);
                         break;
                     case CREATE_ROOM_BOOKING:
-                        this.createRoomBookingInteraction(totalSubCommands);
+                        this.createRoomBookingInteraction(subValues, totalSubCommands);
                         break;
                     case BOOK_PARKING_SPOT:
-                        this.createParkingSpotInteraction(totalSubCommands);
+                        this.createParkingSpotInteraction(subValues, totalSubCommands);
                         break;
                     case BOOK_RESTAURANT_TABLE:
-                        this.createRestaurantTableInteraction(totalSubCommands);
-                        break;
-                    case BOOK_ACTIVITY:
-                        this.createActivityInteraction(totalSubCommands);
+                        this.createRestaurantTableInteraction(subValues, totalSubCommands);
                         break;
                 }
             }
@@ -150,8 +144,8 @@ public class HotelBookingCLI
                         Utils.createNumber(extractedParameters.get(SubCommands.HOUSE_NUMBER))
                 );
 
-                this.userRepository = new UserRepository(sessionFactory);
-                this.userRegistrationService = new UserRegistrationService(userRepository);
+                this.userRepositoryTop = new UserRepository(sessionFactory);
+                this.userRegistrationService = new UserRegistrationService(userRepositoryTop);
                 this.userRegistrationService.create(newUser);
 
                 System.out.println("User created!");
@@ -170,8 +164,8 @@ public class HotelBookingCLI
                 //get input data map
                 Map<SubCommands, String> extractedParameters = extractParameters(subValues);
 
-                this.userRepository = new UserRepository(sessionFactory);
-                this.userRegistrationService = new UserRegistrationService(userRepository);
+                this.userRepositoryTop = new UserRepository(sessionFactory);
+                this.userRegistrationService = new UserRegistrationService(userRepositoryTop);
 
                 User receivedUser = this.userRegistrationService.getById(Integer.parseInt(extractedParameters.get(SubCommands.ID)));
 
@@ -192,8 +186,8 @@ public class HotelBookingCLI
                 //get input data map
                 Map<SubCommands, String> extractedParameters = extractParameters(subValues);
 
-                this.userRepository = new UserRepository(sessionFactory);
-                this.userRegistrationService = new UserRegistrationService(userRepository);
+                this.userRepositoryTop = new UserRepository(sessionFactory);
+                this.userRegistrationService = new UserRegistrationService(userRepositoryTop);
 
                 this.userRegistrationService.delete(Integer.parseInt(extractedParameters.get(SubCommands.ID)));
 
@@ -205,14 +199,14 @@ public class HotelBookingCLI
     }
 
     //method for create room booking interaction
-    private void createRoomBookingInteraction(String[] subCommands)
+    private void createRoomBookingInteraction(String[] subValues, String[] subCommands)
     {
         if (SubCommands.commandsPartOfEnum(subCommands) && MainCommands.checkSubCommandsMatchMainCommandGroup(this.mainCommand, subCommands))
         {
             try (SessionFactory sessionFactory = HibernateUtil.getSessionFactory())
             {
                 //get input data map
-                Map<SubCommands, String> extractedParameters = extractParameters(subCommands);
+                Map<SubCommands, String> extractedParameters = extractParameters(subValues);
 
                 IRepository<Room, Integer> roomRepository = new RoomRepository(sessionFactory);
                 UserRepository userRepository = new UserRepository(sessionFactory);
@@ -223,12 +217,14 @@ public class HotelBookingCLI
                 BookingService<ParkingSpot_User> parkingSpotBookingService = new ParkingSpotBookingService(
                         parkingSpotUserRepository,
                         userRepository,
-                        parkingSpotRepository);
+                        parkingSpotRepository
+                );
                 BookingService<Room_User> roomBookingService = new RoomBookingService(
                         roomUserRepository,
                         userRepository,
                         roomRepository,
-                        parkingSpotBookingService);
+                        parkingSpotBookingService
+                );
 
                 Optional<User> selectedUser = userRepository.getUserByEmail(extractedParameters.get(SubCommands.MAIL));
                 if(selectedUser.isEmpty())
@@ -237,7 +233,7 @@ public class HotelBookingCLI
                     return;
                 }
 
-                Booking roomBooking = new Room_User(
+                Booking roomBooking = new Room_User (
                         roomRepository.getById(Integer.parseInt(extractedParameters.get(SubCommands.ROOM_NUMBER))),
                         selectedUser.get(),
                         Utils.createDateTime(extractedParameters.get(SubCommands.START_DATE)),
@@ -253,20 +249,95 @@ public class HotelBookingCLI
     }
 
     //method for create parking sport interaction
-    private void createParkingSpotInteraction(String[] subCommands)
+    private void createParkingSpotInteraction(String[] subValues, String[] subCommands)
     {
+        if (SubCommands.commandsPartOfEnum(subCommands) && MainCommands.checkSubCommandsMatchMainCommandGroup(this.mainCommand, subCommands))
+        {
+            try (SessionFactory sessionFactory = HibernateUtil.getSessionFactory())
+            {
+                //get input data map
+                Map<SubCommands, String> extractedParameters = extractParameters(subValues);
 
+                IRepository<ParkingSpot_User, Integer> parkingSpotUserRepository = new ParkingSpotUserRepository(sessionFactory);
+                IRepository<ParkingSpot, Integer> parkingSpotRepository = new ParkingSpotRepository(sessionFactory);
+                UserRepository userRepository = new UserRepository(sessionFactory);
+
+                BookingService<ParkingSpot_User> parkingSpotBookingService = new ParkingSpotBookingService(
+                        parkingSpotUserRepository,
+                        userRepository,
+                        parkingSpotRepository
+                );
+
+                //get user by mail
+                Optional<User> selectedUser = userRepository.getUserByEmail(extractedParameters.get(SubCommands.MAIL));
+                if(selectedUser.isEmpty())
+                {
+                    System.out.println("User not found!");
+                    return;
+                }
+
+                //get parking spot by id
+                ParkingSpot selectedParkingSpot = parkingSpotRepository.getById(Utils.createNumber(extractedParameters.get(SubCommands.ID)));
+
+                Booking parkingSpotBooking = new ParkingSpot_User (
+                        selectedParkingSpot,
+                        selectedUser.get(),
+                        Utils.createDateTime(extractedParameters.get(SubCommands.START_DATE)),
+                        Utils.createDateTime(extractedParameters.get(SubCommands.END_DATE))
+                );
+
+                parkingSpotBookingService.book(parkingSpotBooking);
+
+                System.out.println("Parking spot booked!");
+            }
+            HibernateUtil.shutdown();
+        }
     }
 
     //method for create restaurant table interaction
-    private void createRestaurantTableInteraction(String[] subCommands)
+    private void createRestaurantTableInteraction(String[] subValues, String[] subCommands)
     {
+        if (SubCommands.commandsPartOfEnum(subCommands) && MainCommands.checkSubCommandsMatchMainCommandGroup(this.mainCommand, subCommands))
+        {
+            try(SessionFactory sessionFactory = HibernateUtil.getSessionFactory())
+            {
+                //get input data map
+                Map<SubCommands, String> extractedParameters = extractParameters(subValues);
 
+                IRepository<RestaurantTable_User, Integer> restaurantTableUserRepository = new RestaurantTableUserRepository(sessionFactory);
+                IRepository<RestaurantTable, Integer> restaurantTableRepository = new RestaurantTableRepository(sessionFactory);
+                UserRepository userRepository = new UserRepository(sessionFactory);
+
+                BookingService<RestaurantTable_User> restaurantTableBookingService = new RestaurantTableBookingService(
+                        restaurantTableUserRepository,
+                        userRepository,
+                        restaurantTableRepository
+                );
+
+                //get user by mail
+                Optional<User> selectedUser = userRepository.getUserByEmail(extractedParameters.get(SubCommands.MAIL));
+                if(selectedUser.isEmpty())
+                {
+                    System.out.println("User not found!");
+                    return;
+                }
+
+                //get restaurant table
+                RestaurantTable selectedRestaurantTable = restaurantTableRepository.getById(Utils.createNumber(extractedParameters.get(SubCommands.ID)));
+
+                Booking restaurantTableBooking = new RestaurantTable_User (
+                        selectedRestaurantTable,
+                        selectedUser.get(),
+                        Utils.createDateTime(extractedParameters.get(SubCommands.START_DATE)),
+                        Utils.createDateTime(extractedParameters.get(SubCommands.END_DATE))
+                );
+
+                restaurantTableBookingService.book(restaurantTableBooking);
+
+                System.out.println("Restaurant table booked!");
+            }
+            HibernateUtil.shutdown();
+        }
     }
 
-    //method for create activity interaction
-    private void createActivityInteraction(String[] subCommands)
-    {
-
-    }
 }

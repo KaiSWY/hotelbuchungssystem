@@ -35,7 +35,10 @@ public enum MainCommands
             SubCommands.ID)
     ),
     BOOK_PARKING_SPOT("bookParkingSpot", List.of(
-            SubCommands.ID)
+            SubCommands.ID,
+            SubCommands.MAIL,
+            SubCommands.START_DATE,
+            SubCommands.END_DATE)
     ),
     GET_BOOKED_PARKING_SPOT("getBookedParkingSpot", List.of(
             SubCommands.ID)
@@ -47,7 +50,10 @@ public enum MainCommands
             SubCommands.ID)
     ),
     BOOK_RESTAURANT_TABLE("bookRestaurantTable", List.of(
-            SubCommands.ID)
+            SubCommands.ID,
+            SubCommands.MAIL,
+            SubCommands.START_DATE,
+            SubCommands.END_DATE)
     ),
     GET_BOOKED_RESTAURANT_TABLE("getBookedRestaurantTable", List.of(
             SubCommands.ID)

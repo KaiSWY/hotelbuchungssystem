@@ -15,7 +15,7 @@ public class Utils
         }
         catch (NumberFormatException e)
         {
-            System.out.println("Invalid number format: " + e);
+            System.out.println("Invalid number format: " + e.getMessage());
             return -1;
         }
     }
@@ -23,7 +23,7 @@ public class Utils
     //method to create local date time with string
     public static LocalDateTime createDateTime(String dateTime)
     {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d-MM-yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
         try
         {
@@ -31,7 +31,7 @@ public class Utils
         }
         catch (DateTimeParseException e)
         {
-            System.out.println("Invalid date format: " + e);
+            System.out.println("Invalid date format: " + e.getMessage());
             return null;
         }
     }
