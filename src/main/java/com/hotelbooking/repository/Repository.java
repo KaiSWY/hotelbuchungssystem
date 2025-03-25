@@ -95,19 +95,6 @@ public abstract class Repository<TEntity, ID> implements IRepository<TEntity, ID
         }
     }
 
-    public TEntity getByMail(String mail)
-    {
-        try (Session session = sessionFactory.openSession())
-        {
-            TEntity entity = session.get(type, mail);
-            if (entity == null)
-            {
-                throw new EntityNotFoundException("Entity with mail " + mail + " not found.");
-            }
-            EntityLazyLoader.initializeEntity(session, entity);
-            return entity;
-        }
-    }
 
     public List<TEntity> getAll()
     {

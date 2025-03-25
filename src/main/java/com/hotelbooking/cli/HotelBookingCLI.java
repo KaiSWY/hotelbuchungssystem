@@ -11,10 +11,7 @@ import com.hotelbooking.service.RoomBookingService;
 import com.hotelbooking.service.UserRegistrationService;
 import org.hibernate.SessionFactory;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class HotelBookingCLI
 {
@@ -218,7 +215,7 @@ public class HotelBookingCLI
                 Map<SubCommands, String> extractedParameters = extractParameters(subCommands);
 
                 IRepository<Room, Integer> roomRepository = new RoomRepository(sessionFactory);
-                IRepository<User, Integer> userRepository = new UserRepository(sessionFactory);
+                UserRepository userRepository = new UserRepository(sessionFactory);
                 IRepository<Room_User, Integer> roomUserRepository = new RoomUserRepository(sessionFactory);
                 IRepository<ParkingSpot, Integer> parkingSpotRepository = new ParkingSpotRepository(sessionFactory);
                 IRepository<ParkingSpot_User, Integer> parkingSpotUserRepository = new ParkingSpotUserRepository(sessionFactory);
@@ -233,9 +230,16 @@ public class HotelBookingCLI
                         roomRepository,
                         parkingSpotBookingService);
 
+                Optional<User> selectedUser = userRepository.getUserByEmail(extractedParameters.get(SubCommands.MAIL));
+                if(selectedUser.isEmpty())
+                {
+                    System.out.println("User not found!");
+                    return;
+                }
+
                 Booking roomBooking = new Room_User(
                         roomRepository.getById(Integer.parseInt(extractedParameters.get(SubCommands.ROOM_NUMBER))),
-                        userRepository.getByMail(extractedParameters.get(SubCommands.MAIL)),
+                        selectedUser.get(),
                         Utils.createDateTime(extractedParameters.get(SubCommands.START_DATE)),
                         Utils.createDateTime(extractedParameters.get(SubCommands.END_DATE))
                 );
