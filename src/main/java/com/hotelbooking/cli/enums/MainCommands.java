@@ -1,43 +1,90 @@
 package com.hotelbooking.cli.enums;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 //xy.exe hauptbefehl --subbefehl1 value1 --subbefehl2 value2
 public enum MainCommands
 {
-    CREATE_USER("createUser"),
-    GET_USER("getUser"),
-    DELETE_USER("deleteUser"),
-    GET_USER_ANALYSIS("getUserAnalysis"),
-    CREATE_ROOM_BOOKING("createRoomBooking"),
-    GET_ROOM_BOOKING("getRoomBooking"),
-    DELETE_ROOM_BOOKING("deleteRoomBooking"),
-    GET_ROOM_BOOKING_ANALYSIS("getRoomBookingAnalysis"),
-    BOOK_PARKING_SPOT("bookParkingSpot"),
-    GET_BOOKED_PARKING_SPOT("getBookedParkingSpot"),
-    DELETE_BOOKED_PARKING_SPOT("deleteBookedParkingSpot"),
-    GET_BOOKED_PARKING_SPOT_ANALYSIS("getBookedParkingSpotAnalysis"),
-    BOOK_RESTAURANT_TABLE("bookRestaurantTable"),
-    GET_BOOKED_RESTAURANT_TABLE("getBookedRestaurantTable"),
-    DELETE_BOOKED_RESTAURANT_TABLE("deleteBookedRestaurantTable"),
-    GET_BOOKED_RESTAURANT_TABLE_ANALYSIS("getBookedRestaurantTableAnalysis"),
-    BOOK_ACTIVITY("bookActivity"),
-    GET_BOOKED_ACTIVITY("getBookedActivity"),
-    DELETE_BOOKED_ACTIVITY("deleteBookedActivity"),
-    GET_BOOKED_ACTIVITY_ANALYSIS("getBookedActivityAnalysis");
+    CREATE_USER("createUser", List.of(
+            SubCommands.FIRST_NAME,
+            SubCommands.LAST_NAME)
+    ),
+    GET_USER("getUser", List.of(
+            SubCommands.ID)
+    ),
+    DELETE_USER("deleteUser", List.of(
+            SubCommands.ID)
+    ),
+    GET_USER_ANALYSIS("getUserAnalysis", List.of(
+            SubCommands.ID)
+    ),
+    CREATE_ROOM_BOOKING("createRoomBooking", List.of(
+            SubCommands.ID)
+    ),
+    GET_ROOM_BOOKING("getRoomBooking", List.of(
+            SubCommands.ID)
+    ),
+    DELETE_ROOM_BOOKING("deleteRoomBooking", List.of(
+            SubCommands.ID)
+    ),
+    GET_ROOM_BOOKING_ANALYSIS("getRoomBookingAnalysis", List.of(
+            SubCommands.ID)
+    ),
+    BOOK_PARKING_SPOT("bookParkingSpot", List.of(
+            SubCommands.ID)
+    ),
+    GET_BOOKED_PARKING_SPOT("getBookedParkingSpot", List.of(
+            SubCommands.ID)
+    ),
+    DELETE_BOOKED_PARKING_SPOT("deleteBookedParkingSpot", List.of(
+            SubCommands.ID)
+    ),
+    GET_BOOKED_PARKING_SPOT_ANALYSIS("getBookedParkingSpotAnalysis", List.of(
+            SubCommands.ID)
+    ),
+    BOOK_RESTAURANT_TABLE("bookRestaurantTable", List.of(
+            SubCommands.ID)
+    ),
+    GET_BOOKED_RESTAURANT_TABLE("getBookedRestaurantTable", List.of(
+            SubCommands.ID)
+    ),
+    DELETE_BOOKED_RESTAURANT_TABLE("deleteBookedRestaurantTable", List.of(
+            SubCommands.ID)
+    ),
+    GET_BOOKED_RESTAURANT_TABLE_ANALYSIS("getBookedRestaurantTableAnalysis", List.of(
+            SubCommands.ID)
+    ),
+    BOOK_ACTIVITY("bookActivity", List.of(
+            SubCommands.ID)
+    ),
+    GET_BOOKED_ACTIVITY("getBookedActivity", List.of(
+            SubCommands.ID)
+    ),
+    DELETE_BOOKED_ACTIVITY("deleteBookedActivity", List.of(
+            SubCommands.ID)
+    ),
+    GET_BOOKED_ACTIVITY_ANALYSIS("getBookedActivityAnalysis", List.of(
+            SubCommands.ID)
+    );
 
     private String command;
+    private List<SubCommands> subCommands;
 
-    MainCommands(String command)
+    MainCommands(String command, List<SubCommands> subCommands)
     {
         this.command = command;
+        this.subCommands = subCommands;
     }
 
     public String getCommand()
     {
         return command;
+    }
+
+    public List<SubCommands> getSubCommands()
+    {
+        return subCommands;
     }
 
     //method to check if command is part of enums
@@ -46,6 +93,29 @@ public enum MainCommands
         for (MainCommands allCommands : MainCommands.values())
         {
             if (allCommands.getCommand().equalsIgnoreCase(mainCommand))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    //method to check if sub commands match main command
+    public static boolean checkSubCommandsMatchMainCommandGroup(String mainCommand, String[] subCommands)
+    {
+        MainCommands mainCommandEnum = findCommandsByValue(mainCommand);
+
+        if (mainCommandEnum == null)
+        {
+            return false;
+        }
+
+        List<SubCommands> allowedSubCommands = mainCommandEnum.getSubCommands();
+
+        for(String currentSubCommand : subCommands)
+        {
+            if (allowedSubCommands.contains(SubCommands.findCommandsByValue(currentSubCommand)))
             {
                 return true;
             }

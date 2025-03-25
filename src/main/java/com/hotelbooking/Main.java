@@ -20,10 +20,10 @@ public class Main
                 "--zipCode", "76148",
                 "--city", "Karlsruhe",
                 "--street", "Hauptstrasse",
-                "--houseNumber", "2"};
+                "--houseNumber", "12"};
 
         String[] deleteUserArgValues = {"deleteUser",
-                "--id", "4"
+                "--id", "2"
         };
 
         String[] bookRoomArgValues = {"bookRoom",

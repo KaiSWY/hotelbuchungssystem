@@ -7,8 +7,6 @@ import com.hotelbooking.model.Room;
 import com.hotelbooking.model.Room_User;
 import com.hotelbooking.model.User;
 import com.hotelbooking.repository.IRepository;
-import com.hotelbooking.repository.RoomRepository;
-import com.hotelbooking.repository.RoomUserRepository;
 import com.hotelbooking.repository.UserRepository;
 import com.hotelbooking.service.ParkingSpotBookingService;
 import com.hotelbooking.service.RoomBookingService;
@@ -22,6 +20,8 @@ import java.util.Map;
 public class HotelBookingCLI
 {
     private String[] args;
+
+    private String mainCommand;
 
     private IRepository<User, Integer> userRepository;
     private UserRegistrationService userRegistrationService;
@@ -48,7 +48,7 @@ public class HotelBookingCLI
         if (checkInputValid())
         {
             //check case with switch case
-            String mainCommand = this.getStructuredCommands()[0][0];
+            this.mainCommand = this.getStructuredCommands()[0][0];
             String[] subValues = this.getStructuredCommands()[1];
             String[] totalSubCommands = this.getStructuredCommands()[2];
 
@@ -142,7 +142,7 @@ public class HotelBookingCLI
     //method for create user interaction
     private void createUserInteraction(String[] subValues, String[] subCommands)
     {
-        if (SubCommands.commandsPartOfEnum(subCommands))
+        if (SubCommands.commandsPartOfEnum(subCommands) && MainCommands.checkSubCommandsMatchMainCommandGroup(this.mainCommand, subCommands))
         {
             try (SessionFactory sessionFactory = HibernateUtil.getSessionFactory())
             {
@@ -173,7 +173,7 @@ public class HotelBookingCLI
     //method to get user information
     private void getUserInformationInteraction(String[] subValues, String[] subCommands)
     {
-        if (SubCommands.commandsPartOfEnum(subCommands))
+        if (SubCommands.commandsPartOfEnum(subCommands) && MainCommands.checkSubCommandsMatchMainCommandGroup(this.mainCommand, subCommands))
         {
             try (SessionFactory sessionFactory = HibernateUtil.getSessionFactory())
             {
@@ -195,7 +195,7 @@ public class HotelBookingCLI
     //method to delete user
     private void deleteUserInteraction(String[] subValues, String[] subCommands)
     {
-        if (SubCommands.commandsPartOfEnum(subCommands))
+        if (SubCommands.commandsPartOfEnum(subCommands) && MainCommands.checkSubCommandsMatchMainCommandGroup(this.mainCommand, subCommands))
         {
             try (SessionFactory sessionFactory = HibernateUtil.getSessionFactory())
             {
@@ -224,6 +224,7 @@ public class HotelBookingCLI
                 //get input data map
                 Map<SubCommands, String> extractedParameters = extractParameters(subCommands);
 
+                //implementierung von funktionalität um raum buchung durchzuführen
 
 
                 //set information output
