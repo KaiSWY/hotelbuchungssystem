@@ -2,13 +2,10 @@ package com.hotelbooking;
 
 import com.hotelbooking.cli.HotelBookingCLI;
 
-import java.util.logging.Level;
-
 public class Main
 {
     public static void main(String[] args)
     {
-        //java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.OFF);
         System.out.println(">--Hotelbuchungssystem--<");
 
         //test

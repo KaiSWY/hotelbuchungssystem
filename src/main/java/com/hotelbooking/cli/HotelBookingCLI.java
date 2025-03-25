@@ -3,11 +3,9 @@ package com.hotelbooking.cli;
 import com.hotelbooking.HibernateUtil;
 import com.hotelbooking.cli.enums.MainCommands;
 import com.hotelbooking.cli.enums.SubCommands;
-import com.hotelbooking.model.Room;
-import com.hotelbooking.model.Room_User;
-import com.hotelbooking.model.User;
-import com.hotelbooking.repository.IRepository;
-import com.hotelbooking.repository.UserRepository;
+import com.hotelbooking.model.*;
+import com.hotelbooking.repository.*;
+import com.hotelbooking.service.BookingService;
 import com.hotelbooking.service.ParkingSpotBookingService;
 import com.hotelbooking.service.RoomBookingService;
 import com.hotelbooking.service.UserRegistrationService;
@@ -224,10 +222,30 @@ public class HotelBookingCLI
                 //get input data map
                 Map<SubCommands, String> extractedParameters = extractParameters(subCommands);
 
-                //implementierung von funktionalität um raum buchung durchzuführen
+                IRepository<Room, Integer> roomRepository = new RoomRepository(sessionFactory);
+                IRepository<User, Integer> userRepository = new UserRepository(sessionFactory);
+                IRepository<Room_User, Integer> roomUserRepository = new RoomUserRepository(sessionFactory);
+                IRepository<ParkingSpot, Integer> parkingSpotRepository = new ParkingSpotRepository(sessionFactory);
+                IRepository<ParkingSpot_User, Integer> parkingSpotUserRepository = new ParkingSpotUserRepository(sessionFactory);
+                BookingService<ParkingSpot_User> parkingSpotBookingService = new ParkingSpotBookingService(
+                        parkingSpotUserRepository,
+                        userRepository,
+                        parkingSpotRepository);
+                BookingService<Room_User> roomBookingService = new RoomBookingService(
+                        roomUserRepository,
+                        userRepository,
+                        roomRepository,
+                        parkingSpotBookingService);
 
+                Booking roomBooking = new Room_User(
+                        roomRepository.getById(Integer.parseInt(extractedParameters.get(SubCommands.ROOM_NUMBER))),
+                        userRepository.getById(Integer.parseInt(extractedParameters.get(SubCommands.MAIL))),
+                        extractedParameters.get(SubCommands.START_DATE),
+                        extractedParameters.get(SubCommands.END_DATE)
+                );
 
-                //set information output
+                roomBookingService.book(roomBooking);
+
                 System.out.println("Room booked!");
             }
             HibernateUtil.shutdown();
