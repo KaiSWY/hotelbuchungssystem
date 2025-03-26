@@ -1,5 +1,6 @@
 package com.hotelbooking.cli;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -27,11 +28,13 @@ public class Utils
 
         try
         {
-            return LocalDateTime.parse(dateTime, formatter);
+            LocalDate date = LocalDate.parse(dateTime, formatter);
+
+            return date.atStartOfDay();
         }
-        catch (DateTimeParseException e)
+        catch (DateTimeParseException dateTimeParseException)
         {
-            System.out.println("Invalid date format: " + e.getMessage());
+            System.out.println("Invalid Date: " + dateTimeParseException.getMessage());
             return null;
         }
     }
