@@ -186,8 +186,7 @@ public class User
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "User{" +
                 "userId=" + userId +
                 ", firstName='" + firstName + '\'' +
@@ -198,10 +197,6 @@ public class User
                 ", city='" + city + '\'' +
                 ", street='" + street + '\'' +
                 ", houseNumber=" + houseNumber +
-                ", parkingSpots_Users=" + parkingSpots_Users +
-                ", rooms_users=" + rooms_users +
-                ", tables_users=" + tables_users +
-                ", activity_users=" + activity_users +
                 '}';
     }
 }

@@ -15,6 +15,7 @@ import org.hibernate.SessionFactory;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.hotelbooking.cli.HotelBookingCLI.extractParameters;
 
@@ -83,10 +84,9 @@ public class UserInteraction implements IBasicMethods
 
                 this.userRepository = new UserRepository(sessionFactory);
                 this.userRegistrationService = new UserRegistrationService(this.userRepository);
+                User user = this.userRegistrationService.getById(Utils.createNumber(extractedParameters.get(SubCommands.ID)));
 
-                User userById = this.userRegistrationService.getById(Utils.createNumber(extractedParameters.get(SubCommands.ID)));
-
-                System.out.println("User information:\n" + userById.toString());
+                System.out.println("User information:\n" + user.toString());
             }
             HibernateUtil.shutdown();
         }

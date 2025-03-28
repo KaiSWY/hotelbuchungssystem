@@ -9,12 +9,12 @@ public class Main
         System.out.println(">--Hotelbuchungssystem--<");
 
         //test
-        String[] deleteUserArgValues = {"deleteUser",
+        String[] args2 = {"getUser",
                 "--id", "1"
         };
 
         //start cli
-        HotelBookingCLI hotelBookingCLI = new HotelBookingCLI(deleteUserArgValues);
+        HotelBookingCLI hotelBookingCLI = new HotelBookingCLI(args2);
         hotelBookingCLI.execute();
     }
 }
