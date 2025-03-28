@@ -9,22 +9,21 @@ import com.hotelbooking.service.analysers.BookingAnalyser;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class RoomBookingAnalyser extends BookingAnalyser<Room, Integer>
+public class RoomBookingAnalyser extends BookingAnalyser<Room_User, Room, Integer>
 {
-    public RoomBookingAnalyser(IRepository<Room, Integer> repository, IRepository<Booking, Integer> bookingRepository)
+    public RoomBookingAnalyser(IRepository<Room, Integer> repository, IRepository<Room_User, Integer> bookingRepository)
     {
         super(repository, bookingRepository);
     }
 
     @Override
-    protected List<Booking> getFilteredBookings(List<Booking> bookings, Room entity, LocalDateTime startTime, LocalDateTime endTime)
+    protected List<Booking> getFilteredBookings(List<Room_User> bookings, Room entity, LocalDateTime startTime, LocalDateTime endTime)
     {
-        List<Room_User> roomUserBookings = convertBookingListToExtendsBookingList(bookings, Room_User.class);
-        roomUserBookings = roomUserBookings.stream()
+        bookings = bookings.stream()
                 .filter(booking -> booking.getRoom().getRoomNumber() == entity.getRoomNumber())
                 .filter(booking -> !booking.getEndDateTime().isBefore(startTime) && !booking.getStartDateTime().isAfter(endTime))
                 .toList();
 
-        return convertExtendsBookingListToBookingList(roomUserBookings);
+        return convertExtendsBookingListToBookingList(bookings);
     }
 }

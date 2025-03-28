@@ -53,8 +53,12 @@ public class Main
                 "--id", "1"
         };
 
+        String[] roomBookingAnaylserArgs = {"getRoomBookingAnalysis",
+                "--roomNumber", "1"
+        };
+
         //start cli
-        HotelBookingCLI hotelBookingCLI = new HotelBookingCLI(getBookedRestaurantTableArgs);
+        HotelBookingCLI hotelBookingCLI = new HotelBookingCLI(roomBookingAnaylserArgs);
         hotelBookingCLI.execute();
     }
 }

@@ -32,7 +32,7 @@ public enum MainCommands
             SubCommands.ID)
     ),
     GET_ROOM_BOOKING_ANALYSIS("getRoomBookingAnalysis", List.of(
-            SubCommands.ID)
+            SubCommands.ROOM_NUMBER)
     ),
     BOOK_PARKING_SPOT("bookParkingSpot", List.of(
             SubCommands.ID,

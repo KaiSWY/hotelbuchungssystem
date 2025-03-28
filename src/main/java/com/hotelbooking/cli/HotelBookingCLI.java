@@ -6,6 +6,7 @@ import com.hotelbooking.cli.enums.SubCommands;
 import com.hotelbooking.model.*;
 import com.hotelbooking.repository.*;
 import com.hotelbooking.service.*;
+import com.hotelbooking.service.analysers.AnalyseResult;
 import com.hotelbooking.service.analysers.implementations.RoomBookingAnalyser;
 import org.hibernate.SessionFactory;
 
@@ -65,6 +66,9 @@ public class HotelBookingCLI
                     case DELETE_ROOM_BOOKING:
                         this.deleteRoomBookingInteraction(subValues, totalSubCommands);
                         break;
+                    case GET_ROOM_BOOKING_ANALYSIS:
+                        this.roomBookingAnalyserInteraction(subValues, totalSubCommands);
+                        break;
                     case BOOK_PARKING_SPOT:
                         this.createParkingSpotInteraction(subValues, totalSubCommands);
                         break;
@@ -100,12 +104,7 @@ public class HotelBookingCLI
     private boolean checkInputValid()
     {
         String mainCommandValue = args[0];
-        if (MainCommands.commandPartOfEnums(mainCommandValue) && (args.length >= 3))
-        {
-            return true;
-        }
-
-        return false;
+        return MainCommands.commandPartOfEnums(mainCommandValue);
     }
 
     //method to get structured commands
@@ -358,16 +357,17 @@ public class HotelBookingCLI
                 Map<SubCommands, String> extractedParameters = extractParameters(subValues);
 
                 IRepository<Room, Integer> roomRepository = new RoomRepository(sessionFactory);
-                IRepository<Booking, Integer> bookingRepository = new ....;
+                IRepository<Room_User, Integer> bookingRepository = new RoomUserRepository(sessionFactory);
 
                 RoomBookingAnalyser roomBookingAnalyser = new RoomBookingAnalyser(
                         roomRepository,
                         bookingRepository
                 );
 
+                Room room = roomRepository.getById(Utils.createNumber(extractedParameters.get(SubCommands.ROOM_NUMBER)));
 
-
-                System.out.println("Room booking analyser results: ");
+                AnalyseResult result = roomBookingAnalyser.analyse(room);
+                System.out.println("Room booking analysis result:\n" + result.toString());
             }
             HibernateUtil.shutdown();
         }
