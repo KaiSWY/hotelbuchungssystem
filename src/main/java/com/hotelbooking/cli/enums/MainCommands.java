@@ -16,9 +16,6 @@ public enum MainCommands
     DELETE_USER("deleteUser", List.of(
             SubCommands.ID)
     ),
-    GET_USER_ANALYSIS("getUserAnalysis", List.of(
-            SubCommands.ID)
-    ),
     CREATE_ROOM_BOOKING("createRoomBooking", List.of(
             SubCommands.ROOM_NUMBER,
             SubCommands.MAIL,
@@ -26,13 +23,17 @@ public enum MainCommands
             SubCommands.END_DATE)
     ),
     GET_ROOM_BOOKING("getRoomBooking", List.of(
-            SubCommands.ID)
+            SubCommands.ID,
+            SubCommands.START_DATE,
+            SubCommands.END_DATE)
     ),
     DELETE_ROOM_BOOKING("deleteRoomBooking", List.of(
             SubCommands.ID)
     ),
     GET_ROOM_BOOKING_ANALYSIS("getRoomBookingAnalysis", List.of(
-            SubCommands.ROOM_NUMBER)
+            SubCommands.ROOM_NUMBER,
+            SubCommands.START_DATE,
+            SubCommands.END_DATE)
     ),
     BOOK_PARKING_SPOT("bookParkingSpot", List.of(
             SubCommands.ID,
@@ -41,13 +42,17 @@ public enum MainCommands
             SubCommands.END_DATE)
     ),
     GET_BOOKED_PARKING_SPOT("getBookedParkingSpot", List.of(
-            SubCommands.ID)
+            SubCommands.ID,
+            SubCommands.START_DATE,
+            SubCommands.END_DATE)
     ),
     DELETE_BOOKED_PARKING_SPOT("deleteBookedParkingSpot", List.of(
             SubCommands.ID)
     ),
     GET_BOOKED_PARKING_SPOT_ANALYSIS("getBookedParkingSpotAnalysis", List.of(
-            SubCommands.ID)
+            SubCommands.ID,
+            SubCommands.START_DATE,
+            SubCommands.END_DATE)
     ),
     BOOK_RESTAURANT_TABLE("bookRestaurantTable", List.of(
             SubCommands.ID,
@@ -56,25 +61,36 @@ public enum MainCommands
             SubCommands.END_DATE)
     ),
     GET_BOOKED_RESTAURANT_TABLE("getBookedRestaurantTable", List.of(
-            SubCommands.ID)
+            SubCommands.ID,
+            SubCommands.START_DATE,
+            SubCommands.END_DATE)
     ),
     DELETE_BOOKED_RESTAURANT_TABLE("deleteBookedRestaurantTable", List.of(
             SubCommands.ID)
     ),
     GET_BOOKED_RESTAURANT_TABLE_ANALYSIS("getBookedRestaurantTableAnalysis", List.of(
-            SubCommands.ID)
+            SubCommands.ID,
+            SubCommands.START_DATE,
+            SubCommands.END_DATE)
     ),
     BOOK_ACTIVITY("bookActivity", List.of(
-            SubCommands.ID)
+            SubCommands.ACTIVITY_ID,
+            SubCommands.ID,
+            SubCommands.START_DATE,
+            SubCommands.END_DATE)
     ),
     GET_BOOKED_ACTIVITY("getBookedActivity", List.of(
-            SubCommands.ID)
+            SubCommands.ID,
+            SubCommands.START_DATE,
+            SubCommands.END_DATE)
     ),
     DELETE_BOOKED_ACTIVITY("deleteBookedActivity", List.of(
             SubCommands.ID)
     ),
     GET_BOOKED_ACTIVITY_ANALYSIS("getBookedActivityAnalysis", List.of(
-            SubCommands.ID)
+            SubCommands.ID,
+            SubCommands.START_DATE,
+            SubCommands.END_DATE)
     );
 
     private String command;

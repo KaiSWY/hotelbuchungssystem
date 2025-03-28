@@ -50,4 +50,12 @@ public class Activity_User extends Booking
     {
         this.user = user;
     }
+
+    @Override
+    public String toString() {
+        return "Activity_User{" +
+                "activity=" + activity +
+                ", user=" + user +
+                '}';
+    }
 }

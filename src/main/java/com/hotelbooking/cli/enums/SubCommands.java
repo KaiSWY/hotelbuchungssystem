@@ -16,7 +16,8 @@ public enum SubCommands
     HOUSE_NUMBER("--houseNumber"),
     ROOM_NUMBER("--roomNumber"),
     START_DATE("--startDate"),
-    END_DATE("--endDate");
+    END_DATE("--endDate"),
+    ACTIVITY_ID("--activityId");
 
     private String subCommands;
 
