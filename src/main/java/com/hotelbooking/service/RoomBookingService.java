@@ -99,7 +99,7 @@ public class RoomBookingService extends BookingService<Room_User>
         return roomRepository.getById(entityId).getRooms_users();
     }
 
-    public void persistDeleteRoomUser(Room_User roomUser)
+    private void persistDeleteRoomUser(Room_User roomUser)
     {
         User user = roomUser.getUser();
         Room room = roomUser.getRoom();

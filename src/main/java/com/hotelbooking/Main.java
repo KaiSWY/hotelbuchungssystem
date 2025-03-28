@@ -45,8 +45,16 @@ public class Main
                 "--endDate", "02.01.2025"
         };
 
+        String[] deleteBookedRestaurantTable = {"deleteBookedParkingSpot",
+                "--id", "1"
+        };
+
+        String[] getBookedRestaurantTableArgs = {"getBookedRestaurantTable",
+                "--id", "1"
+        };
+
         //start cli
-        HotelBookingCLI hotelBookingCLI = new HotelBookingCLI(bookRestaurantTable);
+        HotelBookingCLI hotelBookingCLI = new HotelBookingCLI(getBookedRestaurantTableArgs);
         hotelBookingCLI.execute();
     }
 }

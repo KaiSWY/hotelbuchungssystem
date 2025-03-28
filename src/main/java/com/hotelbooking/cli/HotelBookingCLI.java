@@ -6,6 +6,7 @@ import com.hotelbooking.cli.enums.SubCommands;
 import com.hotelbooking.model.*;
 import com.hotelbooking.repository.*;
 import com.hotelbooking.service.*;
+import com.hotelbooking.service.analysers.implementations.RoomBookingAnalyser;
 import org.hibernate.SessionFactory;
 
 import java.util.*;
@@ -58,11 +59,29 @@ public class HotelBookingCLI
                     case CREATE_ROOM_BOOKING:
                         this.createRoomBookingInteraction(subValues, totalSubCommands);
                         break;
+                    case GET_ROOM_BOOKING:
+                        this.getRoomBookingInteraction(subValues, totalSubCommands);
+                        break;
+                    case DELETE_ROOM_BOOKING:
+                        this.deleteRoomBookingInteraction(subValues, totalSubCommands);
+                        break;
                     case BOOK_PARKING_SPOT:
                         this.createParkingSpotInteraction(subValues, totalSubCommands);
                         break;
+                    case GET_BOOKED_PARKING_SPOT:
+                        this.getParkingSpotBookingInteraction(subValues, totalSubCommands);
+                        break;
+                    case DELETE_BOOKED_PARKING_SPOT:
+                        this.deleteParkingSpotBooking(subValues, totalSubCommands);
+                        break;
                     case BOOK_RESTAURANT_TABLE:
                         this.createRestaurantTableInteraction(subValues, totalSubCommands);
+                        break;
+                    case GET_BOOKED_RESTAURANT_TABLE:
+                        this.getRestaurantTableInteraction(subValues, totalSubCommands);
+                        break;
+                    case DELETE_BOOKED_RESTAURANT_TABLE:
+                        this.deleteRestaurantTableBooking(subValues, totalSubCommands);
                         break;
                 }
             }
@@ -248,6 +267,112 @@ public class HotelBookingCLI
         }
     }
 
+    //method to get room booking
+    private void getRoomBookingInteraction(String[] subValues, String[] subCommands)
+    {
+        if (SubCommands.commandsPartOfEnum(subCommands) && MainCommands.checkSubCommandsMatchMainCommandGroup(this.mainCommand, subCommands))
+        {
+            try (SessionFactory sessionFactory = HibernateUtil.getSessionFactory())
+            {
+                //get input data map
+                Map<SubCommands, String> extractedParameters = extractParameters(subValues);
+
+                IRepository<Room_User, Integer> roomUserRepository = new RoomUserRepository(sessionFactory);
+                IRepository<User, Integer> userRepository = new UserRepository(sessionFactory);
+                IRepository<Room, Integer> roomRepository = new RoomRepository(sessionFactory);
+                IRepository<ParkingSpot, Integer> parkingSpotRepository = new ParkingSpotRepository(sessionFactory);
+                IRepository<ParkingSpot_User, Integer> parkingSpotUserRepository = new ParkingSpotUserRepository(sessionFactory);
+
+                BookingService<ParkingSpot_User> parkingSpotBookingService = new ParkingSpotBookingService(
+                        parkingSpotUserRepository,
+                        userRepository,
+                        parkingSpotRepository
+                );
+
+                RoomBookingService roomBookingService = new RoomBookingService(
+                        roomUserRepository,
+                        userRepository,
+                        roomRepository,
+                        parkingSpotBookingService
+                );
+
+                List<Room_User> roomUserList = roomBookingService.getBookingsByEntityId(Utils.createNumber(extractedParameters.get(SubCommands.ID)));
+
+                for (Room_User roomUser : roomUserList)
+                {
+                    User currentUser = userRepository.getById(roomUser.getUser().getUserId());
+                    Room currentRoom = roomRepository.getById(roomUser.getRoom().getRoomNumber());
+
+                    System.out.println("Room booking information: " + currentUser.toString() + "\n" + currentRoom.toString());
+                }
+            }
+            HibernateUtil.shutdown();
+        }
+    }
+
+    //method to delete room booking
+    private void deleteRoomBookingInteraction(String[] subValues, String[] subCommands)
+    {
+        if (SubCommands.commandsPartOfEnum(subCommands) && MainCommands.checkSubCommandsMatchMainCommandGroup(this.mainCommand, subCommands))
+        {
+            try (SessionFactory sessionFactory = HibernateUtil.getSessionFactory())
+            {
+                //get input data map
+                Map<SubCommands, String> extractedParameters = extractParameters(subValues);
+
+                IRepository<Room_User, Integer> roomUserRepository = new RoomUserRepository(sessionFactory);
+                IRepository<User, Integer> userRepository = new UserRepository(sessionFactory);
+                IRepository<Room, Integer> roomRepository = new RoomRepository(sessionFactory);
+                IRepository<ParkingSpot, Integer> parkingSpotRepository = new ParkingSpotRepository(sessionFactory);
+                IRepository<ParkingSpot_User, Integer> parkingSpotUserRepository = new ParkingSpotUserRepository(sessionFactory);
+
+                BookingService<ParkingSpot_User> parkingSpotBookingService = new ParkingSpotBookingService(
+                        parkingSpotUserRepository,
+                        userRepository,
+                        parkingSpotRepository
+                );
+
+                RoomBookingService roomBookingService = new RoomBookingService(
+                        roomUserRepository,
+                        userRepository,
+                        roomRepository,
+                        parkingSpotBookingService
+                );
+
+                roomBookingService.cancel(Utils.createNumber(extractedParameters.get(SubCommands.ID)));
+
+                System.out.println("Room booking deleted!");
+            }
+            HibernateUtil.shutdown();
+        }
+    }
+
+    //method for room booking analyser interaction
+    private void roomBookingAnalyserInteraction(String[] subValues, String[] subCommands)
+    {
+        if (SubCommands.commandsPartOfEnum(subCommands) && MainCommands.checkSubCommandsMatchMainCommandGroup(this.mainCommand, subCommands))
+        {
+            try (SessionFactory sessionFactory = HibernateUtil.getSessionFactory())
+            {
+                //get input data map
+                Map<SubCommands, String> extractedParameters = extractParameters(subValues);
+
+                IRepository<Room, Integer> roomRepository = new RoomRepository(sessionFactory);
+                IRepository<Booking, Integer> bookingRepository = new ....;
+
+                RoomBookingAnalyser roomBookingAnalyser = new RoomBookingAnalyser(
+                        roomRepository,
+                        bookingRepository
+                );
+
+
+
+                System.out.println("Room booking analyser results: ");
+            }
+            HibernateUtil.shutdown();
+        }
+    }
+
     //method for create parking sport interaction
     private void createParkingSpotInteraction(String[] subValues, String[] subCommands)
     {
@@ -294,6 +419,68 @@ public class HotelBookingCLI
         }
     }
 
+    //method to get parking spot booking
+    private void getParkingSpotBookingInteraction(String[] subValues, String[] subCommands)
+    {
+        if (SubCommands.commandsPartOfEnum(subCommands) && MainCommands.checkSubCommandsMatchMainCommandGroup(this.mainCommand, subCommands))
+        {
+            try (SessionFactory sessionFactory = HibernateUtil.getSessionFactory())
+            {
+                //get input data map
+                Map<SubCommands, String> extractedParameters = extractParameters(subValues);
+
+                IRepository<ParkingSpot_User, Integer> parkingSpotUserRepository = new ParkingSpotUserRepository(sessionFactory);
+                IRepository<User, Integer> userRepository = new UserRepository(sessionFactory);
+                IRepository<ParkingSpot, Integer> parkingSpotRepository = new ParkingSpotRepository(sessionFactory);
+
+                BookingService<ParkingSpot_User> parkingSpotBookingService = new ParkingSpotBookingService(
+                        parkingSpotUserRepository,
+                        userRepository,
+                        parkingSpotRepository
+                );
+
+                List<ParkingSpot_User> parkingSpotUser = parkingSpotBookingService.getBookingsByEntityId(Utils.createNumber(extractedParameters.get(SubCommands.ID)));
+
+                for (ParkingSpot_User parkingSpotUserEntity : parkingSpotUser)
+                {
+                    User user = userRepository.getById(parkingSpotUserEntity.getUser().getUserId());
+                    ParkingSpot parkingSpot = parkingSpotRepository.getById(parkingSpotUserEntity.getSpot().getSpotNumber());
+
+                    System.out.println("Parking spot booking information: " + user.toString() + "\n" + parkingSpot.toString());
+                }
+            }
+            HibernateUtil.shutdown();
+        }
+    }
+
+    //method to delete parking spot booking
+    private void deleteParkingSpotBooking(String[] subValues, String[] subCommands)
+    {
+        if (SubCommands.commandsPartOfEnum(subCommands) && MainCommands.checkSubCommandsMatchMainCommandGroup(this.mainCommand, subCommands))
+        {
+            try (SessionFactory sessionFactory = HibernateUtil.getSessionFactory())
+            {
+                //get input data map
+                Map<SubCommands, String> extractedParameters = extractParameters(subValues);
+
+                IRepository<ParkingSpot_User, Integer> parkingSpotUserRepository = new ParkingSpotUserRepository(sessionFactory);
+                IRepository<User, Integer> userRepository = new UserRepository(sessionFactory);
+                IRepository<ParkingSpot, Integer> parkingSpotRepository = new ParkingSpotRepository(sessionFactory);
+
+                BookingService<ParkingSpot_User> parkingSpotBookingService = new ParkingSpotBookingService(
+                        parkingSpotUserRepository,
+                        userRepository,
+                        parkingSpotRepository
+                );
+
+                parkingSpotBookingService.cancel(Utils.createNumber(extractedParameters.get(SubCommands.ID)));
+
+                System.out.println("Parking spot booking deleted!");
+            }
+            HibernateUtil.shutdown();
+        }
+    }
+
     //method for create restaurant table interaction
     private void createRestaurantTableInteraction(String[] subValues, String[] subCommands)
     {
@@ -335,6 +522,62 @@ public class HotelBookingCLI
                 restaurantTableBookingService.book(restaurantTableBooking);
 
                 System.out.println("Restaurant table booked!");
+            }
+            HibernateUtil.shutdown();
+        }
+    }
+
+    //method to get restaurant table
+    private void getRestaurantTableInteraction(String[] subValues, String[] subCommands)
+    {
+        if (SubCommands.commandsPartOfEnum(subCommands) && MainCommands.checkSubCommandsMatchMainCommandGroup(this.mainCommand, subCommands))
+        {
+            try (SessionFactory sessionFactory = HibernateUtil.getSessionFactory())
+            {
+                //get input data map
+                Map<SubCommands, String> extractedParameters = extractParameters(subValues);
+
+                IRepository<RestaurantTable_User, Integer> restaurantTableUserRepository = new RestaurantTableUserRepository(sessionFactory);
+                IRepository<RestaurantTable, Integer> restaurantTableRepository = new RestaurantTableRepository(sessionFactory);
+                UserRepository userRepository = new UserRepository(sessionFactory);
+
+                BookingService<RestaurantTable_User> restaurantTableBookingService = new RestaurantTableBookingService(
+                        restaurantTableUserRepository,
+                        userRepository,
+                        restaurantTableRepository
+                );
+
+                RestaurantTable_User restaurantTableUser = restaurantTableBookingService.getById(Utils.createNumber(extractedParameters.get(SubCommands.ID)));
+
+                System.out.println("Restaurant table booking information: " + restaurantTableUser.getUser().toString() + "\n" + restaurantTableUser.getTable().toString());
+            }
+            HibernateUtil.shutdown();
+        }
+    }
+
+    //method to delete restaurant table
+    private void deleteRestaurantTableBooking(String[] subValues, String[] subCommands)
+    {
+        if (SubCommands.commandsPartOfEnum(subCommands) && MainCommands.checkSubCommandsMatchMainCommandGroup(this.mainCommand, subCommands))
+        {
+            try (SessionFactory sessionFactory = HibernateUtil.getSessionFactory())
+            {
+                //get input data map
+                Map<SubCommands, String> extractedParameters = extractParameters(subValues);
+
+                IRepository<RestaurantTable_User, Integer> restaurantTableUserRepository = new RestaurantTableUserRepository(sessionFactory);
+                IRepository<RestaurantTable, Integer> restaurantTableRepository = new RestaurantTableRepository(sessionFactory);
+                UserRepository userRepository = new UserRepository(sessionFactory);
+
+                BookingService<RestaurantTable_User> restaurantTableBookingService = new RestaurantTableBookingService(
+                        restaurantTableUserRepository,
+                        userRepository,
+                        restaurantTableRepository
+                );
+
+                restaurantTableBookingService.cancel(Utils.createNumber(extractedParameters.get(SubCommands.ID)));
+
+                System.out.println("Restaurant table booking deleted!");
             }
             HibernateUtil.shutdown();
         }
