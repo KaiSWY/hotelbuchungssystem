@@ -17,6 +17,7 @@ public class User
     private String firstName;
     @Column(name = "last_name")
     private String lastName;
+    @Column(unique = true, nullable = false)
     private String email;
     private String country;
     @Column(name = "postal_code")
@@ -182,5 +183,16 @@ public class User
     public void setCountry(String country)
     {
         this.country = country;
+    }
+
+    @Override
+    public String toString() {
+        return "User information:" +
+                "\nUser ID: " + userId +
+                "\nName: " + firstName + " " + lastName +
+                "\nMail: " + email +
+                "\nCountry: " + country +
+                "\nPostal Code & City: " + postalCode + " " + city +
+                "\nStreet & House Number: " + street + " " + houseNumber;
     }
 }

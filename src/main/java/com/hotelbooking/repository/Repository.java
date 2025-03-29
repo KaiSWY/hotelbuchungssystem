@@ -1,5 +1,6 @@
 package com.hotelbooking.repository;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -93,6 +94,7 @@ public abstract class Repository<TEntity, ID> implements IRepository<TEntity, ID
             return entity;
         }
     }
+
 
     public List<TEntity> getAll()
     {

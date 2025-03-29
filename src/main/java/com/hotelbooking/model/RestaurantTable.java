@@ -56,4 +56,11 @@ public class RestaurantTable
     {
         this.tables_users = tables_users;
     }
+
+    @Override
+    public String toString() {
+        return "Restaurant Table information:" +
+                "\nTable number: " + tableNumber +
+                "\nSeats: " + seats;
+    }
 }

@@ -50,4 +50,13 @@ public class RestaurantTable_User extends Booking
     {
         this.user = user;
     }
+
+    @Override
+    public String toString() {
+        return "RestaurantT table information:" +
+                "\n" + table.toString() +
+                "\n" + user.toString() +
+                "\nBooking start date: " + getStartDateTime() +
+                "\nBooking end date: " + getEndDateTime();
+    }
 }

@@ -50,4 +50,13 @@ public class Room_User extends Booking
     {
         this.user = user;
     }
+
+    @Override
+    public String toString() {
+        return "Room booking information:" +
+                "\n" + room.toString() +
+                "\n" + user.toString() +
+                "\nBooking start date: " + getStartDateTime() +
+                "\nBooking end date: " + getEndDateTime();
+    }
 }

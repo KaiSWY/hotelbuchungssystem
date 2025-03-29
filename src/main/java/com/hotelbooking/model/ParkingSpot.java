@@ -59,4 +59,11 @@ public class ParkingSpot
     {
         this.parkingSpots_Users = parkingSpots_Users;
     }
+
+    @Override
+    public String toString() {
+        return "Parking Spot information:" +
+                "\nParking Spot number: " + spotNumber +
+                "\n" + spotType.toString();
+    }
 }

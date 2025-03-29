@@ -50,4 +50,13 @@ public class Activity_User extends Booking
     {
         this.user = user;
     }
+
+    @Override
+    public String toString() {
+        return "Activity booking information:" +
+                "\n" + activity.toString() +
+                "\n" + user.toString() +
+                "\nBooking start date: " + getStartDateTime() +
+                "\nBooking end date: " + getEndDateTime();
+    }
 }

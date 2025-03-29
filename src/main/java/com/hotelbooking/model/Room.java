@@ -95,4 +95,14 @@ public class Room
     {
         this.rooms_users = rooms_users;
     }
+
+    @Override
+    public String toString() {
+        return "Room information:" +
+                "\nRoom Number: " + roomNumber +
+                "\nDouble beds amount: " + doubleBeds +
+                "\nSingle beds amount: " + singleBeds +
+                "\nRoom description: " + description +
+                "\nPrice per night: " + pricePerNight;
+    }
 }

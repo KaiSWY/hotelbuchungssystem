@@ -25,7 +25,6 @@ public abstract class CrudService<T, ID>
         return repository.getById(id);
     }
 
-
     public void update(ID id, T entity)
     {
         T oldEntity = repository.getById(id);

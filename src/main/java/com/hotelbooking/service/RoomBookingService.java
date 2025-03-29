@@ -10,13 +10,13 @@ public class RoomBookingService extends BookingService<Room_User>
 {
     private final IRepository<User, Integer> userRepository;
     private final IRepository<Room, Integer> roomRepository;
-    private final ParkingSpotBookingService parkingSpotBookingService;
+    private final BookingService<ParkingSpot_User> parkingSpotBookingService;
 
     public RoomBookingService(
             IRepository<Room_User, Integer> roomUserRepository,
             IRepository<User, Integer> userRepository,
             IRepository<Room, Integer> roomRepository,
-            ParkingSpotBookingService parkingSpotBookingService)
+            BookingService<ParkingSpot_User> parkingSpotBookingService)
     {
         super(roomUserRepository);
         this.userRepository = userRepository;
@@ -99,7 +99,7 @@ public class RoomBookingService extends BookingService<Room_User>
         return roomRepository.getById(entityId).getRooms_users();
     }
 
-    public void persistDeleteRoomUser(Room_User roomUser)
+    private void persistDeleteRoomUser(Room_User roomUser)
     {
         User user = roomUser.getUser();
         Room room = roomUser.getRoom();

@@ -50,4 +50,13 @@ public class ParkingSpot_User extends Booking
     {
         this.user = user;
     }
+
+    @Override
+    public String toString() {
+        return "Parking Spot booking information:" +
+                "\n" + spot.toString() +
+                "\n" + user.toString() +
+                "\nBooking start date: " + getStartDateTime() +
+                "\nBooking end date: " + getEndDateTime();
+    }
 }

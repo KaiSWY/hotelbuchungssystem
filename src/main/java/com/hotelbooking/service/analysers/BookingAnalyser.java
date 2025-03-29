@@ -4,17 +4,18 @@ import com.hotelbooking.model.Booking;
 import com.hotelbooking.repository.IRepository;
 
 import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class BookingAnalyser<T, ID> extends Analyser<T, ID> implements IBookingAnalyser<T>
+public abstract class BookingAnalyser<B extends Booking, T, ID> extends Analyser<T, ID> implements IBookingAnalyser<T>
 {
-    protected final IRepository<Booking, Integer> bookingRepository;
+    protected final IRepository<B, Integer> bookingRepository;
 
-    protected BookingAnalyser(IRepository<T, ID> repository, IRepository<Booking, Integer> bookingRepository)
+    protected BookingAnalyser(IRepository<T, ID> repository, IRepository<B, Integer> bookingRepository)
     {
         super(repository);
         this.bookingRepository = bookingRepository;
@@ -36,12 +37,12 @@ public abstract class BookingAnalyser<T, ID> extends Analyser<T, ID> implements 
     @Override
     public AnalyseResult analyseBetweenDate(T entity, LocalDateTime startTime, LocalDateTime endTime)
     {
-        List<Booking> bookings = bookingRepository.getAll();
+        List<B> bookings = bookingRepository.getAll();
         List<Booking> filteredBookings = getFilteredBookings(bookings, entity, startTime, endTime);
         return calculateAnalyseResult(filteredBookings, startTime, endTime);
     }
 
-    protected abstract List<Booking> getFilteredBookings(List<Booking> bookings, T entity, LocalDateTime startTime, LocalDateTime endTime);
+    protected abstract List<Booking> getFilteredBookings(List<B> bookings, T entity, LocalDateTime startTime, LocalDateTime endTime);
 
     @Override
     public Map<T, AnalyseResult> analyseAllFromDate(LocalDateTime startTime)
@@ -83,7 +84,26 @@ public abstract class BookingAnalyser<T, ID> extends Analyser<T, ID> implements 
                                                           LocalDateTime endTime)
     {
         Map<AnalyseResultKey, Object> resultKeys = new HashMap<>();
-        resultKeys.put(AnalyseResultKey.AVERAGE_BOOKING_GUESTS_SELECTED_TIME, calculateAverageGuestsPerDays(bookings, startTime, endTime));
+
+        LocalDateTime lastMonthBeginning = LocalDateTime.now().minusMonths(1).withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
+        LocalDateTime lastMonthEnding = YearMonth.now().minusMonths(1).atEndOfMonth().atTime(23, 59, 59, 999_999_999);
+        resultKeys.put(AnalyseResultKey.AVERAGE_BOOKING_GUESTS_PER_DAY_LAST_MONTH, calculateAverageGuestsPerDays(bookings, lastMonthBeginning, lastMonthEnding));
+
+        LocalDateTime thisMonthBeginning = LocalDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
+        resultKeys.put(AnalyseResultKey.AVERAGE_BOOKING_GUESTS_PER_DAY_THIS_MONTH, calculateAverageGuestsPerDays(bookings, thisMonthBeginning, LocalDateTime.now()));
+
+        LocalDateTime lastYearBeginning = LocalDateTime.now().minusYears(1).withDayOfYear(1).withHour(0).withMinute(0).withSecond(0);
+        LocalDateTime lastYearEnding = LocalDateTime.of(LocalDateTime.now().getYear()-1, 12, 31, 23, 59, 59, 999_999_999);
+        resultKeys.put(AnalyseResultKey.AVERAGE_BOOKING_GUESTS_PER_DAY_LAST_YEAR, calculateAverageGuestsPerDays(bookings, lastYearBeginning, lastYearEnding));
+
+        LocalDateTime thisYearBeginning = LocalDateTime.now().withDayOfYear(1).withHour(0).withMinute(0).withSecond(0);
+        resultKeys.put(AnalyseResultKey.AVERAGE_BOOKING_GUESTS_PER_DAY_THIS_YEAR, calculateAverageGuestsPerDays(bookings, thisYearBeginning, LocalDateTime.now()));
+
+        if (!startTime.isEqual(LocalDateTime.MIN))
+        {
+            resultKeys.put(AnalyseResultKey.AVERAGE_BOOKING_GUESTS_PER_DAY_SELECTED_TIME, calculateAverageGuestsPerDays(bookings, startTime, endTime));
+        }
+
         return resultKeys;
     }
 
@@ -98,25 +118,7 @@ public abstract class BookingAnalyser<T, ID> extends Analyser<T, ID> implements 
         return result;
     }
 
-    protected <B extends Booking> List<B> convertBookingListToExtendsBookingList(List<Booking> bookings, Class<B> type)
-    {
-        List<B> extendsBookingList = new ArrayList<>();
-
-        for (Booking booking : bookings)
-        {
-            if (type.isInstance(booking))
-            {
-                extendsBookingList.add(type.cast(booking));
-            }
-            else
-            {
-                throw new IllegalArgumentException("Invalid booking object. " + type.getSimpleName() + " object expected");
-            }
-        }
-        return extendsBookingList;
-    }
-
-    protected <B extends Booking> List<Booking> convertExtendsBookingListToBookingList(List<B> extendsBookingList)
+    protected List<Booking> convertExtendsBookingListToBookingList(List<B> extendsBookingList)
     {
         List<Booking> bookings = new ArrayList<>();
         for (B extendsBooking : extendsBookingList)
