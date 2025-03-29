@@ -109,11 +109,7 @@ public class ActivityBookingInteraction implements IBasicMethods
                 if(!Arrays.asList(subCommands).contains(SubCommands.END_DATE.name()))
                 {
                     Activity_User activityUser = this.activityBookingService.getById(Utils.createNumber(extractedParameters.get(SubCommands.ID)));
-                    //get bookings by id
-                    User currentUser = activityUser.getUser();
-                    Activity currentActivity = activityUser.getActivity();
-
-                    System.out.println("Room booking information:\n" + currentUser.toString() + "\n" + currentActivity.toString());
+                    System.out.println(activityUser.toString());
                 }
                 else
                 {
@@ -125,10 +121,7 @@ public class ActivityBookingInteraction implements IBasicMethods
                     //get bookings by timespan
                     for (Activity_User currentActivityUser : activityUserList)
                     {
-                        User currentUser = currentActivityUser.getUser();
-                        Activity currentActivity = currentActivityUser.getActivity();
-
-                        System.out.println("Room booking information:\n" + currentUser.toString() + "\n" + currentActivity.toString());
+                        System.out.println(currentActivityUser.toString());
                     }
                 }
             }

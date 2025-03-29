@@ -117,12 +117,8 @@ public class ParkingSpotInteraction implements IBasicMethods
                 if(!Arrays.asList(subCommands).contains(SubCommands.END_DATE.name()))
                 {
                     ParkingSpot_User parkingSpotUser = parkingSpotBookingService.getById(Utils.createNumber(extractedParameters.get(SubCommands.ID)));
-
                     //get bookings by id
-                    User currentUser = parkingSpotUser.getUser();
-                    ParkingSpot currentParkingSpot = parkingSpotUser.getSpot();
-
-                    System.out.println("Parking spot booking information:\n" + currentUser.toString() + "\n" + currentParkingSpot.toString());
+                    System.out.println(parkingSpotUser.toString());
                 }
                 else
                 {
@@ -134,10 +130,7 @@ public class ParkingSpotInteraction implements IBasicMethods
                     //get bookings by timespan
                     for (ParkingSpot_User currentParkingSpotUser : parkingSpotUserList)
                     {
-                        User currentUser = currentParkingSpotUser.getUser();
-                        ParkingSpot currentParkingSpot = currentParkingSpotUser.getSpot();
-
-                        System.out.println("Parking spot booking information:\n" + currentUser.toString() + "\n" + currentParkingSpot.toString());
+                        System.out.println(currentParkingSpotUser.toString());
                     }
                 }
             }

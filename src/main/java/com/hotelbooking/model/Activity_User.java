@@ -53,8 +53,10 @@ public class Activity_User extends Booking
 
     @Override
     public String toString() {
-        return "Activity & User Information:" +
-                activity.toString() +
-                user.toString();
+        return "Activity booking information:" +
+                "\n" + activity.toString() +
+                "\n" + user.toString() +
+                "\nBooking start date: " + getStartDateTime() +
+                "\nBooking end date: " + getEndDateTime();
     }
 }

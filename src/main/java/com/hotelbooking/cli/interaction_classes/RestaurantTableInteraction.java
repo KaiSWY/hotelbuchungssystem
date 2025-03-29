@@ -122,10 +122,7 @@ public class RestaurantTableInteraction implements IBasicMethods
                     RestaurantTable_User restaurantTableUser = restaurantTableBookingService.getById(Utils.createNumber(extractedParameters.get(SubCommands.ID)));
 
                     //get bookings by id
-                    User currentUser = restaurantTableUser.getUser();
-                    RestaurantTable currenRestaurantTable = restaurantTableUser.getTable();
-
-                    System.out.println("Restaurant table booking information:\n" + currentUser.toString() + "\n" + currenRestaurantTable.toString());
+                    System.out.println(restaurantTableUser.toString());
                 }
                 else
                 {
@@ -137,10 +134,7 @@ public class RestaurantTableInteraction implements IBasicMethods
                     //get bookings by timespan
                     for (RestaurantTable_User currentRestaurantTableUser : restaurantTableUserList)
                     {
-                        User currentUser = currentRestaurantTableUser.getUser();
-                        RestaurantTable currenRestaurantTable = currentRestaurantTableUser.getTable();
-
-                        System.out.println("Restaurant table booking information:\n" + currentUser.toString() + "\n" + currenRestaurantTable.toString());
+                        System.out.println(currentRestaurantTableUser.toString());
                     }
                 }
             }

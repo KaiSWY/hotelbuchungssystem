@@ -130,11 +130,7 @@ public class RoomBookingInteraction implements IBasicMethods
                 if(!Arrays.asList(subCommands).contains(SubCommands.END_DATE.name()))
                 {
                     Room_User roomUser = roomBookingService.getById(Utils.createNumber(extractedParameters.get(SubCommands.ID)));
-                    //get bookings by id
-                    User currentUser = roomUser.getUser();
-                    Room currentRoom = roomUser.getRoom();
-
-                    System.out.println("Room booking information:\n" + currentUser.toString() + "\n" + currentRoom.toString());
+                    System.out.println(roomUser.toString());
                 }
                 else
                 {
@@ -146,10 +142,7 @@ public class RoomBookingInteraction implements IBasicMethods
                     //get bookings by timespan
                     for (Room_User currentRoomUser : roomUserByTimespan)
                     {
-                        User currentUser = currentRoomUser.getUser();
-                        Room currentRoom = currentRoomUser.getRoom();
-
-                        System.out.println("Room booking information: " + currentUser.toString() + "\n" + currentRoom.toString());
+                              System.out.println(currentRoomUser.toString());
                     }
                 }
             }
@@ -212,7 +205,7 @@ public class RoomBookingInteraction implements IBasicMethods
                         this.roomUserRepository
                 );
 
-                Room room = this.roomRepository.getById(Utils.createNumber(extractedParameters.get(SubCommands.ID)));
+                Room room = this.roomRepository.getById(Utils.createNumber(extractedParameters.get(SubCommands.ROOM_NUMBER)));
 
                 AnalyseResult result;
                 if (!Arrays.asList(subCommands).contains(SubCommands.END_DATE.name()))
