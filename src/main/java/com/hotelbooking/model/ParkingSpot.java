@@ -62,10 +62,8 @@ public class ParkingSpot
 
     @Override
     public String toString() {
-        return "ParkingSpot{" +
-                "spotNumber=" + spotNumber +
-                ", spotType=" + spotType +
-                ", parkingSpots_Users=" + parkingSpots_Users +
-                '}';
+        return "Parking Spot information:" +
+                "\nParking Spot number: " + spotNumber +
+                "\n" + spotType.toString();
     }
 }

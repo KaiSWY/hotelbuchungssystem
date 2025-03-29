@@ -113,15 +113,11 @@ public class ParkingSpotInteraction implements IBasicMethods
                         parkingSpotRepository
                 );
 
-                ParkingSpot_User parkingSpotUser = parkingSpotBookingService.getById(Utils.createNumber(extractedParameters.get(SubCommands.ID)));
-                List<ParkingSpot_User> parkingSpotUserList = parkingSpotBookingService.getBookingsByTimeSpan(
-                        Utils.createDateTime(extractedParameters.get(SubCommands.START_DATE)),
-                        Utils.createDateTime(extractedParameters.get(SubCommands.END_DATE))
-                );
-
                 //check if to get bookings by id or timespan
                 if(!Arrays.asList(subCommands).contains(SubCommands.END_DATE.name()))
                 {
+                    ParkingSpot_User parkingSpotUser = parkingSpotBookingService.getById(Utils.createNumber(extractedParameters.get(SubCommands.ID)));
+
                     //get bookings by id
                     User currentUser = parkingSpotUser.getUser();
                     ParkingSpot currentParkingSpot = parkingSpotUser.getSpot();
@@ -130,6 +126,11 @@ public class ParkingSpotInteraction implements IBasicMethods
                 }
                 else
                 {
+                    List<ParkingSpot_User> parkingSpotUserList = parkingSpotBookingService.getBookingsByTimeSpan(
+                            Utils.createDateTime(extractedParameters.get(SubCommands.START_DATE)),
+                            Utils.createDateTime(extractedParameters.get(SubCommands.END_DATE))
+                    );
+
                     //get bookings by timespan
                     for (ParkingSpot_User currentParkingSpotUser : parkingSpotUserList)
                     {

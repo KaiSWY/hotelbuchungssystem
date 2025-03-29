@@ -9,7 +9,7 @@ public class Main
         System.out.println(">--Hotelbuchungssystem--<");
 
         //test
-        String[] args2 = {"getUser",
+        String[] args2 = {"getBookedActivity",
                 "--id", "1"
         };
 

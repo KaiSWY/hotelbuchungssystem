@@ -187,16 +187,12 @@ public class User
 
     @Override
     public String toString() {
-        return "User{" +
-                "userId=" + userId +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", country='" + country + '\'' +
-                ", postalCode=" + postalCode +
-                ", city='" + city + '\'' +
-                ", street='" + street + '\'' +
-                ", houseNumber=" + houseNumber +
-                '}';
+        return "User information:" +
+                "\nUser ID: " + userId +
+                "\nName: " + firstName + " " + lastName +
+                "\nMail: " + email +
+                "\nCountry: " + country +
+                "\nPostal Code & City: " + postalCode + " " + city +
+                "\nStreet & House Number: " + street + " " + houseNumber;
     }
 }

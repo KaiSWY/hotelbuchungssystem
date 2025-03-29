@@ -70,4 +70,12 @@ public class ParkingSpotType
     {
         this.spots = spots;
     }
+
+    @Override
+    public String toString() {
+        return "Parking Spot type information:" +
+                "\nParking spot type Id: " + typeId +
+                "\nType name: " + typeName +
+                "\nPrice per hour: " + pricePerHour;
+    }
 }

@@ -116,15 +116,11 @@ public class RestaurantTableInteraction implements IBasicMethods
                         restaurantTableRepository
                 );
 
-                RestaurantTable_User restaurantTableUser = restaurantTableBookingService.getById(Utils.createNumber(extractedParameters.get(SubCommands.ID)));
-                List<RestaurantTable_User> restaurantTableUserList = restaurantTableBookingService.getBookingsByTimeSpan(
-                        Utils.createDateTime(extractedParameters.get(SubCommands.START_DATE)),
-                        Utils.createDateTime(extractedParameters.get(SubCommands.END_DATE))
-                );
-
                 //check if to get bookings by id or timespan
                 if(!Arrays.asList(subCommands).contains(SubCommands.END_DATE.name()))
                 {
+                    RestaurantTable_User restaurantTableUser = restaurantTableBookingService.getById(Utils.createNumber(extractedParameters.get(SubCommands.ID)));
+
                     //get bookings by id
                     User currentUser = restaurantTableUser.getUser();
                     RestaurantTable currenRestaurantTable = restaurantTableUser.getTable();
@@ -133,6 +129,11 @@ public class RestaurantTableInteraction implements IBasicMethods
                 }
                 else
                 {
+                    List<RestaurantTable_User> restaurantTableUserList = restaurantTableBookingService.getBookingsByTimeSpan(
+                            Utils.createDateTime(extractedParameters.get(SubCommands.START_DATE)),
+                            Utils.createDateTime(extractedParameters.get(SubCommands.END_DATE))
+                    );
+
                     //get bookings by timespan
                     for (RestaurantTable_User currentRestaurantTableUser : restaurantTableUserList)
                     {

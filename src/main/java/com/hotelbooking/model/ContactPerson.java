@@ -93,4 +93,14 @@ public class ContactPerson
     {
         this.activities = activities;
     }
+
+    @Override
+    public String toString() {
+        return "Contact Person information:" +
+                "\nUser Id: " + userId +
+                "\nFirst Name: " + firstName +
+                "\nLast Name: " + lastName +
+                "\nMail: " + email +
+                "\nPhone: " + phone;
+    }
 }

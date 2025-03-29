@@ -126,15 +126,10 @@ public class RoomBookingInteraction implements IBasicMethods
                         parkingSpotBookingService
                 );
 
-                Room_User roomUser = roomBookingService.getById(Utils.createNumber(extractedParameters.get(SubCommands.ID)));
-                List<Room_User> roomUserByTimespan = roomBookingService.getBookingsByTimeSpan(
-                        Utils.createDateTime(extractedParameters.get(SubCommands.START_DATE)),
-                        Utils.createDateTime(extractedParameters.get(SubCommands.END_DATE))
-                );
-
                 //check if to get bookings by id or timespan
                 if(!Arrays.asList(subCommands).contains(SubCommands.END_DATE.name()))
                 {
+                    Room_User roomUser = roomBookingService.getById(Utils.createNumber(extractedParameters.get(SubCommands.ID)));
                     //get bookings by id
                     User currentUser = roomUser.getUser();
                     Room currentRoom = roomUser.getRoom();
@@ -143,6 +138,11 @@ public class RoomBookingInteraction implements IBasicMethods
                 }
                 else
                 {
+                    List<Room_User> roomUserByTimespan = roomBookingService.getBookingsByTimeSpan(
+                            Utils.createDateTime(extractedParameters.get(SubCommands.START_DATE)),
+                            Utils.createDateTime(extractedParameters.get(SubCommands.END_DATE))
+                    );
+
                     //get bookings by timespan
                     for (Room_User currentRoomUser : roomUserByTimespan)
                     {

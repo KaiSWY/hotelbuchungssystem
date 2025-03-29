@@ -123,4 +123,16 @@ public class Activity
     {
         this.activity_users = activity_users;
     }
+
+    @Override
+    public String toString() {
+        return "Activity information:" +
+                "\nActivity Id: " + activityId +
+                "\nName: " + name +
+                "\nDescription: " + description +
+                "\nPrice per person: " + pricePerPerson +
+                "\nMax participants amount: " + maxParticipants +
+                "\nPlace: " + place +
+                "\n" + contactPerson.toString();
+    }
 }

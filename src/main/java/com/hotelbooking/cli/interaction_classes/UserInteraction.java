@@ -86,7 +86,7 @@ public class UserInteraction implements IBasicMethods
                 this.userRegistrationService = new UserRegistrationService(this.userRepository);
                 User user = this.userRegistrationService.getById(Utils.createNumber(extractedParameters.get(SubCommands.ID)));
 
-                System.out.println("User information:\n" + user.toString());
+                System.out.println(user.toString());
             }
             HibernateUtil.shutdown();
         }

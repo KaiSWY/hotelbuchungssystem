@@ -10,7 +10,7 @@ public enum SubCommands
     LAST_NAME("--lastName"),
     MAIL("--mail"),
     COUNTRY("--country"),
-    ZIP_CODE("--zipCode"),
+    ZIP_CODE("--postalCode"),
     CITY("--city"),
     STREET("--street"),
     HOUSE_NUMBER("--houseNumber"),

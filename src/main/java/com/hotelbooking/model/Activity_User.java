@@ -53,9 +53,8 @@ public class Activity_User extends Booking
 
     @Override
     public String toString() {
-        return "Activity_User{" +
-                "activity=" + activity +
-                ", user=" + user +
-                '}';
+        return "Activity & User Information:" +
+                activity.toString() +
+                user.toString();
     }
 }

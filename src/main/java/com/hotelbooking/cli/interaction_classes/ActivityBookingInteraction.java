@@ -105,15 +105,10 @@ public class ActivityBookingInteraction implements IBasicMethods
                         activityRepository
                 );
 
-                Activity_User activityUser = this.activityBookingService.getById(Utils.createNumber(extractedParameters.get(SubCommands.ID)));
-                List<Activity_User> activityUserList = this.activityBookingService.getBookingsByTimeSpan(
-                        Utils.createDateTime(extractedParameters.get(SubCommands.START_DATE)),
-                        Utils.createDateTime(extractedParameters.get(SubCommands.END_DATE))
-                );
-
                 //check if to get bookings by id or timespan
                 if(!Arrays.asList(subCommands).contains(SubCommands.END_DATE.name()))
                 {
+                    Activity_User activityUser = this.activityBookingService.getById(Utils.createNumber(extractedParameters.get(SubCommands.ID)));
                     //get bookings by id
                     User currentUser = activityUser.getUser();
                     Activity currentActivity = activityUser.getActivity();
@@ -122,6 +117,11 @@ public class ActivityBookingInteraction implements IBasicMethods
                 }
                 else
                 {
+                    List<Activity_User> activityUserList = this.activityBookingService.getBookingsByTimeSpan(
+                            Utils.createDateTime(extractedParameters.get(SubCommands.START_DATE)),
+                            Utils.createDateTime(extractedParameters.get(SubCommands.END_DATE))
+                    );
+
                     //get bookings by timespan
                     for (Activity_User currentActivityUser : activityUserList)
                     {

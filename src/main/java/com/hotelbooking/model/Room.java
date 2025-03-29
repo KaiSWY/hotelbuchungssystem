@@ -98,13 +98,11 @@ public class Room
 
     @Override
     public String toString() {
-        return "Room{" +
-                "roomNumber=" + roomNumber +
-                ", doubleBeds=" + doubleBeds +
-                ", singleBeds=" + singleBeds +
-                ", description='" + description + '\'' +
-                ", pricePerNight=" + pricePerNight +
-                ", rooms_users=" + rooms_users +
-                '}';
+        return "Room information:" +
+                "\nRoom Number: " + roomNumber +
+                "\nDouble beds amount: " + doubleBeds +
+                "\nSingle beds amount: " + singleBeds +
+                "\nRoom description: " + description +
+                "\nPrice per night: " + pricePerNight;
     }
 }
