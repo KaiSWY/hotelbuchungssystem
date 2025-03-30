@@ -9,8 +9,8 @@ public class Main
         System.out.println(">--Hotelbuchungssystem--<");
 
         //test
-        String[] args2 = {"getBookedRestaurantTable",
-                "--id", "1"
+        String[] args2 = {"getRoomBookingAnalysis",
+                "--roomNumber", "1",
         };
 
         //start cli

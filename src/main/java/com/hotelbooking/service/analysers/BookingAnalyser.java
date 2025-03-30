@@ -38,8 +38,7 @@ public abstract class BookingAnalyser<B extends Booking, T, ID> extends Analyser
     public AnalyseResult analyseBetweenDate(T entity, LocalDateTime startTime, LocalDateTime endTime)
     {
         List<B> bookings = bookingRepository.getAll();
-        List<Booking> filteredBookings = getFilteredBookings(bookings, entity, startTime, endTime);
-        return calculateAnalyseResult(filteredBookings, startTime, endTime);
+        return calculateAnalyseResult(bookings, entity, startTime, endTime);
     }
 
     protected abstract List<Booking> getFilteredBookings(List<B> bookings, T entity, LocalDateTime startTime, LocalDateTime endTime);
@@ -68,18 +67,22 @@ public abstract class BookingAnalyser<B extends Booking, T, ID> extends Analyser
         return results;
     }
 
-    protected double calculateAverageGuestsPerDays(List<Booking> bookings, LocalDateTime startTime, LocalDateTime endTime)
+    protected double calculateAverageGuestsPerDays(List<B> bookings, T entity, LocalDateTime startTime, LocalDateTime endTime)
     {
-        int numberGuests = bookings.size();
-        double duration = ChronoUnit.MINUTES.between(startTime, endTime);
-        if (numberGuests == 0)
-        {
+
+        List<Booking> filteredBookings = getFilteredBookings(bookings, entity, startTime, endTime);
+        if (filteredBookings.isEmpty()) {
             return 0;
         }
-        return (duration / numberGuests) * 60 * 24;
+
+        int numberGuests = filteredBookings.size();
+        long totalDurationInMinutes = ChronoUnit.MINUTES.between(startTime, endTime);
+        double totalDurationInDays = totalDurationInMinutes / (24.0 * 60);
+        return numberGuests / totalDurationInDays;
     }
 
-    protected Map<AnalyseResultKey, Object> getResultKeys(List<Booking> bookings,
+    protected Map<AnalyseResultKey, Object> getResultKeys(List<B> bookings,
+                                                          T entity,
                                                           LocalDateTime startTime,
                                                           LocalDateTime endTime)
     {
@@ -87,30 +90,30 @@ public abstract class BookingAnalyser<B extends Booking, T, ID> extends Analyser
 
         LocalDateTime lastMonthBeginning = LocalDateTime.now().minusMonths(1).withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
         LocalDateTime lastMonthEnding = YearMonth.now().minusMonths(1).atEndOfMonth().atTime(23, 59, 59, 999_999_999);
-        resultKeys.put(AnalyseResultKey.AVERAGE_BOOKING_GUESTS_PER_DAY_LAST_MONTH, calculateAverageGuestsPerDays(bookings, lastMonthBeginning, lastMonthEnding));
+        resultKeys.put(AnalyseResultKey.AVERAGE_BOOKING_GUESTS_PER_DAY_LAST_MONTH, calculateAverageGuestsPerDays(bookings, entity, lastMonthBeginning, lastMonthEnding));
 
         LocalDateTime thisMonthBeginning = LocalDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
-        resultKeys.put(AnalyseResultKey.AVERAGE_BOOKING_GUESTS_PER_DAY_THIS_MONTH, calculateAverageGuestsPerDays(bookings, thisMonthBeginning, LocalDateTime.now()));
+        resultKeys.put(AnalyseResultKey.AVERAGE_BOOKING_GUESTS_PER_DAY_THIS_MONTH, calculateAverageGuestsPerDays(bookings, entity, thisMonthBeginning, LocalDateTime.now()));
 
         LocalDateTime lastYearBeginning = LocalDateTime.now().minusYears(1).withDayOfYear(1).withHour(0).withMinute(0).withSecond(0);
         LocalDateTime lastYearEnding = LocalDateTime.of(LocalDateTime.now().getYear()-1, 12, 31, 23, 59, 59, 999_999_999);
-        resultKeys.put(AnalyseResultKey.AVERAGE_BOOKING_GUESTS_PER_DAY_LAST_YEAR, calculateAverageGuestsPerDays(bookings, lastYearBeginning, lastYearEnding));
+        resultKeys.put(AnalyseResultKey.AVERAGE_BOOKING_GUESTS_PER_DAY_LAST_YEAR, calculateAverageGuestsPerDays(bookings, entity, lastYearBeginning, lastYearEnding));
 
         LocalDateTime thisYearBeginning = LocalDateTime.now().withDayOfYear(1).withHour(0).withMinute(0).withSecond(0);
-        resultKeys.put(AnalyseResultKey.AVERAGE_BOOKING_GUESTS_PER_DAY_THIS_YEAR, calculateAverageGuestsPerDays(bookings, thisYearBeginning, LocalDateTime.now()));
+        resultKeys.put(AnalyseResultKey.AVERAGE_BOOKING_GUESTS_PER_DAY_THIS_YEAR, calculateAverageGuestsPerDays(bookings, entity, thisYearBeginning, LocalDateTime.now()));
 
         if (!startTime.isEqual(LocalDateTime.MIN))
         {
-            resultKeys.put(AnalyseResultKey.AVERAGE_BOOKING_GUESTS_PER_DAY_SELECTED_TIME, calculateAverageGuestsPerDays(bookings, startTime, endTime));
+            resultKeys.put(AnalyseResultKey.AVERAGE_BOOKING_GUESTS_PER_DAY_SELECTED_TIME, calculateAverageGuestsPerDays(bookings, entity, startTime, endTime));
         }
 
         return resultKeys;
     }
 
-    private AnalyseResult calculateAnalyseResult(List<Booking> bookings, LocalDateTime startTime, LocalDateTime endTime)
+    private AnalyseResult calculateAnalyseResult(List<B> bookings, T entity, LocalDateTime startTime, LocalDateTime endTime)
     {
         AnalyseResult result = new AnalyseResult();
-        Map<AnalyseResultKey, Object> resultKeys = getResultKeys(bookings, startTime, endTime);
+        Map<AnalyseResultKey, Object> resultKeys = getResultKeys(bookings, entity, startTime, endTime);
         for (Map.Entry<AnalyseResultKey, Object> entry : resultKeys.entrySet())
         {
             result.addResult(entry.getKey(), entry.getValue());
