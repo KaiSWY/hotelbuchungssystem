@@ -51,7 +51,7 @@ public class PlantUMLDiagramGenerator
         }
     }
     public static void all(){
-        scanPackages.add("com.hotelbooking.cli");
+        scanPackages.add("com.hotelbooking.model");
 
     }
 }

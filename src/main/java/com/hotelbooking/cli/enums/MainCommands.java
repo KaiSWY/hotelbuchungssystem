@@ -8,7 +8,13 @@ public enum MainCommands
 {
     CREATE_USER("createUser", List.of(
             SubCommands.FIRST_NAME,
-            SubCommands.LAST_NAME)
+            SubCommands.LAST_NAME,
+            SubCommands.MAIL,
+            SubCommands.COUNTRY,
+            SubCommands.ZIP_CODE,
+            SubCommands.CITY,
+            SubCommands.STREET,
+            SubCommands.HOUSE_NUMBER)
     ),
     GET_USER("getUser", List.of(
             SubCommands.ID)
