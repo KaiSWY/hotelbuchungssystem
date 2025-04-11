@@ -125,7 +125,8 @@ public class Activity
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "Activity information:" +
                 "\nActivity Id: " + activityId +
                 "\nName: " + name +
@@ -133,6 +134,6 @@ public class Activity
                 "\nPrice per person: " + pricePerPerson +
                 "\nMax participants amount: " + maxParticipants +
                 "\nPlace: " + place +
-                "\n" + contactPerson.toString();
+                "\nContact person: " + (contactPerson != null ? contactPerson.toString() : "No contact person assigned");
     }
 }

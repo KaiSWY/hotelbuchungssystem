@@ -31,6 +31,7 @@ public abstract class CrudService<T, ID>
         if (oldEntity != null)
         {
             repository.update(entity);
+            return;
         }
         throw new RuntimeException("Entity not found with ID: " + id);
     }
