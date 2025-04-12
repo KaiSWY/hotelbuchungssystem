@@ -52,5 +52,10 @@ public abstract class AbstractBookingServiceTest<T extends Booking> {
 
         assertNull(bookingRepository.getById(id));
     }
+
+    @Test
+    void testCancelNonExistentBooking() {
+        assertThrows(IllegalArgumentException.class, () -> bookingService.cancel(999));
+    }
 }
 
