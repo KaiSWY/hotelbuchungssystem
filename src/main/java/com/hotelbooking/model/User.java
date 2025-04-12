@@ -1,5 +1,6 @@
 package com.hotelbooking.model;
 
+import com.hotelbooking.model.valueObjects.Adress;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -19,13 +20,7 @@ public class User
     private String lastName;
     @Column(unique = true, nullable = false)
     private String email;
-    private String country;
-    @Column(name = "postal_code")
-    private int postalCode;
-    private String city;
-    private String street;
-    @Column(name = "house_number")
-    private int houseNumber;
+    private Adress adress;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<ParkingSpot_User> parkingSpots_Users = new ArrayList<>();
@@ -48,11 +43,7 @@ public class User
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.country = country;
-        this.postalCode = postalCode;
-        this.city = city;
-        this.street = street;
-        this.houseNumber = houseNumber;
+        this.adress = new Adress(country, postalCode, city, street, houseNumber);
     }
 
     public int getUserId()
@@ -95,44 +86,14 @@ public class User
         this.email = email;
     }
 
-    public int getPostalCode()
+    public Adress getAdress()
     {
-        return postalCode;
+        return adress;
     }
 
-    public void setPostalCode(int postalCode)
+    public void setAdress(Adress adress)
     {
-        this.postalCode = postalCode;
-    }
-
-    public String getCity()
-    {
-        return city;
-    }
-
-    public void setCity(String city)
-    {
-        this.city = city;
-    }
-
-    public String getStreet()
-    {
-        return street;
-    }
-
-    public void setStreet(String street)
-    {
-        this.street = street;
-    }
-
-    public int getHouseNumber()
-    {
-        return houseNumber;
-    }
-
-    public void setHouseNumber(int houseNumber)
-    {
-        this.houseNumber = houseNumber;
+        this.adress = adress;
     }
 
     public List<ParkingSpot_User> getParkingSpots_Users()
@@ -175,15 +136,6 @@ public class User
         this.activity_users = activity_users;
     }
 
-    public String getCountry()
-    {
-        return country;
-    }
-
-    public void setCountry(String country)
-    {
-        this.country = country;
-    }
 
     @Override
     public String toString() {
@@ -191,8 +143,8 @@ public class User
                 "\nUser ID: " + userId +
                 "\nName: " + firstName + " " + lastName +
                 "\nMail: " + email +
-                "\nCountry: " + country +
-                "\nPostal Code & City: " + postalCode + " " + city +
-                "\nStreet & House Number: " + street + " " + houseNumber;
+                "\nCountry: " + adress.getCountry() +
+                "\nPostal Code & City: " + adress.getPostalCode() + " " + adress.getCity() +
+                "\nStreet & House Number: " + adress.getStreet() + " " + adress.getHouseNumber();
     }
 }
