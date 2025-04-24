@@ -95,7 +95,8 @@ public class ContactPerson
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "Contact Person information:" +
                 "\nUser Id: " + userId +
                 "\nFirst Name: " + firstName +

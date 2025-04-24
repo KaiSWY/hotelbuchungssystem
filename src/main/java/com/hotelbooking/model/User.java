@@ -138,7 +138,8 @@ public class User
 
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "User information:" +
                 "\nUser ID: " + userId +
                 "\nName: " + firstName + " " + lastName +

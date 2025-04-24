@@ -144,7 +144,7 @@ public enum MainCommands
 
         List<SubCommands> allowedSubCommands = mainCommandEnum.getSubCommands();
 
-        for(String currentSubCommand : subCommands)
+        for (String currentSubCommand : subCommands)
         {
             if (allowedSubCommands.contains(SubCommands.findCommandsByValue(currentSubCommand)))
             {

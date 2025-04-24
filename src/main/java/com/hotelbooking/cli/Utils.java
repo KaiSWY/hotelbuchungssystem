@@ -13,8 +13,7 @@ public class Utils
         try
         {
             return Integer.parseInt(number);
-        }
-        catch (NumberFormatException e)
+        } catch (NumberFormatException e)
         {
             System.out.println("Invalid number format: " + e.getMessage());
             return -1;
@@ -31,8 +30,7 @@ public class Utils
             LocalDate date = LocalDate.parse(dateTime, formatter);
 
             return date.atStartOfDay();
-        }
-        catch (DateTimeParseException dateTimeParseException)
+        } catch (DateTimeParseException dateTimeParseException)
         {
             System.out.println("Invalid Date: " + dateTimeParseException.getMessage());
             return null;

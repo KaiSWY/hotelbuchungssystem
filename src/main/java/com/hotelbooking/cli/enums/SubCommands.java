@@ -1,6 +1,5 @@
 package com.hotelbooking.cli.enums;
 
-import java.util.Arrays;
 import java.util.Objects;
 
 public enum SubCommands

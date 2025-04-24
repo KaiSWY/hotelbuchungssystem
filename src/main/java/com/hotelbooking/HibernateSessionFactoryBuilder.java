@@ -5,20 +5,19 @@ import org.hibernate.cfg.Configuration;
 
 import java.io.File;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
-public class HibernateUtil
+public class HibernateSessionFactoryBuilder
 {
-    private static final String debugDbPath = "src/main/resources/database/hotelbooking.db";
-    private static final String jarDbPath = "classes/database/hotelbooking.db";
-    private static final SessionFactory sessionFactory = buildSessionFactory();
 
-    private static SessionFactory buildSessionFactory()
+    private final String debugDbPath = "src/main/resources/database/hotelbooking.db";
+    private final String jarDbPath = "classes/database/hotelbooking.db";
+
+    public SessionFactory createSessionFactory()
     {
         try
         {
-            String dbPath = getDbPath();
             setLogLevels();
+            String dbPath = resolveDbPath();
 
             Configuration configuration = new Configuration();
             configuration.configure("hibernate.cfg.xml");
@@ -31,26 +30,21 @@ public class HibernateUtil
         }
     }
 
-    private static String getDbPath()
+    private String resolveDbPath()
     {
-        File jarFile = new File(HibernateUtil.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+        File jarFile = new File(HibernateSessionFactoryBuilder.class
+                .getProtectionDomain()
+                .getCodeSource()
+                .getLocation()
+                .getPath());
         File jarDir = jarFile.getParentFile();
         String jarDatabasePath = new File(jarDir, jarDbPath).getAbsolutePath();
 
         return new File(debugDbPath).exists() ? debugDbPath : jarDatabasePath;
     }
 
-    private static void setLogLevels(){
+    private void setLogLevels()
+    {
         java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.SEVERE);
-    }
-
-    public static SessionFactory getSessionFactory()
-    {
-        return sessionFactory;
-    }
-
-    public static void shutdown()
-    {
-        getSessionFactory().close();
     }
 }

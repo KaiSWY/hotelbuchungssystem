@@ -71,7 +71,8 @@ public abstract class BookingAnalyser<B extends Booking, T, ID> extends Analyser
     {
 
         List<Booking> filteredBookings = getFilteredBookings(bookings, entity, startTime, endTime);
-        if (filteredBookings.isEmpty()) {
+        if (filteredBookings.isEmpty())
+        {
             return 0;
         }
 
@@ -96,7 +97,7 @@ public abstract class BookingAnalyser<B extends Booking, T, ID> extends Analyser
         resultKeys.put(AnalyseResultKey.AVERAGE_BOOKING_GUESTS_PER_DAY_THIS_MONTH, calculateAverageGuestsPerDays(bookings, entity, thisMonthBeginning, LocalDateTime.now()));
 
         LocalDateTime lastYearBeginning = LocalDateTime.now().minusYears(1).withDayOfYear(1).withHour(0).withMinute(0).withSecond(0);
-        LocalDateTime lastYearEnding = LocalDateTime.of(LocalDateTime.now().getYear()-1, 12, 31, 23, 59, 59, 999_999_999);
+        LocalDateTime lastYearEnding = LocalDateTime.of(LocalDateTime.now().getYear() - 1, 12, 31, 23, 59, 59, 999_999_999);
         resultKeys.put(AnalyseResultKey.AVERAGE_BOOKING_GUESTS_PER_DAY_LAST_YEAR, calculateAverageGuestsPerDays(bookings, entity, lastYearBeginning, lastYearEnding));
 
         LocalDateTime thisYearBeginning = LocalDateTime.now().withDayOfYear(1).withHour(0).withMinute(0).withSecond(0);

@@ -58,7 +58,8 @@ public class RestaurantTable
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "Restaurant Table information:" +
                 "\nTable number: " + tableNumber +
                 "\nSeats: " + seats;

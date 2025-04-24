@@ -1,10 +1,13 @@
 package com.hotelbooking.cli.interaction_classes;
 
-import com.hotelbooking.HibernateUtil;
+import com.hotelbooking.HibernateSessionFactoryBuilder;
 import com.hotelbooking.cli.Utils;
 import com.hotelbooking.cli.enums.MainCommands;
 import com.hotelbooking.cli.enums.SubCommands;
-import com.hotelbooking.model.*;
+import com.hotelbooking.model.Booking;
+import com.hotelbooking.model.ParkingSpot;
+import com.hotelbooking.model.ParkingSpot_User;
+import com.hotelbooking.model.User;
 import com.hotelbooking.repository.IRepository;
 import com.hotelbooking.repository.ParkingSpotRepository;
 import com.hotelbooking.repository.ParkingSpotUserRepository;
@@ -52,7 +55,7 @@ public class ParkingSpotInteraction implements IBasicMethods
     {
         if (SubCommands.commandsPartOfEnum(subCommands) && MainCommands.checkSubCommandsMatchMainCommandGroup(this.mainCommand, subCommands))
         {
-            try (SessionFactory sessionFactory = HibernateUtil.getSessionFactory())
+            try (SessionFactory sessionFactory = getSessionFactory())
             {
                 //get input data map
                 Map<SubCommands, String> extractedParameters = extractParameters(subValues);
@@ -69,7 +72,7 @@ public class ParkingSpotInteraction implements IBasicMethods
 
                 //get user by mail
                 Optional<User> selectedUser = userRepository.getUserByEmail(extractedParameters.get(SubCommands.MAIL));
-                if(selectedUser.isEmpty())
+                if (selectedUser.isEmpty())
                 {
                     System.out.println("User not found!");
                     return;
@@ -78,7 +81,7 @@ public class ParkingSpotInteraction implements IBasicMethods
                 //get parking spot by id
                 ParkingSpot selectedParkingSpot = parkingSpotRepository.getById(Utils.createNumber(extractedParameters.get(SubCommands.ID)));
 
-                Booking parkingSpotBooking = new ParkingSpot_User (
+                Booking parkingSpotBooking = new ParkingSpot_User(
                         selectedParkingSpot,
                         selectedUser.get(),
                         Utils.createDateTime(extractedParameters.get(SubCommands.START_DATE)),
@@ -89,7 +92,6 @@ public class ParkingSpotInteraction implements IBasicMethods
 
                 System.out.println("Parking spot booked!");
             }
-            HibernateUtil.shutdown();
         }
     }
 
@@ -98,7 +100,7 @@ public class ParkingSpotInteraction implements IBasicMethods
     {
         if (SubCommands.commandsPartOfEnum(subCommands) && MainCommands.checkSubCommandsMatchMainCommandGroup(this.mainCommand, subCommands))
         {
-            try (SessionFactory sessionFactory = HibernateUtil.getSessionFactory())
+            try (SessionFactory sessionFactory = getSessionFactory())
             {
                 //get input data map
                 Map<SubCommands, String> extractedParameters = extractParameters(subValues);
@@ -114,7 +116,7 @@ public class ParkingSpotInteraction implements IBasicMethods
                 );
 
                 //check if to get bookings by id or timespan
-                if(!Arrays.asList(subCommands).contains(SubCommands.END_DATE.name()))
+                if (!Arrays.asList(subCommands).contains(SubCommands.END_DATE.name()))
                 {
                     ParkingSpot_User parkingSpotUser = parkingSpotBookingService.getById(Utils.createNumber(extractedParameters.get(SubCommands.ID)));
                     //get bookings by id
@@ -134,7 +136,6 @@ public class ParkingSpotInteraction implements IBasicMethods
                     }
                 }
             }
-            HibernateUtil.shutdown();
         }
     }
 
@@ -143,7 +144,7 @@ public class ParkingSpotInteraction implements IBasicMethods
     {
         if (SubCommands.commandsPartOfEnum(subCommands) && MainCommands.checkSubCommandsMatchMainCommandGroup(this.mainCommand, subCommands))
         {
-            try (SessionFactory sessionFactory = HibernateUtil.getSessionFactory())
+            try (SessionFactory sessionFactory = getSessionFactory())
             {
                 //get input data map
                 Map<SubCommands, String> extractedParameters = extractParameters(subValues);
@@ -162,7 +163,6 @@ public class ParkingSpotInteraction implements IBasicMethods
 
                 System.out.println("Parking spot booking deleted!");
             }
-            HibernateUtil.shutdown();
         }
     }
 
@@ -171,7 +171,7 @@ public class ParkingSpotInteraction implements IBasicMethods
     {
         if (SubCommands.commandsPartOfEnum(subCommands) && MainCommands.checkSubCommandsMatchMainCommandGroup(this.mainCommand, subCommands))
         {
-            try (SessionFactory sessionFactory = HibernateUtil.getSessionFactory())
+            try (SessionFactory sessionFactory = getSessionFactory())
             {
                 //get input data map
                 Map<SubCommands, String> extractedParameters = extractParameters(subValues);
@@ -204,7 +204,12 @@ public class ParkingSpotInteraction implements IBasicMethods
                 }
                 System.out.println("Parking spot booking analysis result:\n" + result.toString());
             }
-            HibernateUtil.shutdown();
         }
+    }
+
+    private SessionFactory getSessionFactory()
+    {
+        HibernateSessionFactoryBuilder factoryBuilder = new HibernateSessionFactoryBuilder();
+        return factoryBuilder.createSessionFactory();
     }
 }

@@ -1,10 +1,13 @@
 package com.hotelbooking.cli.interaction_classes;
 
-import com.hotelbooking.HibernateUtil;
+import com.hotelbooking.HibernateSessionFactoryBuilder;
 import com.hotelbooking.cli.Utils;
 import com.hotelbooking.cli.enums.MainCommands;
 import com.hotelbooking.cli.enums.SubCommands;
-import com.hotelbooking.model.*;
+import com.hotelbooking.model.Activity;
+import com.hotelbooking.model.Activity_User;
+import com.hotelbooking.model.Booking;
+import com.hotelbooking.model.User;
 import com.hotelbooking.repository.ActivityRepository;
 import com.hotelbooking.repository.ActivityUserRepository;
 import com.hotelbooking.repository.IRepository;
@@ -52,7 +55,7 @@ public class ActivityBookingInteraction implements IBasicMethods
     {
         if (SubCommands.commandsPartOfEnum(subCommands) && MainCommands.checkSubCommandsMatchMainCommandGroup(this.mainCommand, subCommands))
         {
-            try (SessionFactory sessionFactory = HibernateUtil.getSessionFactory())
+            try (SessionFactory sessionFactory = getSessionFactory())
             {
                 //get input data map
                 Map<SubCommands, String> extractedParameters = extractParameters(subValues);
@@ -81,7 +84,6 @@ public class ActivityBookingInteraction implements IBasicMethods
 
                 System.out.println("Activity booked!");
             }
-            HibernateUtil.shutdown();
         }
     }
 
@@ -90,7 +92,7 @@ public class ActivityBookingInteraction implements IBasicMethods
     {
         if (SubCommands.commandsPartOfEnum(subCommands) && MainCommands.checkSubCommandsMatchMainCommandGroup(this.mainCommand, subCommands))
         {
-            try (SessionFactory sessionFactory = HibernateUtil.getSessionFactory())
+            try (SessionFactory sessionFactory = getSessionFactory())
             {
                 //get input data map
                 Map<SubCommands, String> extractedParameters = extractParameters(subValues);
@@ -106,7 +108,7 @@ public class ActivityBookingInteraction implements IBasicMethods
                 );
 
                 //check if to get bookings by id or timespan
-                if(!Arrays.asList(subCommands).contains(SubCommands.END_DATE.name()))
+                if (!Arrays.asList(subCommands).contains(SubCommands.END_DATE.name()))
                 {
                     Activity_User activityUser = this.activityBookingService.getById(Utils.createNumber(extractedParameters.get(SubCommands.ID)));
                     System.out.println(activityUser.toString());
@@ -125,7 +127,6 @@ public class ActivityBookingInteraction implements IBasicMethods
                     }
                 }
             }
-            HibernateUtil.shutdown();
         }
     }
 
@@ -134,7 +135,7 @@ public class ActivityBookingInteraction implements IBasicMethods
     {
         if (SubCommands.commandsPartOfEnum(subCommands) && MainCommands.checkSubCommandsMatchMainCommandGroup(this.mainCommand, subCommands))
         {
-            try (SessionFactory sessionFactory = HibernateUtil.getSessionFactory())
+            try (SessionFactory sessionFactory = getSessionFactory())
             {
                 //get input data map
                 Map<SubCommands, String> extractedParameters = extractParameters(subValues);
@@ -153,7 +154,6 @@ public class ActivityBookingInteraction implements IBasicMethods
 
                 System.out.println("Activity booking deleted!");
             }
-            HibernateUtil.shutdown();
         }
     }
 
@@ -162,7 +162,7 @@ public class ActivityBookingInteraction implements IBasicMethods
     {
         if (SubCommands.commandsPartOfEnum(subCommands) && MainCommands.checkSubCommandsMatchMainCommandGroup(this.mainCommand, subCommands))
         {
-            try (SessionFactory sessionFactory = HibernateUtil.getSessionFactory())
+            try (SessionFactory sessionFactory = getSessionFactory())
             {
                 //get input data map
                 Map<SubCommands, String> extractedParameters = extractParameters(subValues);
@@ -195,7 +195,12 @@ public class ActivityBookingInteraction implements IBasicMethods
                 }
                 System.out.println("Activity booking analysis result:\n" + result.toString());
             }
-            HibernateUtil.shutdown();
         }
+    }
+
+    private SessionFactory getSessionFactory()
+    {
+        HibernateSessionFactoryBuilder factoryBuilder = new HibernateSessionFactoryBuilder();
+        return factoryBuilder.createSessionFactory();
     }
 }
