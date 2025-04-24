@@ -52,7 +52,8 @@ public class Room_User extends Booking
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "Room booking information:" +
                 "\n" + room.toString() +
                 "\n" + user.toString() +

@@ -52,7 +52,8 @@ public class Activity_User extends Booking
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "Activity booking information:" +
                 "\n" + activity.toString() +
                 "\n" + user.toString() +

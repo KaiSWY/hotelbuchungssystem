@@ -4,7 +4,9 @@ import com.hotelbooking.cli.enums.MainCommands;
 import com.hotelbooking.cli.enums.SubCommands;
 import com.hotelbooking.cli.interaction_classes.*;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class HotelBookingCLI
 {
@@ -138,7 +140,7 @@ public class HotelBookingCLI
                 .toArray(String[]::new);
 
         //return new string array
-        return new String[][] {
+        return new String[][]{
                 {args[0]},
                 Arrays.copyOfRange(args, 1, args.length),
                 totalSubCommandsArray
@@ -146,7 +148,8 @@ public class HotelBookingCLI
     }
 
     //method to extract input values
-    public static Map<SubCommands, String> extractParameters(String[] args) {
+    public static Map<SubCommands, String> extractParameters(String[] args)
+    {
         Map<SubCommands, String> parameters = new HashMap<>();
 
         for (int iIndex = 0; iIndex < args.length - 1; iIndex++)

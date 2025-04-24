@@ -4,7 +4,10 @@ import com.hotelbooking.HibernateSessionFactoryBuilder;
 import com.hotelbooking.cli.Utils;
 import com.hotelbooking.cli.enums.MainCommands;
 import com.hotelbooking.cli.enums.SubCommands;
-import com.hotelbooking.model.*;
+import com.hotelbooking.model.Activity;
+import com.hotelbooking.model.Activity_User;
+import com.hotelbooking.model.Booking;
+import com.hotelbooking.model.User;
 import com.hotelbooking.repository.ActivityRepository;
 import com.hotelbooking.repository.ActivityUserRepository;
 import com.hotelbooking.repository.IRepository;
@@ -105,7 +108,7 @@ public class ActivityBookingInteraction implements IBasicMethods
                 );
 
                 //check if to get bookings by id or timespan
-                if(!Arrays.asList(subCommands).contains(SubCommands.END_DATE.name()))
+                if (!Arrays.asList(subCommands).contains(SubCommands.END_DATE.name()))
                 {
                     Activity_User activityUser = this.activityBookingService.getById(Utils.createNumber(extractedParameters.get(SubCommands.ID)));
                     System.out.println(activityUser.toString());

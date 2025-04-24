@@ -31,6 +31,7 @@ public class Adress
         this.street = street;
         this.houseNumber = houseNumber;
     }
+
     public String getCountry()
     {
         return country;

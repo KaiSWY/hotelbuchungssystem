@@ -12,8 +12,10 @@ public class HibernateSessionFactoryBuilder
     private final String debugDbPath = "src/main/resources/database/hotelbooking.db";
     private final String jarDbPath = "classes/database/hotelbooking.db";
 
-    public SessionFactory createSessionFactory() {
-        try {
+    public SessionFactory createSessionFactory()
+    {
+        try
+        {
             setLogLevels();
             String dbPath = resolveDbPath();
 
@@ -21,13 +23,15 @@ public class HibernateSessionFactoryBuilder
             configuration.configure("hibernate.cfg.xml");
             configuration.setProperty("hibernate.connection.url", "jdbc:sqlite:" + dbPath);
             return configuration.buildSessionFactory();
-        } catch (Throwable ex) {
+        } catch (Throwable ex)
+        {
             System.err.println("Initial SessionFactory creation failed: " + ex);
             throw new ExceptionInInitializerError(ex);
         }
     }
 
-    private String resolveDbPath() {
+    private String resolveDbPath()
+    {
         File jarFile = new File(HibernateSessionFactoryBuilder.class
                 .getProtectionDomain()
                 .getCodeSource()
@@ -39,7 +43,8 @@ public class HibernateSessionFactoryBuilder
         return new File(debugDbPath).exists() ? debugDbPath : jarDatabasePath;
     }
 
-    private void setLogLevels() {
+    private void setLogLevels()
+    {
         java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.SEVERE);
     }
 }

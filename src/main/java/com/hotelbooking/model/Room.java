@@ -97,7 +97,8 @@ public class Room
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "Room information:" +
                 "\nRoom Number: " + roomNumber +
                 "\nDouble beds amount: " + doubleBeds +

@@ -3,8 +3,6 @@ package com.hotelbooking.service.analysers.implementations.RankingStrategy;
 import com.hotelbooking.model.Activity;
 
 import java.time.LocalDateTime;
-import java.util.Comparator;
-import java.util.List;
 
 public class BookingTimePriceRanking implements IActivityRankingStrategy
 {

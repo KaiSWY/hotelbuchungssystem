@@ -3,7 +3,6 @@ package com.hotelbooking.service.analysers.implementations.RankingStrategy;
 import com.hotelbooking.model.Activity;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class BookingTimesRanking implements IActivityRankingStrategy
 {
@@ -14,6 +13,6 @@ public class BookingTimesRanking implements IActivityRankingStrategy
                 activityUser.getStartDateTime().isAfter(LocalDateTime.now().minusYears(1))).count();
         long bookingsLastMonth = activity.getActivity_users().stream().filter(activityUser ->
                 activityUser.getStartDateTime().isAfter(LocalDateTime.now().minusMonths(1))).count();
-        return bookingsLastYear +  bookingsLastMonth * 2;
+        return bookingsLastYear + bookingsLastMonth * 2;
     }
 }

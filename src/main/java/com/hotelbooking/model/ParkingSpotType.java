@@ -72,7 +72,8 @@ public class ParkingSpotType
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "Parking Spot type information:" +
                 "\nParking spot type Id: " + typeId +
                 "\nType name: " + typeName +

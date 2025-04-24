@@ -52,7 +52,8 @@ public class ParkingSpot_User extends Booking
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "Parking Spot booking information:" +
                 "\n" + spot.toString() +
                 "\n" + user.toString() +

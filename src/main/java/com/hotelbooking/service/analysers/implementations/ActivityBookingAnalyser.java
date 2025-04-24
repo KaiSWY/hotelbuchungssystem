@@ -7,7 +7,6 @@ import com.hotelbooking.repository.IRepository;
 import com.hotelbooking.service.analysers.AnalyseResult;
 import com.hotelbooking.service.analysers.AnalyseResultKey;
 import com.hotelbooking.service.analysers.BookingAnalyser;
-import com.hotelbooking.service.analysers.implementations.RankingStrategy.BookingTimePriceRanking;
 import com.hotelbooking.service.analysers.implementations.RankingStrategy.BookingTimesRanking;
 import com.hotelbooking.service.analysers.implementations.RankingStrategy.IActivityRankingStrategy;
 
@@ -16,7 +15,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class ActivityBookingAnalyser extends BookingAnalyser<Activity_User, Activity, Integer>
 {
@@ -56,16 +54,19 @@ public class ActivityBookingAnalyser extends BookingAnalyser<Activity_User, Acti
         return sortByValue(result);
     }
 
-    private Map<Activity, AnalyseResult> sortByValue(Map<Activity, AnalyseResult> map) {
+    private Map<Activity, AnalyseResult> sortByValue(Map<Activity, AnalyseResult> map)
+    {
         List<Map.Entry<Activity, AnalyseResult>> list = new ArrayList<>(map.entrySet());
-        list.sort((entry1, entry2) -> {
+        list.sort((entry1, entry2) ->
+        {
             double value1 = (double) entry1.getValue().getResults().get(AnalyseResultKey.ACTIVITY_RANKING_VALUE);
             double value2 = (double) entry2.getValue().getResults().get(AnalyseResultKey.ACTIVITY_RANKING_VALUE);
             return Double.compare(value1, value2);
         });
 
         Map<Activity, AnalyseResult> result = new LinkedHashMap<>();
-        for (Map.Entry<Activity, AnalyseResult> entry : list) {
+        for (Map.Entry<Activity, AnalyseResult> entry : list)
+        {
             result.put(entry.getKey(), entry.getValue());
         }
 

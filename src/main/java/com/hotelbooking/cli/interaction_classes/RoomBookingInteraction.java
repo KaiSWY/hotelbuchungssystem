@@ -76,13 +76,13 @@ public class RoomBookingInteraction implements IBasicMethods
                 );
 
                 Optional<User> selectedUser = userRepository.getUserByEmail(extractedParameters.get(SubCommands.MAIL));
-                if(selectedUser.isEmpty())
+                if (selectedUser.isEmpty())
                 {
                     System.out.println("User not found!");
                     return;
                 }
 
-                Booking roomBooking = new Room_User (
+                Booking roomBooking = new Room_User(
                         roomRepository.getById(Integer.parseInt(extractedParameters.get(SubCommands.ROOM_NUMBER))),
                         selectedUser.get(),
                         Utils.createDateTime(extractedParameters.get(SubCommands.START_DATE)),
@@ -126,7 +126,7 @@ public class RoomBookingInteraction implements IBasicMethods
                 );
 
                 //check if to get bookings by id or timespan
-                if(!Arrays.asList(subCommands).contains(SubCommands.END_DATE.name()))
+                if (!Arrays.asList(subCommands).contains(SubCommands.END_DATE.name()))
                 {
                     Room_User roomUser = roomBookingService.getById(Utils.createNumber(extractedParameters.get(SubCommands.ID)));
                     System.out.println(roomUser.toString());
@@ -141,7 +141,7 @@ public class RoomBookingInteraction implements IBasicMethods
                     //get bookings by timespan
                     for (Room_User currentRoomUser : roomUserByTimespan)
                     {
-                              System.out.println(currentRoomUser.toString());
+                        System.out.println(currentRoomUser.toString());
                     }
                 }
             }

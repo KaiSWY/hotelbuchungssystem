@@ -52,7 +52,8 @@ public class RestaurantTable_User extends Booking
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "RestaurantT table information:" +
                 "\n" + table.toString() +
                 "\n" + user.toString() +

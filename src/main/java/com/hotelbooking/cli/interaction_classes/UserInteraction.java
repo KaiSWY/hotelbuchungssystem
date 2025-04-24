@@ -4,8 +4,9 @@ import com.hotelbooking.HibernateSessionFactoryBuilder;
 import com.hotelbooking.cli.Utils;
 import com.hotelbooking.cli.enums.MainCommands;
 import com.hotelbooking.cli.enums.SubCommands;
-import com.hotelbooking.model.*;
-import com.hotelbooking.repository.*;
+import com.hotelbooking.model.User;
+import com.hotelbooking.repository.IRepository;
+import com.hotelbooking.repository.UserRepository;
 import com.hotelbooking.service.UserRegistrationService;
 import org.hibernate.SessionFactory;
 

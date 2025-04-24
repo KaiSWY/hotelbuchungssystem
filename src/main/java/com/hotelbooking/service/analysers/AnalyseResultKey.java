@@ -13,7 +13,6 @@ public enum AnalyseResultKey
     ACTIVITY_RANKING_VALUE(Double.class);
 
 
-
     private final Class<?> typ;
 
     AnalyseResultKey(Class<?> typ)
