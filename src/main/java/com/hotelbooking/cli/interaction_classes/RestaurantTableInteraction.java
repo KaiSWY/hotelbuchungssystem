@@ -55,7 +55,7 @@ public class RestaurantTableInteraction implements IBasicMethods
     {
         if (SubCommands.commandsPartOfEnum(subCommands) && MainCommands.checkSubCommandsMatchMainCommandGroup(this.mainCommand, subCommands))
         {
-            try(SessionFactory sessionFactory = HibernateUtil.getSessionFactory())
+            try(SessionFactory sessionFactory = HibernateUtil.INSTANCE.getSessionFactory())
             {
                 //get input data map
                 Map<SubCommands, String> extractedParameters = extractParameters(subValues);
@@ -92,7 +92,7 @@ public class RestaurantTableInteraction implements IBasicMethods
 
                 System.out.println("Restaurant table booked!");
             }
-            HibernateUtil.shutdown();
+            HibernateUtil.INSTANCE.shutdown();
         }
     }
 
@@ -101,7 +101,7 @@ public class RestaurantTableInteraction implements IBasicMethods
     {
         if (SubCommands.commandsPartOfEnum(subCommands) && MainCommands.checkSubCommandsMatchMainCommandGroup(this.mainCommand, subCommands))
         {
-            try (SessionFactory sessionFactory = HibernateUtil.getSessionFactory())
+            try (SessionFactory sessionFactory = HibernateUtil.INSTANCE.getSessionFactory())
             {
                 //get input data map
                 Map<SubCommands, String> extractedParameters = extractParameters(subValues);
@@ -138,7 +138,7 @@ public class RestaurantTableInteraction implements IBasicMethods
                     }
                 }
             }
-            HibernateUtil.shutdown();
+            HibernateUtil.INSTANCE.shutdown();
         }
     }
 
@@ -147,7 +147,7 @@ public class RestaurantTableInteraction implements IBasicMethods
     {
         if (SubCommands.commandsPartOfEnum(subCommands) && MainCommands.checkSubCommandsMatchMainCommandGroup(this.mainCommand, subCommands))
         {
-            try (SessionFactory sessionFactory = HibernateUtil.getSessionFactory())
+            try (SessionFactory sessionFactory = HibernateUtil.INSTANCE.getSessionFactory())
             {
                 //get input data map
                 Map<SubCommands, String> extractedParameters = extractParameters(subValues);
@@ -166,7 +166,7 @@ public class RestaurantTableInteraction implements IBasicMethods
 
                 System.out.println("Restaurant table booking deleted!");
             }
-            HibernateUtil.shutdown();
+            HibernateUtil.INSTANCE.shutdown();
         }
     }
 
@@ -175,7 +175,7 @@ public class RestaurantTableInteraction implements IBasicMethods
     {
         if (SubCommands.commandsPartOfEnum(subCommands) && MainCommands.checkSubCommandsMatchMainCommandGroup(this.mainCommand, subCommands))
         {
-            try (SessionFactory sessionFactory = HibernateUtil.getSessionFactory())
+            try (SessionFactory sessionFactory = HibernateUtil.INSTANCE.getSessionFactory())
             {
                 //get input data map
                 Map<SubCommands, String> extractedParameters = extractParameters(subValues);
@@ -208,7 +208,7 @@ public class RestaurantTableInteraction implements IBasicMethods
                 }
                 System.out.println("Restaurant table booking analysis result:\n" + result.toString());
             }
-            HibernateUtil.shutdown();
+            HibernateUtil.INSTANCE.shutdown();
         }
     }
 }
