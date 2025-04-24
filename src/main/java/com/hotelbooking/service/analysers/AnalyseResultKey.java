@@ -9,7 +9,9 @@ public enum AnalyseResultKey
     AVERAGE_BOOKING_GUESTS_PER_DAY_LAST_MONTH(Double.class),
     AVERAGE_BOOKING_GUESTS_PER_DAY_THIS_YEAR(Double.class),
     AVERAGE_BOOKING_GUESTS_PER_DAY_LAST_YEAR(Double.class),
-    AVERAGE_BOOKING_GUESTS_PER_DAY_SELECTED_TIME(Double.class);
+    AVERAGE_BOOKING_GUESTS_PER_DAY_SELECTED_TIME(Double.class),
+    ACTIVITY_RANKING_VALUE(Double.class);
+
 
 
     private final Class<?> typ;

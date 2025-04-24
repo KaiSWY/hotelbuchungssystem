@@ -1,6 +1,6 @@
 package com.hotelbooking.cli.interaction_classes;
 
-import com.hotelbooking.HibernateSessionFactoryFactory;
+import com.hotelbooking.HibernateSessionFactoryBuilder;
 import com.hotelbooking.cli.Utils;
 import com.hotelbooking.cli.enums.MainCommands;
 import com.hotelbooking.cli.enums.SubCommands;
@@ -210,7 +210,7 @@ public class RestaurantTableInteraction implements IBasicMethods
 
     private SessionFactory getSessionFactory()
     {
-        HibernateSessionFactoryFactory factoryBuilder = new HibernateSessionFactoryFactory();
+        HibernateSessionFactoryBuilder factoryBuilder = new HibernateSessionFactoryBuilder();
         return factoryBuilder.createSessionFactory();
     }
 }

@@ -6,7 +6,8 @@ import org.hibernate.cfg.Configuration;
 import java.io.File;
 import java.util.logging.Level;
 
-public class HibernateSessionFactoryFactory {
+public class HibernateSessionFactoryBuilder
+{
 
     private final String debugDbPath = "src/main/resources/database/hotelbooking.db";
     private final String jarDbPath = "classes/database/hotelbooking.db";
@@ -27,7 +28,7 @@ public class HibernateSessionFactoryFactory {
     }
 
     private String resolveDbPath() {
-        File jarFile = new File(HibernateSessionFactoryFactory.class
+        File jarFile = new File(HibernateSessionFactoryBuilder.class
                 .getProtectionDomain()
                 .getCodeSource()
                 .getLocation()
