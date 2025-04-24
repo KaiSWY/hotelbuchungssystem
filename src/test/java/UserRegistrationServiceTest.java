@@ -1,5 +1,6 @@
 import Mocks.MockRepository;
 import com.hotelbooking.model.User;
+import com.hotelbooking.model.valueObjects.Adress;
 import com.hotelbooking.service.UserRegistrationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,15 +21,24 @@ class UserRegistrationServiceTest {
 
     @Test
     void testCreateUser() {
+        Adress adress = new Adress(
+                "Country1",
+                123456,
+                "Berlin",
+                "Street",
+                123
+        );
         User user = new User();
         user.setUserId(0);
         user.setEmail(emailExample);
+        user.setAdress(adress);
 
         userRegistrationService.create(user);
 
         User createdUser = userRepository.getById(0);
         assertNotNull(createdUser);
         assertEquals(emailExample, createdUser.getEmail());
+        assertEquals(adress, createdUser.getAdress());
     }
 
     @Test
