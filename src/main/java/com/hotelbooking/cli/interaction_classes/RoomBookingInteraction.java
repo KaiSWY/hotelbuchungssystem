@@ -1,6 +1,6 @@
 package com.hotelbooking.cli.interaction_classes;
 
-import com.hotelbooking.HibernateUtil;
+import com.hotelbooking.HibernateSessionFactoryFactory;
 import com.hotelbooking.cli.Utils;
 import com.hotelbooking.cli.enums.MainCommands;
 import com.hotelbooking.cli.enums.SubCommands;
@@ -52,7 +52,7 @@ public class RoomBookingInteraction implements IBasicMethods
     {
         if (SubCommands.commandsPartOfEnum(subCommands) && MainCommands.checkSubCommandsMatchMainCommandGroup(this.mainCommand, subCommands))
         {
-            try (SessionFactory sessionFactory = HibernateUtil.INSTANCE.getSessionFactory())
+            try (SessionFactory sessionFactory = getSessionFactory())
             {
                 //get input data map
                 Map<SubCommands, String> extractedParameters = extractParameters(subValues);
@@ -93,7 +93,6 @@ public class RoomBookingInteraction implements IBasicMethods
 
                 System.out.println("Room booked!");
             }
-            HibernateUtil.INSTANCE.shutdown();
         }
     }
 
@@ -102,7 +101,7 @@ public class RoomBookingInteraction implements IBasicMethods
     {
         if (SubCommands.commandsPartOfEnum(subCommands) && MainCommands.checkSubCommandsMatchMainCommandGroup(this.mainCommand, subCommands))
         {
-            try (SessionFactory sessionFactory = HibernateUtil.INSTANCE.getSessionFactory())
+            try (SessionFactory sessionFactory = getSessionFactory())
             {
                 //get input data map
                 Map<SubCommands, String> extractedParameters = extractParameters(subValues);
@@ -146,7 +145,6 @@ public class RoomBookingInteraction implements IBasicMethods
                     }
                 }
             }
-            HibernateUtil.INSTANCE.shutdown();
         }
     }
 
@@ -155,7 +153,7 @@ public class RoomBookingInteraction implements IBasicMethods
     {
         if (SubCommands.commandsPartOfEnum(subCommands) && MainCommands.checkSubCommandsMatchMainCommandGroup(this.mainCommand, subCommands))
         {
-            try (SessionFactory sessionFactory = HibernateUtil.INSTANCE.getSessionFactory())
+            try (SessionFactory sessionFactory = getSessionFactory())
             {
                 //get input data map
                 Map<SubCommands, String> extractedParameters = extractParameters(subValues);
@@ -183,7 +181,6 @@ public class RoomBookingInteraction implements IBasicMethods
 
                 System.out.println("Room booking deleted!");
             }
-            HibernateUtil.INSTANCE.shutdown();
         }
     }
 
@@ -192,7 +189,7 @@ public class RoomBookingInteraction implements IBasicMethods
     {
         if (SubCommands.commandsPartOfEnum(subCommands) && MainCommands.checkSubCommandsMatchMainCommandGroup(this.mainCommand, subCommands))
         {
-            try (SessionFactory sessionFactory = HibernateUtil.INSTANCE.getSessionFactory())
+            try (SessionFactory sessionFactory = getSessionFactory())
             {
                 //get input data map
                 Map<SubCommands, String> extractedParameters = extractParameters(subValues);
@@ -224,7 +221,12 @@ public class RoomBookingInteraction implements IBasicMethods
                 }
                 System.out.println("Room booking analysis result:\n" + result.toString());
             }
-            HibernateUtil.INSTANCE.shutdown();
         }
+    }
+
+    private SessionFactory getSessionFactory()
+    {
+        HibernateSessionFactoryFactory factoryBuilder = new HibernateSessionFactoryFactory();
+        return factoryBuilder.createSessionFactory();
     }
 }

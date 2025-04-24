@@ -1,21 +1,15 @@
 package com.hotelbooking.cli.interaction_classes;
 
-import com.hotelbooking.HibernateUtil;
+import com.hotelbooking.HibernateSessionFactoryFactory;
 import com.hotelbooking.cli.Utils;
 import com.hotelbooking.cli.enums.MainCommands;
 import com.hotelbooking.cli.enums.SubCommands;
 import com.hotelbooking.model.*;
 import com.hotelbooking.repository.*;
-import com.hotelbooking.service.BookingService;
-import com.hotelbooking.service.ParkingSpotBookingService;
-import com.hotelbooking.service.RoomBookingService;
 import com.hotelbooking.service.UserRegistrationService;
 import org.hibernate.SessionFactory;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import static com.hotelbooking.cli.HotelBookingCLI.extractParameters;
 
@@ -46,7 +40,7 @@ public class UserInteraction implements IBasicMethods
     {
         if (SubCommands.commandsPartOfEnum(subCommands) && MainCommands.checkSubCommandsMatchMainCommandGroup(this.mainCommand, subCommands))
         {
-            try (SessionFactory sessionFactory = HibernateUtil.INSTANCE.getSessionFactory())
+            try (SessionFactory sessionFactory = getSessionFactory())
             {
                 Map<SubCommands, String> extractedParameters = extractParameters(subValues);
 
@@ -68,7 +62,6 @@ public class UserInteraction implements IBasicMethods
 
                 System.out.println("User created!");
             }
-            HibernateUtil.INSTANCE.shutdown();
         }
     }
 
@@ -77,7 +70,7 @@ public class UserInteraction implements IBasicMethods
     {
         if (SubCommands.commandsPartOfEnum(subCommands) && MainCommands.checkSubCommandsMatchMainCommandGroup(this.mainCommand, subCommands))
         {
-            try (SessionFactory sessionFactory = HibernateUtil.INSTANCE.getSessionFactory())
+            try (SessionFactory sessionFactory = getSessionFactory())
             {
                 //get input data map
                 Map<SubCommands, String> extractedParameters = extractParameters(subValues);
@@ -88,7 +81,6 @@ public class UserInteraction implements IBasicMethods
 
                 System.out.println(user.toString());
             }
-            HibernateUtil.INSTANCE.shutdown();
         }
     }
 
@@ -97,7 +89,7 @@ public class UserInteraction implements IBasicMethods
     {
         if (SubCommands.commandsPartOfEnum(subCommands) && MainCommands.checkSubCommandsMatchMainCommandGroup(this.mainCommand, subCommands))
         {
-            try (SessionFactory sessionFactory = HibernateUtil.INSTANCE.getSessionFactory())
+            try (SessionFactory sessionFactory = getSessionFactory())
             {
                 //get input data map
                 Map<SubCommands, String> extractedParameters = extractParameters(subValues);
@@ -110,12 +102,18 @@ public class UserInteraction implements IBasicMethods
                 //set information output
                 System.out.println("User deleted!");
             }
-            HibernateUtil.INSTANCE.shutdown();
         }
+    }
+
+    private SessionFactory getSessionFactory()
+    {
+        HibernateSessionFactoryFactory factoryBuilder = new HibernateSessionFactoryFactory();
+        return factoryBuilder.createSessionFactory();
     }
 
     @Override
     public void analytics()
     {
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
 }
