@@ -14,18 +14,19 @@ public abstract class CrudService<T, ID>
     }
 
 
-    public void create(T entity)
+    public void createEntity(T entity)
     {
         repository.add(entity);
     }
 
 
-    public T getById(ID id)
+    public T getEntityById(ID id)
     {
         return repository.getById(id);
     }
 
-    public void update(ID id, T entity)
+
+    public void updateEntityById(ID id, T entity)
     {
         T oldEntity = repository.getById(id);
         if (oldEntity != null)
@@ -37,7 +38,7 @@ public abstract class CrudService<T, ID>
     }
 
 
-    public void delete(ID id)
+    public void deleteEntityById(ID id)
     {
         T oldEntity = repository.getById(id);
         if (oldEntity != null)
@@ -51,7 +52,7 @@ public abstract class CrudService<T, ID>
     }
 
 
-    public List<T> findAll()
+    public List<T> findAllEntities()
     {
         return repository.getAll();
     }

@@ -28,7 +28,6 @@ public class Utils
         try
         {
             LocalDate date = LocalDate.parse(dateTime, formatter);
-
             return date.atStartOfDay();
         } catch (DateTimeParseException dateTimeParseException)
         {

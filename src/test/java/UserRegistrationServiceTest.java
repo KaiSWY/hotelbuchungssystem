@@ -33,7 +33,7 @@ class UserRegistrationServiceTest {
         user.setEmail(emailExample);
         user.setAdress(adress);
 
-        userRegistrationService.create(user);
+        userRegistrationService.createEntity(user);
 
         User createdUser = userRepository.getById(0);
         assertNotNull(createdUser);
@@ -47,9 +47,9 @@ class UserRegistrationServiceTest {
         user.setUserId(0);
         user.setEmail(emailExample);
 
-        userRegistrationService.create(user);
+        userRegistrationService.createEntity(user);
 
-        User foundUser = userRegistrationService.getById(0);
+        User foundUser = userRegistrationService.getEntityById(0);
 
         assertNotNull(foundUser);
         assertEquals(emailExample, foundUser.getEmail());
@@ -61,13 +61,13 @@ class UserRegistrationServiceTest {
         user.setUserId(0);
         user.setEmail(emailExample);
 
-        userRegistrationService.create(user);
+        userRegistrationService.createEntity(user);
 
         String updatedEmail = "email1@email1.de";
         user.setEmail(updatedEmail);
-        userRegistrationService.update(0, user);
+        userRegistrationService.updateEntityById(0, user);
 
-        User updatedUser = userRegistrationService.getById(0);
+        User updatedUser = userRegistrationService.getEntityById(0);
 
         assertNotNull(updatedUser);
         assertEquals(updatedEmail, updatedUser.getEmail());
@@ -79,16 +79,16 @@ class UserRegistrationServiceTest {
         user.setUserId(1);
         user.setEmail(emailExample);
 
-        userRegistrationService.create(user);
-        userRegistrationService.delete(0);
-        User deletedUser = userRegistrationService.getById(0);
+        userRegistrationService.createEntity(user);
+        userRegistrationService.deleteEntityById(0);
+        User deletedUser = userRegistrationService.getEntityById(0);
 
         assertNull(deletedUser);
     }
 
     @Test
     void testDeleteUserNotFound() {
-        assertThrows(RuntimeException.class, () -> userRegistrationService.delete(0));
+        assertThrows(RuntimeException.class, () -> userRegistrationService.deleteEntityById(0));
     }
 
     @Test
@@ -97,6 +97,6 @@ class UserRegistrationServiceTest {
         user.setUserId(0);
         user.setEmail(emailExample);
 
-        assertThrows(RuntimeException.class, () -> userRegistrationService.update(0, user));
+        assertThrows(RuntimeException.class, () -> userRegistrationService.updateEntityById(0, user));
     }
 }

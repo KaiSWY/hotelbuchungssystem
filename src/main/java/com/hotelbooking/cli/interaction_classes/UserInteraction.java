@@ -59,7 +59,7 @@ public class UserInteraction implements IBasicMethods
 
                 this.userRepository = new UserRepository(sessionFactory);
                 this.userRegistrationService = new UserRegistrationService(this.userRepository);
-                this.userRegistrationService.create(newUser);
+                this.userRegistrationService.createEntity(newUser);
 
                 System.out.println("User created!");
             }
@@ -78,7 +78,7 @@ public class UserInteraction implements IBasicMethods
 
                 this.userRepository = new UserRepository(sessionFactory);
                 this.userRegistrationService = new UserRegistrationService(this.userRepository);
-                User user = this.userRegistrationService.getById(Utils.createNumber(extractedParameters.get(SubCommands.ID)));
+                User user = this.userRegistrationService.getEntityById(Utils.createNumber(extractedParameters.get(SubCommands.ID)));
 
                 System.out.println(user.toString());
             }
@@ -98,7 +98,7 @@ public class UserInteraction implements IBasicMethods
                 this.userRepository = new UserRepository(sessionFactory);
                 this.userRegistrationService = new UserRegistrationService(userRepository);
 
-                this.userRegistrationService.delete(Integer.parseInt(extractedParameters.get(SubCommands.ID)));
+                this.userRegistrationService.deleteEntityById(Integer.parseInt(extractedParameters.get(SubCommands.ID)));
 
                 //set information output
                 System.out.println("User deleted!");
