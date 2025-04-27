@@ -10,6 +10,7 @@ import com.hotelbooking.service.BookingService;
 import com.hotelbooking.service.ParkingSpotBookingService;
 import com.hotelbooking.service.RoomBookingService;
 import com.hotelbooking.service.analysers.AnalyseResult;
+import com.hotelbooking.service.analysers.IBookingAnalyser;
 import com.hotelbooking.service.analysers.implementations.RoomBookingAnalyser;
 import org.hibernate.SessionFactory;
 
@@ -35,6 +36,7 @@ public class RoomBookingInteraction implements IBasicMethods
     private IRepository<ParkingSpot_User, Integer> parkingSpotUserRepository;
 
     private BookingService<ParkingSpot_User> parkingSpotBookingService;
+    private IBookingAnalyser<Room> roomBookingAnalyser;
 
     public RoomBookingInteraction()
     {
@@ -197,7 +199,7 @@ public class RoomBookingInteraction implements IBasicMethods
                 this.roomRepository = new RoomRepository(sessionFactory);
                 this.roomUserRepository = new RoomUserRepository(sessionFactory);
 
-                RoomBookingAnalyser roomBookingAnalyser = new RoomBookingAnalyser(
+                roomBookingAnalyser = new RoomBookingAnalyser(
                         this.roomRepository,
                         this.roomUserRepository
                 );

@@ -12,9 +12,11 @@ import com.hotelbooking.repository.IRepository;
 import com.hotelbooking.repository.RestaurantTableRepository;
 import com.hotelbooking.repository.RestaurantTableUserRepository;
 import com.hotelbooking.repository.UserRepository;
+import com.hotelbooking.service.Bookable;
 import com.hotelbooking.service.BookingService;
 import com.hotelbooking.service.RestaurantTableBookingService;
 import com.hotelbooking.service.analysers.AnalyseResult;
+import com.hotelbooking.service.analysers.IBookingAnalyser;
 import com.hotelbooking.service.analysers.implementations.RestaurantTableBookingAnalyser;
 import org.hibernate.SessionFactory;
 
@@ -37,7 +39,8 @@ public class RestaurantTableInteraction implements IBasicMethods
     private IRepository<RestaurantTable, Integer> restaurantTableRepository;
     private UserRepository userRepository;
 
-    private BookingService<RestaurantTable_User> restaurantTableBookingService;
+    private Bookable<RestaurantTable_User> restaurantTableBookingService;
+    private IBookingAnalyser<RestaurantTable> restaurantTableBookingAnalyser;
 
     public RestaurantTableInteraction()
     {
@@ -180,7 +183,7 @@ public class RestaurantTableInteraction implements IBasicMethods
                 this.restaurantTableRepository = new RestaurantTableRepository(sessionFactory);
                 this.restaurantTableUserRepository = new RestaurantTableUserRepository(sessionFactory);
 
-                RestaurantTableBookingAnalyser restaurantTableBookingAnalyser = new RestaurantTableBookingAnalyser(
+                restaurantTableBookingAnalyser = new RestaurantTableBookingAnalyser(
                         this.restaurantTableRepository,
                         this.restaurantTableUserRepository
                 );

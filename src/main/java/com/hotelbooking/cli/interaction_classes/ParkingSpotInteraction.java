@@ -12,9 +12,10 @@ import com.hotelbooking.repository.IRepository;
 import com.hotelbooking.repository.ParkingSpotRepository;
 import com.hotelbooking.repository.ParkingSpotUserRepository;
 import com.hotelbooking.repository.UserRepository;
-import com.hotelbooking.service.BookingService;
+import com.hotelbooking.service.Bookable;
 import com.hotelbooking.service.ParkingSpotBookingService;
 import com.hotelbooking.service.analysers.AnalyseResult;
+import com.hotelbooking.service.analysers.IBookingAnalyser;
 import com.hotelbooking.service.analysers.implementations.ParkingSpotBookingAnalyser;
 import org.hibernate.SessionFactory;
 
@@ -37,7 +38,8 @@ public class ParkingSpotInteraction implements IBasicMethods
     private IRepository<ParkingSpot, Integer> parkingSpotRepository;
     private UserRepository userRepository;
 
-    private BookingService<ParkingSpot_User> parkingSpotBookingService;
+    private Bookable<ParkingSpot_User> parkingSpotBookingService;
+    private IBookingAnalyser<ParkingSpot> parkingSpotBookingAnalyser;
 
     public ParkingSpotInteraction()
     {
@@ -179,7 +181,7 @@ public class ParkingSpotInteraction implements IBasicMethods
                 this.parkingSpotRepository = new ParkingSpotRepository(sessionFactory);
                 this.parkingSpotUserRepository = new ParkingSpotUserRepository(sessionFactory);
 
-                ParkingSpotBookingAnalyser parkingSpotBookingAnalyser = new ParkingSpotBookingAnalyser(
+                parkingSpotBookingAnalyser = new ParkingSpotBookingAnalyser(
                         parkingSpotRepository,
                         parkingSpotUserRepository
                 );

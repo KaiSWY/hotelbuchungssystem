@@ -13,8 +13,9 @@ import com.hotelbooking.repository.ActivityUserRepository;
 import com.hotelbooking.repository.IRepository;
 import com.hotelbooking.repository.UserRepository;
 import com.hotelbooking.service.ActivityBookingService;
-import com.hotelbooking.service.BookingService;
+import com.hotelbooking.service.Bookable;
 import com.hotelbooking.service.analysers.AnalyseResult;
+import com.hotelbooking.service.analysers.IBookingAnalyser;
 import com.hotelbooking.service.analysers.implementations.ActivityBookingAnalyser;
 import org.hibernate.SessionFactory;
 
@@ -35,8 +36,8 @@ public class ActivityBookingInteraction implements IBasicMethods
     private IRepository<Activity_User, Integer> activityUserRepository;
     private IRepository<User, Integer> userRepository;
     private IRepository<Activity, Integer> activityRepository;
-
-    private BookingService<Activity_User> activityBookingService;
+    private Bookable<Activity_User> activityBookingService;
+    private IBookingAnalyser<Activity> activityBookingAnalyser;
 
     public ActivityBookingInteraction()
     {
@@ -170,7 +171,7 @@ public class ActivityBookingInteraction implements IBasicMethods
                 this.activityRepository = new ActivityRepository(sessionFactory);
                 this.activityUserRepository = new ActivityUserRepository(sessionFactory);
 
-                ActivityBookingAnalyser activityBookingAnalyser = new ActivityBookingAnalyser(
+                activityBookingAnalyser = new ActivityBookingAnalyser(
                         this.activityRepository,
                         this.activityUserRepository
                 );
