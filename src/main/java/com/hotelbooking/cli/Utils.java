@@ -15,7 +15,6 @@ public class Utils
             return Integer.parseInt(number);
         } catch (NumberFormatException e)
         {
-            System.out.println("Invalid number format: " + e.getMessage());
             return -1;
         }
     }

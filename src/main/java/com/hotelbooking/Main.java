@@ -8,13 +8,8 @@ public class Main
     {
         System.out.println(">--Hotelbuchungssystem--<");
 
-        //test
-        String[] args2 = {"getBookedActivityAnalysis",
-                "--id", "1",
-        };
-
         //start cli
-        HotelBookingCLI hotelBookingCLI = new HotelBookingCLI(args2);
+        HotelBookingCLI hotelBookingCLI = new HotelBookingCLI(args);
         hotelBookingCLI.execute();
     }
 }
