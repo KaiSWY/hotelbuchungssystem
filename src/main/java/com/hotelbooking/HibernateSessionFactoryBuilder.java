@@ -10,7 +10,7 @@ public class HibernateSessionFactoryBuilder
 {
 
     private final String debugDbPath = "src/main/resources/database/hotelbooking.db";
-    private final String jarDbPath = "classes/database/hotelbooking.db";
+    private final String jarDbPath = "hotelbooking.db";
 
     public SessionFactory createSessionFactory()
     {
